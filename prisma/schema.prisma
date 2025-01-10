@@ -101,8 +101,10 @@ model User {
   createCompanies        Company[]         @relation("creator")
   updateCompanies        Company[]         @relation("updater")
   createTicketQuotations TicketQuotation[] @relation("creator")
-  Quotation              Quotation?        @relation(fields: [quotationId], references: [id])
+  quotation              Quotation?        @relation(fields: [quotationId], references: [id])
   quotationId            String?
+  createCategories       Category[]        @relation("creator")
+  updateCategories       Category[]        @relation("updater")
 }
 
 model Project {
@@ -135,11 +137,27 @@ model ProjectItem {
   product      Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
 }
 
+model Category {
+  id            String     @id @default(uuid())
+  name          String     @db.Text
+  desc          String?    @db.Text
+  parentId      String?
+  parent        Category?  @relation("CategoryParent", fields: [parentId], references: [id], onDelete: Cascade)
+  subCategories Category[] @relation("CategoryParent")
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  creatorId     String
+  updaterId     String?
+  creator       User?      @relation("creator", fields: [creatorId], references: [id], onDelete: Cascade)
+  updater       User?      @relation("updater", fields: [updaterId], references: [id], onDelete: Cascade)
+}
+
 model Product {
   id             String          @id @default(uuid())
   name           String          @db.Text
   thumb          String?         @db.Text
   desc           String?         @db.Text
+  producer       String?         @db.Text
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   creatorId      String
