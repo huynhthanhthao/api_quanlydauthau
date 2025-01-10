@@ -10,3 +10,11 @@ export interface PaginationArgs {
 export interface TokenSign {
   userId: string
 }
+
+export interface TokenSign {
+  userId: string
+}
+
+export interface RequestJWT extends Request {
+  userId: string
+}

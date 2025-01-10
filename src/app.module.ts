@@ -7,6 +7,7 @@ import { PrismaModule } from 'nestjs-prisma'
 import { DistrictModule } from './district/district.module'
 import { AuthModule } from './auth/auth.module'
 import { JwtModule } from '@nestjs/jwt'
+import { ProductModule } from './product/product.module'
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { JwtModule } from '@nestjs/jwt'
     CityModule,
     DistrictModule,
     AuthModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],
