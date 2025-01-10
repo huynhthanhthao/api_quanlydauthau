@@ -13,7 +13,7 @@ export class CityService {
 
     const keySearch = ['name', 'divisionType']
 
-    const where: Prisma.UserWhereInput = {
+    const where: Prisma.CityWhereInput = {
       ...(keyword && {
         OR: keySearch.map(key => ({
           [key]: { contains: keyword },
