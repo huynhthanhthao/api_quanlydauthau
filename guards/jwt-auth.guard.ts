@@ -4,7 +4,7 @@ import {
   CanActivate,
   ExecutionContext,
   HttpStatus,
-  HttpException,
+  HttpException
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { PrismaService } from 'nestjs-prisma'
@@ -31,21 +31,21 @@ export class JwtAuthGuard implements CanActivate {
 
     try {
       const payload: TokenSign = await this.jwtService.verifyAsync(token, {
-        secret: process.env.SECRET_KEY,
+        secret: process.env.SECRET_KEY
       })
 
       const user = await this.prisma.user.findUniqueOrThrow({
         where: {
           id: payload.userId,
-          status: UserStatus.ACTIVE,
+          status: UserStatus.ACTIVE
         },
         include: {
           roles: {
             include: {
-              permissions: true,
-            },
-          },
-        },
+              permissions: true
+            }
+          }
+        }
       })
 
       request.roles = user.roles

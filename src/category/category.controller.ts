@@ -10,7 +10,7 @@ import {
   Post,
   Query,
   Req,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common'
 import { CategoryService } from './category.service'
 import { JwtAuthGuard } from 'guards/jwt-auth.guard'
@@ -18,7 +18,7 @@ import {
   CreateCategoryDto,
   DeleteManyCategoryDto,
   FindManyCategoryDto,
-  UpdateCategoryDto,
+  UpdateCategoryDto
 } from './dto/category.dto'
 import { RequestJWT } from 'types'
 

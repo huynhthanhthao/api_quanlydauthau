@@ -22,7 +22,7 @@ async function bootstrap() {
         transform: true,
         skipMissingProperties: false,
         disableErrorMessages: false,
-        skipNullProperties: false,
+        skipNullProperties: false
       })
     )
 

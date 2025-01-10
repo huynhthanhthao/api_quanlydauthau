@@ -17,21 +17,21 @@ const readJsonFile = async (filePath: string) => {
 const roles = [
   {
     name: 'Quản trị',
-    permissionIds: [],
+    permissionIds: []
   },
   {
     name: 'Chủ dự án',
-    permissionIds: [],
+    permissionIds: []
   },
   {
     name: 'Nhà cung cấp',
-    permissionIds: [],
-  },
+    permissionIds: []
+  }
 ]
 
 async function main() {
   await prisma.permission.createMany({
-    data: [],
+    data: []
   })
 
   await Promise.all(
@@ -41,10 +41,10 @@ async function main() {
           name: role.name,
           permissions: {
             connect: role.permissionIds.map(permissionId => ({
-              id: permissionId,
-            })),
-          },
-        },
+              id: permissionId
+            }))
+          }
+        }
       })
     )
   )
@@ -53,8 +53,8 @@ async function main() {
     data: {
       name: 'admin',
       password: bcrypt.hashSync('aA@123', 10),
-      username: 'admin',
-    },
+      username: 'admin'
+    }
   })
 
   const provinces = await readJsonFile('jsonData/provinces.json')
@@ -79,12 +79,12 @@ async function main() {
                 name: ward.name,
                 codeName: ward.codename,
                 divisionType: ward.division_type,
-                shortCodeName: ward.short_codename,
-              })),
-            },
-          })),
-        },
-      },
+                shortCodeName: ward.short_codename
+              }))
+            }
+          }))
+        }
+      }
     })
 
     return `Created city: ${city.name}`

@@ -4,7 +4,7 @@ import {
   CreateProductDto,
   DeleteManyProductDto,
   FindManyProductDto,
-  UpdateProductDto,
+  UpdateProductDto
 } from './dto/product.dto'
 import { Prisma, PrismaClient } from '.prisma/client'
 import { paginate } from 'utils/helper'
@@ -22,9 +22,9 @@ export class ProductService {
         producer: data.producer,
         creatorId: userId,
         categories: {
-          connect: data.categoryIds.map(id => ({ id })),
-        },
-      },
+          connect: data.categoryIds.map(id => ({ id }))
+        }
+      }
     })
   }
 
@@ -37,9 +37,9 @@ export class ProductService {
         thumb: data.name,
         producer: data.producer,
         categories: {
-          set: data.categoryIds.map(id => ({ id })),
-        },
-      },
+          set: data.categoryIds.map(id => ({ id }))
+        }
+      }
     })
   }
 
@@ -51,9 +51,9 @@ export class ProductService {
     const where: Prisma.ProductWhereInput = {
       ...(keyword && {
         OR: keySearch.map(key => ({
-          [key]: { contains: keyword },
-        })),
-      }),
+          [key]: { contains: keyword }
+        }))
+      })
     }
 
     return await paginate(
@@ -61,12 +61,12 @@ export class ProductService {
       {
         where,
         include: {
-          categories: true,
-        },
+          categories: true
+        }
       },
       {
         page,
-        perPage,
+        perPage
       }
     )
   }
@@ -75,8 +75,8 @@ export class ProductService {
     return this.prisma.product.findUniqueOrThrow({
       where: { id },
       include: {
-        categories: true,
-      },
+        categories: true
+      }
     })
   }
 
@@ -85,9 +85,9 @@ export class ProductService {
       await prisma.product.deleteMany({
         where: {
           id: {
-            in: data.ids,
-          },
-        },
+            in: data.ids
+          }
+        }
       })
     })
   }

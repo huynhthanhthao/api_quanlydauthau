@@ -14,7 +14,7 @@ export const CATEGORY_SELECT: Prisma.CategorySelect = {
       thumb: true,
       desc: true,
       parentId: true,
-      updatedAt: true,
-    },
-  },
+      updatedAt: true
+    }
+  }
 }

@@ -16,19 +16,19 @@ export class CityService {
     const where: Prisma.CityWhereInput = {
       ...(keyword && {
         OR: keySearch.map(key => ({
-          [key]: { contains: keyword },
-        })),
-      }),
+          [key]: { contains: keyword }
+        }))
+      })
     }
 
     return await paginate(
       this.prisma.city,
       {
-        where,
+        where
       },
       {
         page,
-        perPage,
+        perPage
       }
     )
   }
@@ -36,7 +36,7 @@ export class CityService {
   async findOne(code: number) {
     return this.prisma.city.findUniqueOrThrow({
       where: { code },
-      include: { districts: true },
+      include: { districts: true }
     })
   }
 }

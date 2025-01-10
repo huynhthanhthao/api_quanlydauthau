@@ -4,7 +4,7 @@ import {
   CreateCategoryDto,
   DeleteManyCategoryDto,
   FindManyCategoryDto,
-  UpdateCategoryDto,
+  UpdateCategoryDto
 } from './dto/category.dto'
 import { Prisma, PrismaClient } from '.prisma/client'
 import { paginate } from 'utils/helper'
@@ -21,8 +21,8 @@ export class CategoryService {
         desc: data.desc,
         thumb: data.thumb,
         parentId: data.parentId,
-        creatorId: userId,
-      },
+        creatorId: userId
+      }
     })
   }
 
@@ -33,8 +33,8 @@ export class CategoryService {
         name: data.name,
         desc: data.desc,
         thumb: data.thumb,
-        parentId: data.parentId,
-      },
+        parentId: data.parentId
+      }
     })
   }
 
@@ -46,9 +46,9 @@ export class CategoryService {
     const where: Prisma.CategoryWhereInput = {
       ...(keyword && {
         OR: keySearch.map(key => ({
-          [key]: { contains: keyword },
-        })),
-      }),
+          [key]: { contains: keyword }
+        }))
+      })
     }
 
     return await paginate(
@@ -57,12 +57,12 @@ export class CategoryService {
         where,
         select: CATEGORY_SELECT,
         orderBy: {
-          [orderKey]: orderValue,
-        },
+          [orderKey]: orderValue
+        }
       },
       {
         page,
-        perPage,
+        perPage
       }
     )
   }
@@ -70,7 +70,7 @@ export class CategoryService {
   async findOne(id: string) {
     return this.prisma.category.findUniqueOrThrow({
       where: { id },
-      select: CATEGORY_SELECT,
+      select: CATEGORY_SELECT
     })
   }
 
@@ -79,9 +79,9 @@ export class CategoryService {
       return await prisma.category.deleteMany({
         where: {
           id: {
-            in: data.ids,
-          },
-        },
+            in: data.ids
+          }
+        }
       })
     })
   }

@@ -6,7 +6,7 @@ import {
   HttpCode,
   HttpException,
   HttpStatus,
-  Post,
+  Post
 } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { LoginDto } from './dto/auth.dto'

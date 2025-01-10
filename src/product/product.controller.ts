@@ -10,14 +10,14 @@ import {
   Post,
   Query,
   Req,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common'
 import { ProductService } from './product.service'
 import {
   CreateProductDto,
   DeleteManyProductDto,
   FindManyProductDto,
-  UpdateProductDto,
+  UpdateProductDto
 } from './dto/product.dto'
 import { JwtAuthGuard } from 'guards/jwt-auth.guard'
 import { RequestJWT } from 'types'

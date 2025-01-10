@@ -4,7 +4,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  Query,
+  Query
 } from '@nestjs/common'
 import { DistrictService } from './district.service'
 import { FindManyDistrictDto } from './dto/district.dto'

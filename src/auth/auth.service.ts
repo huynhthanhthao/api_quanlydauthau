@@ -17,8 +17,8 @@ export class AuthService {
   async login(data: LoginDto) {
     const user = await this.prisma.user.findUnique({
       where: {
-        username: data.username,
-      },
+        username: data.username
+      }
     })
 
     if (!user || !bcrypt.compareSync(data.password, user.password))
@@ -46,7 +46,7 @@ export class AuthService {
       { userId: data.userId },
       {
         expiresIn: time,
-        secret: key,
+        secret: key
       }
     )
   }
@@ -54,13 +54,13 @@ export class AuthService {
   async getMe(token: string) {
     try {
       const payload: TokenSign = await this.jwtService.verifyAsync(token, {
-        secret: process.env.SECRET_KEY,
+        secret: process.env.SECRET_KEY
       })
 
       const user = await this.prisma.user.findUnique({
         where: {
-          id: payload.userId,
-        },
+          id: payload.userId
+        }
       })
 
       delete user.password

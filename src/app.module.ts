@@ -14,22 +14,22 @@ import { CategoryModule } from './category/category.module'
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      cache: true,
+      cache: true
     }),
     PrismaModule.forRoot({
-      isGlobal: true,
+      isGlobal: true
     }),
     JwtModule.register({
       global: true,
-      secret: process.env.SECRET_KEY,
+      secret: process.env.SECRET_KEY
     }),
     CityModule,
     DistrictModule,
     AuthModule,
     ProductModule,
-    CategoryModule,
+    CategoryModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
 export class AppModule {}

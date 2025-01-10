@@ -4,7 +4,7 @@ import {
   Injectable,
   NestInterceptor,
   ExecutionContext,
-  CallHandler,
+  CallHandler
 } from '@nestjs/common'
 import { AnyObject } from 'types'
 
@@ -26,7 +26,7 @@ export class TransformInterceptor<T>
       map((data: AnyObject) => ({
         statusCode: context.switchToHttp().getResponse().statusCode,
         message: data?.message ?? 'Thành công!',
-        response: data as T,
+        response: data as T
       }))
     )
   }

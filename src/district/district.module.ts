@@ -4,6 +4,6 @@ import { DistrictController } from './district.controller'
 
 @Module({
   controllers: [DistrictController],
-  providers: [DistrictService],
+  providers: [DistrictService]
 })
 export class DistrictModule {}

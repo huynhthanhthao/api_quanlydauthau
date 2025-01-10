@@ -5,14 +5,14 @@ import { PrismaClient } from '@prisma/client'
 
 export async function paginate<
   T extends keyof PrismaClient,
-  M extends PrismaClient[T],
+  M extends PrismaClient[T]
 >(
   prismaModel: M,
   queryArgs: AnyObject,
   paginationArgs: PaginationArgs
 ): Promise<ReturnType<PaginatorTypes.PaginateFunction>> {
   const paginateFn: PaginatorTypes.PaginateFunction = paginator({
-    perPage: paginationArgs.perPage || PER_PAGE,
+    perPage: paginationArgs.perPage || PER_PAGE
   })
 
   return await paginateFn(prismaModel, queryArgs, paginationArgs)

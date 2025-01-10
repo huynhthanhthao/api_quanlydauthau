@@ -4,7 +4,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  Query,
+  Query
 } from '@nestjs/common'
 import { CityService } from './city.service'
 import { FindManyCityDto } from './dto/city.dto'
