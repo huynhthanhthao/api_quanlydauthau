@@ -4,6 +4,7 @@ import { AppService } from './app.service'
 import { ConfigModule } from '@nestjs/config'
 import { CityModule } from './city/city.module'
 import { PrismaModule } from 'nestjs-prisma'
+import { DistrictModule } from './district/district.module'
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { PrismaModule } from 'nestjs-prisma'
       isGlobal: true,
     }),
     CityModule,
+    DistrictModule,
   ],
   controllers: [AppController],
   providers: [AppService],

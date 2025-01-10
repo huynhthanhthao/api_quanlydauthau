@@ -35,12 +35,12 @@ async function main() {
   })
 
   await Promise.all(
-    roles.map((role) =>
+    roles.map(role =>
       prisma.role.create({
         data: {
           name: role.name,
           permissions: {
-            connect: role.permissionIds.map((permissionId) => ({
+            connect: role.permissionIds.map(permissionId => ({
               id: permissionId,
             })),
           },
@@ -59,7 +59,7 @@ async function main() {
 
   const provinces = await readJsonFile('jsonData/provinces.json')
 
-  const cityPromises = provinces.map(async (province) => {
+  const cityPromises = provinces.map(async province => {
     const city = await prisma.city.create({
       data: {
         code: province.code,
@@ -67,14 +67,14 @@ async function main() {
         phoneCode: province.phone_code,
         divisionType: province.division_type,
         districts: {
-          create: province.districts.map((district) => ({
+          create: province.districts.map(district => ({
             code: district.code,
             name: district.name,
             codeName: district.codename,
             divisionType: district.division_type,
             shortCodeName: district.short_codename,
             wards: {
-              create: district.wards.map((ward) => ({
+              create: district.wards.map(ward => ({
                 code: ward.code,
                 name: ward.name,
                 codeName: ward.codename,
@@ -97,7 +97,7 @@ main()
   .then(() => {
     console.log('Seeding completed!')
   })
-  .catch((e) => {
+  .catch(e => {
     console.error(e)
   })
   .finally(async () => {
