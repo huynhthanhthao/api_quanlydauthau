@@ -142,6 +142,7 @@ model Category {
   name          String     @db.Text
   desc          String?    @db.Text
   parentId      String?
+  products      Product[]
   parent        Category?  @relation("CategoryParent", fields: [parentId], references: [id], onDelete: Cascade)
   subCategories Category[] @relation("CategoryParent")
   createdAt     DateTime   @default(now())
@@ -158,6 +159,7 @@ model Product {
   thumb          String?         @db.Text
   desc           String?         @db.Text
   producer       String?         @db.Text
+  categories     Category[]
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   creatorId      String
