@@ -52,7 +52,7 @@ async function main() {
   await prisma.user.create({
     data: {
       name: 'admin',
-      password: bcrypt.hashSync('123456', 10),
+      password: bcrypt.hashSync('aA@123', 10),
       username: 'admin',
     },
   })
