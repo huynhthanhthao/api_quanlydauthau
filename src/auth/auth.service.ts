@@ -19,15 +19,6 @@ export class AuthService {
       where: {
         username: data.username,
       },
-      include: {
-        roles: {
-          select: {
-            id: true,
-            name: true,
-            permissions: true,
-          },
-        },
-      },
     })
 
     if (!user || !bcrypt.compareSync(data.password, user.password))
@@ -58,5 +49,30 @@ export class AuthService {
         secret: key,
       }
     )
+  }
+
+  async getMe(token: string) {
+    try {
+      const payload: TokenSign = await this.jwtService.verifyAsync(token, {
+        secret: process.env.SECRET_KEY,
+      })
+
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: payload.userId,
+        },
+      })
+
+      delete user.password
+
+      return { user }
+    } catch (error) {
+      console.log(error)
+
+      throw new HttpException(
+        'Phiên bản đăng nhập hết hạn!',
+        HttpStatus.CONFLICT
+      )
+    }
   }
 }
