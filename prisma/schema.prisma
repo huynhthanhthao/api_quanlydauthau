@@ -6,3 +6,235 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Role {
+  id          String       @id @default(uuid())
+  name        String       @db.Text
+  permissions Permission[]
+  users       User[]       @relation("userRoles")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Permission {
+  id        String   @id @default(uuid())
+  name      String   @db.Text
+  roles     Role[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Company {
+  id                     String    @id @default(uuid())
+  name                   String    @db.Text
+  address                String?   @db.Text
+  email                  String?
+  phone                  String?
+  tax                    String?
+  website                String?   @db.Text
+  logo                   String?   @db.Text
+  representativeName     String?   @db.Text
+  representativePosition String?   @db.Text
+  foundedAt              DateTime?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  creatorId              String
+  updaterId              String?
+  creator                User?     @relation("creator", fields: [creatorId], references: [id], onDelete: Cascade)
+  updater                User?     @relation("updater", fields: [updaterId], references: [id], onDelete: Cascade)
+}
+
+model City {
+  code         Int        @id @unique
+  name         String
+  phoneCode    Int?
+  divisionType String?
+  districts    District[]
+}
+
+model District {
+  code          Int     @id @unique
+  name          String
+  codeName      String?
+  divisionType  String?
+  shortCodeName String?
+  cityId        Int
+  city          City?   @relation(fields: [cityId], references: [code], onDelete: Cascade)
+  wards         Ward[]
+}
+
+model Ward {
+  code          Int       @id @unique
+  name          String
+  codeName      String?
+  divisionType  String?
+  shortCodeName String?
+  districtId    Int
+  district      District? @relation(fields: [districtId], references: [code], onDelete: Cascade)
+  users         User[]
+}
+
+model User {
+  id                     String            @id @default(uuid())
+  name                   String            @db.Text
+  username               String            @unique
+  password               String
+  email                  String?           @unique
+  phone                  String?           @unique
+  avatar                 String?           @db.Text
+  wardId                 Int?
+  ward                   Ward?             @relation(fields: [wardId], references: [code], onDelete: Cascade)
+  address                String?           @db.Text
+  birthDate              DateTime?
+  roles                  Role[]            @relation("userRoles")
+  createdAt              DateTime          @default(now())
+  updatedAt              DateTime          @updatedAt
+  createProjects         Project[]         @relation("creator")
+  updateProjects         Project[]         @relation("updater")
+  createProducts         Product[]         @relation("creator")
+  updateProducts         Product[]         @relation("updater")
+  createUnits            Unit[]            @relation("creator")
+  updateUnits            Unit[]            @relation("updater")
+  createQuotations       Quotation[]       @relation("creator")
+  updateQuotations       Quotation[]       @relation("updater")
+  createCompanies        Company[]         @relation("creator")
+  updateCompanies        Company[]         @relation("updater")
+  createTicketQuotations TicketQuotation[] @relation("creator")
+  Quotation              Quotation?        @relation(fields: [quotationId], references: [id])
+  quotationId            String?
+}
+
+model Project {
+  id           String        @id @default(uuid())
+  name         String
+  price        Float
+  status       ProjectStatus
+  address      String?       @db.Text
+  desc         String?       @db.Text
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  creatorId    String
+  updaterId    String?
+  creator      User?         @relation("creator", fields: [creatorId], references: [id], onDelete: Cascade)
+  updater      User?         @relation("updater", fields: [updaterId], references: [id], onDelete: Cascade)
+  projectItems ProjectItem[]
+}
+
+model ProjectItem {
+  id           String   @id @default(uuid())
+  projectId    String
+  productId    String
+  productName  String   @db.Text
+  productThumb String?  @db.Text
+  productDesc  String?  @db.Text
+  quantity     Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  product      Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+}
+
+model Product {
+  id             String          @id @default(uuid())
+  name           String          @db.Text
+  thumb          String?         @db.Text
+  desc           String?         @db.Text
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  creatorId      String
+  updaterId      String?
+  creator        User?           @relation("creator", fields: [creatorId], references: [id], onDelete: Cascade)
+  updater        User?           @relation("updater", fields: [updaterId], references: [id], onDelete: Cascade)
+  projectItems   ProjectItem[]
+  quotationItems QuotationItem[]
+}
+
+model Unit {
+  id        String   @id @default(uuid())
+  name      String   @db.Text
+  code      String?  @db.Text
+  desc      String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  creatorId String
+  updaterId String?
+  creator   User?    @relation("creator", fields: [creatorId], references: [id], onDelete: Cascade)
+  updater   User?    @relation("updater", fields: [updaterId], references: [id], onDelete: Cascade)
+}
+
+model Quotation {
+  id                 String             @id @default(uuid())
+  name               String             @db.Text
+  desc               String?            @db.Text
+  price              Float
+  status             QuotationStatus
+  items              QuotationItem[]
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  creatorId          String
+  updaterId          String?
+  creator            User?              @relation("creator", fields: [creatorId], references: [id], onDelete: Cascade)
+  updater            User?              @relation("updater", fields: [updaterId], references: [id], onDelete: Cascade)
+  quotationHistories QuotationHistory[]
+  ticketQuotations   TicketQuotation[]
+  User               User[]
+}
+
+model TicketQuotation {
+  id          String    @id @default(uuid())
+  title       String    @db.Text
+  content     String?   @db.Text
+  createdAt   DateTime  @default(now())
+  quotationId String
+  quotation   Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+  creatorId   String
+  creator     User?     @relation("creator", fields: [creatorId], references: [id], onDelete: Cascade)
+}
+
+model QuotationItem {
+  id            String    @id @default(uuid())
+  quotationId   String
+  productId     String
+  productName   String    @db.Text
+  productDesc   String?   @db.Text
+  productThumb  String?   @db.Text
+  photoURLs     Json?
+  attachedFiles Json?
+  quantity      Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  quotation     Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+  product       Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+}
+
+model QuotationHistory {
+  id               String    @id @default(uuid())
+  quotationVersion Json
+  quotationId      String
+  quotation        Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+  createdAt        DateTime  @default(now())
+}
+
+model Trash {
+  id         String   @id @default(uuid())
+  entityId   String
+  entityType String
+  data       Json
+  deletedAt  DateTime @default(now())
+  isRestored Boolean  @default(false)
+}
+
+enum QuotationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+enum ProjectStatus {
+  PENDING
+  BIDDING
+  IN_PROGRESS
+  CANCELED
+  COMPLETED
+}
