@@ -79,6 +79,7 @@ model User {
   name                   String            @db.Text
   username               String            @unique
   password               String
+  status                 UserStatus        @default(ACTIVE)
   email                  String?           @unique
   phone                  String?           @unique
   avatar                 String?           @db.Text
@@ -237,4 +238,9 @@ enum ProjectStatus {
   IN_PROGRESS
   CANCELED
   COMPLETED
+}
+
+enum UserStatus {
+  ACTIVE
+  BLOCKED
 }

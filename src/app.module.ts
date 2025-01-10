@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config'
 import { CityModule } from './city/city.module'
 import { PrismaModule } from 'nestjs-prisma'
 import { DistrictModule } from './district/district.module'
+import { AuthModule } from './auth/auth.module'
+import { JwtModule } from '@nestjs/jwt'
 
 @Module({
   imports: [
@@ -15,8 +17,13 @@ import { DistrictModule } from './district/district.module'
     PrismaModule.forRoot({
       isGlobal: true,
     }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.SECRET_KEY,
+    }),
     CityModule,
     DistrictModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
