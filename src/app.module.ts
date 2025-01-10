@@ -8,6 +8,7 @@ import { DistrictModule } from './district/district.module'
 import { AuthModule } from './auth/auth.module'
 import { JwtModule } from '@nestjs/jwt'
 import { ProductModule } from './product/product.module'
+import { CategoryModule } from './category/category.module'
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ProductModule } from './product/product.module'
     DistrictModule,
     AuthModule,
     ProductModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

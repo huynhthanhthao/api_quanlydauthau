@@ -140,17 +140,18 @@ model ProjectItem {
 model Category {
   id            String     @id @default(uuid())
   name          String     @db.Text
+  thumb         String?    @db.Text
   desc          String?    @db.Text
   parentId      String?
   products      Product[]
-  parent        Category?  @relation("CategoryParent", fields: [parentId], references: [id], onDelete: Cascade)
+  parent        Category?  @relation("CategoryParent", fields: [parentId], references: [id])
   subCategories Category[] @relation("CategoryParent")
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
   creatorId     String
   updaterId     String?
-  creator       User?      @relation("creator", fields: [creatorId], references: [id], onDelete: Cascade)
-  updater       User?      @relation("updater", fields: [updaterId], references: [id], onDelete: Cascade)
+  creator       User?      @relation("creator", fields: [creatorId], references: [id])
+  updater       User?      @relation("updater", fields: [updaterId], references: [id])
 }
 
 model Product {
