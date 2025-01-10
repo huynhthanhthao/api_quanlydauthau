@@ -165,8 +165,8 @@ model Product {
   updatedAt      DateTime        @updatedAt
   creatorId      String
   updaterId      String?
-  creator        User?           @relation("creator", fields: [creatorId], references: [id], onDelete: Cascade)
-  updater        User?           @relation("updater", fields: [updaterId], references: [id], onDelete: Cascade)
+  creator        User?           @relation("creator", fields: [creatorId], references: [id])
+  updater        User?           @relation("updater", fields: [updaterId], references: [id])
   projectItems   ProjectItem[]
   quotationItems QuotationItem[]
 }

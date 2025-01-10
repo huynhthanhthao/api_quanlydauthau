@@ -8,6 +8,7 @@ import {
 } from './dto/product.dto'
 import { Prisma, PrismaClient } from '.prisma/client'
 import { paginate } from 'utils/helper'
+import { PRODUCT_SELECT } from 'responses'
 
 @Injectable()
 export class ProductService {
@@ -18,7 +19,7 @@ export class ProductService {
       data: {
         name: data.name,
         desc: data.desc,
-        thumb: data.name,
+        thumb: data.thumb,
         producer: data.producer,
         creatorId: userId,
         categories: {
@@ -37,7 +38,7 @@ export class ProductService {
         thumb: data.name,
         producer: data.producer,
         categories: {
-          set: data.categoryIds.map(id => ({ id }))
+          set: data.categoryIds?.map(id => ({ id }))
         }
       }
     })
@@ -60,9 +61,7 @@ export class ProductService {
       this.prisma.product,
       {
         where,
-        include: {
-          categories: true
-        }
+        select: PRODUCT_SELECT
       },
       {
         page,
@@ -74,15 +73,13 @@ export class ProductService {
   async findOne(id: string) {
     return this.prisma.product.findUniqueOrThrow({
       where: { id },
-      include: {
-        categories: true
-      }
+      select: PRODUCT_SELECT
     })
   }
 
   async deleteMany(data: DeleteManyProductDto) {
-    return await this.prisma.$transaction(async (prisma: PrismaClient) => {
-      await prisma.product.deleteMany({
+    return this.prisma.$transaction(async (prisma: PrismaClient) => {
+      return await prisma.product.deleteMany({
         where: {
           id: {
             in: data.ids
@@ -90,5 +87,9 @@ export class ProductService {
         }
       })
     })
+  }
+
+  async delete(id: string) {
+    return this.prisma.product.delete({ where: { id } })
   }
 }

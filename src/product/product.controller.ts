@@ -41,6 +41,13 @@ export class ProductController {
     return this.productService.update(id, data)
   }
 
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  delete(@Param('id') id: string) {
+    return this.productService.delete(id)
+  }
+
   @Delete('')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)

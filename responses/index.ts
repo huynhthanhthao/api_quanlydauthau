@@ -18,3 +18,22 @@ export const CATEGORY_SELECT: Prisma.CategorySelect = {
     }
   }
 }
+
+export const PRODUCT_SELECT: Prisma.ProductSelect = {
+  id: true,
+  name: true,
+  thumb: true,
+  desc: true,
+  producer: true,
+  updatedAt: true,
+  categories: {
+    select: {
+      id: true,
+      name: true,
+      thumb: true,
+      desc: true,
+      parentId: true,
+      updatedAt: true
+    }
+  }
+}
