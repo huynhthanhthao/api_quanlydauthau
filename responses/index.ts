@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client'
 
-export const CATEGORY_SELECT: Prisma.CategorySelect = {
+export const categorySelect: Prisma.CategorySelect = {
   id: true,
   name: true,
   thumb: true,
@@ -19,7 +19,7 @@ export const CATEGORY_SELECT: Prisma.CategorySelect = {
   }
 }
 
-export const PRODUCT_SELECT: Prisma.ProductSelect = {
+export const productSelect: Prisma.ProductSelect = {
   id: true,
   name: true,
   thumb: true,

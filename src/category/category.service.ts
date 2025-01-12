@@ -8,7 +8,7 @@ import {
 } from './dto/category.dto'
 import { Prisma, PrismaClient } from '.prisma/client'
 import { paginate } from 'utils/helper'
-import { CATEGORY_SELECT } from 'responses'
+import { categorySelect } from 'responses'
 
 @Injectable()
 export class CategoryService {
@@ -55,7 +55,7 @@ export class CategoryService {
       this.prisma.category,
       {
         where,
-        select: CATEGORY_SELECT,
+        select: categorySelect,
         orderBy: {
           [orderKey]: orderValue
         }
@@ -70,7 +70,7 @@ export class CategoryService {
   async findOne(id: string) {
     return this.prisma.category.findUniqueOrThrow({
       where: { id },
-      select: CATEGORY_SELECT
+      select: categorySelect
     })
   }
 

@@ -8,7 +8,7 @@ import {
 } from './dto/product.dto'
 import { Prisma, PrismaClient } from '.prisma/client'
 import { paginate } from 'utils/helper'
-import { PRODUCT_SELECT } from 'responses'
+import { productSelect } from 'responses'
 
 @Injectable()
 export class ProductService {
@@ -61,7 +61,7 @@ export class ProductService {
       this.prisma.product,
       {
         where,
-        select: PRODUCT_SELECT
+        select: productSelect
       },
       {
         page,
@@ -73,7 +73,7 @@ export class ProductService {
   async findOne(id: string) {
     return this.prisma.product.findUniqueOrThrow({
       where: { id },
-      select: PRODUCT_SELECT
+      select: productSelect
     })
   }
 
