@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { ProductModule } from './product/product.module'
 import { CategoryModule } from './category/category.module'
 import { TrashModule } from './trash/trash.module'
+import { MediaModule } from './media/media.module'
 
 @Module({
   imports: [
@@ -32,7 +33,8 @@ import { TrashModule } from './trash/trash.module'
     AuthModule,
     ProductModule,
     CategoryModule,
-    TrashModule
+    TrashModule,
+    MediaModule
   ],
   controllers: [AppController],
   providers: [AppService]
