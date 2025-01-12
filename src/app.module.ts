@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module'
 import { JwtModule } from '@nestjs/jwt'
 import { ProductModule } from './product/product.module'
 import { CategoryModule } from './category/category.module'
+import { TrashModule } from './trash/trash.module'
 
 @Module({
   imports: [
@@ -19,6 +20,9 @@ import { CategoryModule } from './category/category.module'
     PrismaModule.forRoot({
       isGlobal: true
     }),
+    TrashModule.forRoot({
+      isGlobal: true
+    }),
     JwtModule.register({
       global: true,
       secret: process.env.SECRET_KEY
@@ -27,7 +31,8 @@ import { CategoryModule } from './category/category.module'
     DistrictModule,
     AuthModule,
     ProductModule,
-    CategoryModule
+    CategoryModule,
+    TrashModule
   ],
   controllers: [AppController],
   providers: [AppService]

@@ -38,10 +38,10 @@ model Company {
   foundedAt              DateTime?
   createdAt              DateTime  @default(now())
   updatedAt              DateTime  @updatedAt
-  creatorId              String
+  creatorId              String?
   updaterId              String?
-  creator                User?     @relation("creator", fields: [creatorId], references: [id], onDelete: Cascade)
-  updater                User?     @relation("updater", fields: [updaterId], references: [id], onDelete: Cascade)
+  creator                User?     @relation("creator", fields: [creatorId], references: [id])
+  updater                User?     @relation("updater", fields: [updaterId], references: [id])
 }
 
 model City {
@@ -59,7 +59,7 @@ model District {
   divisionType  String?
   shortCodeName String?
   cityId        Int
-  city          City?   @relation(fields: [cityId], references: [code], onDelete: Cascade)
+  city          City?   @relation(fields: [cityId], references: [code])
   wards         Ward[]
 }
 
@@ -70,7 +70,7 @@ model Ward {
   divisionType  String?
   shortCodeName String?
   districtId    Int
-  district      District? @relation(fields: [districtId], references: [code], onDelete: Cascade)
+  district      District? @relation(fields: [districtId], references: [code])
   users         User[]
 }
 
@@ -84,7 +84,7 @@ model User {
   phone                  String?           @unique
   avatar                 String?           @db.Text
   wardId                 Int?
-  ward                   Ward?             @relation(fields: [wardId], references: [code], onDelete: Cascade)
+  ward                   Ward?             @relation(fields: [wardId], references: [code])
   address                String?           @db.Text
   birthDate              DateTime?
   roles                  Role[]            @relation("userRoles")
@@ -105,6 +105,7 @@ model User {
   quotationId            String?
   createCategories       Category[]        @relation("creator")
   updateCategories       Category[]        @relation("updater")
+  createTrash            Trash[]           @relation("creator")
 }
 
 model Project {
@@ -116,10 +117,10 @@ model Project {
   desc         String?       @db.Text
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  creatorId    String
+  creatorId    String?
   updaterId    String?
-  creator      User?         @relation("creator", fields: [creatorId], references: [id], onDelete: Cascade)
-  updater      User?         @relation("updater", fields: [updaterId], references: [id], onDelete: Cascade)
+  creator      User?         @relation("creator", fields: [creatorId], references: [id])
+  updater      User?         @relation("updater", fields: [updaterId], references: [id])
   projectItems ProjectItem[]
 }
 
@@ -133,7 +134,7 @@ model ProjectItem {
   quantity     Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project      Project  @relation(fields: [projectId], references: [id])
   product      Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
 }
 
@@ -148,7 +149,7 @@ model Category {
   subCategories Category[] @relation("CategoryParent")
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
-  creatorId     String
+  creatorId     String?
   updaterId     String?
   creator       User?      @relation("creator", fields: [creatorId], references: [id])
   updater       User?      @relation("updater", fields: [updaterId], references: [id])
@@ -163,7 +164,7 @@ model Product {
   categories     Category[]
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
-  creatorId      String
+  creatorId      String?
   updaterId      String?
   creator        User?           @relation("creator", fields: [creatorId], references: [id])
   updater        User?           @relation("updater", fields: [updaterId], references: [id])
@@ -178,10 +179,10 @@ model Unit {
   desc      String?  @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  creatorId String
+  creatorId String?
   updaterId String?
-  creator   User?    @relation("creator", fields: [creatorId], references: [id], onDelete: Cascade)
-  updater   User?    @relation("updater", fields: [updaterId], references: [id], onDelete: Cascade)
+  creator   User?    @relation("creator", fields: [creatorId], references: [id])
+  updater   User?    @relation("updater", fields: [updaterId], references: [id])
 }
 
 model Quotation {
@@ -193,10 +194,10 @@ model Quotation {
   items              QuotationItem[]
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
-  creatorId          String
+  creatorId          String?
   updaterId          String?
-  creator            User?              @relation("creator", fields: [creatorId], references: [id], onDelete: Cascade)
-  updater            User?              @relation("updater", fields: [updaterId], references: [id], onDelete: Cascade)
+  creator            User?              @relation("creator", fields: [creatorId], references: [id])
+  updater            User?              @relation("updater", fields: [updaterId], references: [id])
   quotationHistories QuotationHistory[]
   ticketQuotations   TicketQuotation[]
   User               User[]
@@ -208,9 +209,9 @@ model TicketQuotation {
   content     String?   @db.Text
   createdAt   DateTime  @default(now())
   quotationId String
-  quotation   Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
-  creatorId   String
-  creator     User?     @relation("creator", fields: [creatorId], references: [id], onDelete: Cascade)
+  quotation   Quotation @relation(fields: [quotationId], references: [id])
+  creatorId   String?
+  creator     User?     @relation("creator", fields: [creatorId], references: [id])
 }
 
 model QuotationItem {
@@ -225,7 +226,7 @@ model QuotationItem {
   quantity      Int
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  quotation     Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+  quotation     Quotation @relation(fields: [quotationId], references: [id])
   product       Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
 }
 
@@ -233,17 +234,18 @@ model QuotationHistory {
   id               String    @id @default(uuid())
   quotationVersion Json
   quotationId      String
-  quotation        Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+  quotation        Quotation @relation(fields: [quotationId], references: [id])
   createdAt        DateTime  @default(now())
 }
 
 model Trash {
   id         String   @id @default(uuid())
-  entityId   String
-  entityType String
+  modelName  String
   data       Json
   deletedAt  DateTime @default(now())
   isRestored Boolean  @default(false)
+  creatorId  String?
+  creator    User?    @relation("creator", fields: [creatorId], references: [id])
 }
 
 enum QuotationStatus {

@@ -44,15 +44,17 @@ export class ProductController {
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  delete(@Param('id') id: string) {
-    return this.productService.delete(id)
+  delete(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.productService.delete(id, userId)
   }
 
   @Delete('')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
-  deleteMany(@Body() data: DeleteManyProductDto) {
-    return this.productService.deleteMany(data)
+  deleteMany(@Body() data: DeleteManyProductDto, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.productService.deleteMany(data, userId)
   }
 
   @Get(':id')
