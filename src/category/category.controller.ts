@@ -58,14 +58,16 @@ export class CategoryController {
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  delete(@Param('id') id: string) {
-    return this.categoryService.delete(id)
+  delete(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.categoryService.delete(id, userId)
   }
 
   @Delete('')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
-  deleteMany(@Body() data: DeleteManyCategoryDto) {
-    return this.categoryService.deleteMany(data)
+  deleteMany(@Body() data: DeleteManyCategoryDto, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.categoryService.deleteMany(data, userId)
   }
 }

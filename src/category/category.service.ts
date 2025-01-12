@@ -9,10 +9,15 @@ import {
 import { Prisma, PrismaClient } from '.prisma/client'
 import { paginate } from 'utils/helper'
 import { categorySelect } from 'responses'
+import { TrashService } from 'src/trash/trash.service'
+import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 
 @Injectable()
 export class CategoryService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly trashService: TrashService
+  ) {}
 
   async create(data: CreateCategoryDto, userId: string) {
     return await this.prisma.category.create({
@@ -74,9 +79,17 @@ export class CategoryService {
     })
   }
 
-  async deleteMany(data: DeleteManyCategoryDto) {
+  async deleteMany(data: DeleteManyCategoryDto, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
-      return await prisma.category.deleteMany({
+      const dataTrash: CreateManyTrashDto = {
+        ids: data.ids,
+        userId,
+        modelName: 'Category'
+      }
+
+      await this.trashService.createMany(dataTrash, prisma)
+
+      return prisma.category.deleteMany({
         where: {
           id: {
             in: data.ids
@@ -86,7 +99,17 @@ export class CategoryService {
     })
   }
 
-  async delete(id: string) {
-    return this.prisma.category.delete({ where: { id } })
+  async delete(id: string, userId: string) {
+    return await this.prisma.$transaction(async (prisma: PrismaClient) => {
+      const dataTrash: CreateTrashDto = {
+        id,
+        userId,
+        modelName: 'Category'
+      }
+
+      await this.trashService.create(dataTrash, prisma)
+
+      return prisma.category.delete({ where: { id } })
+    })
   }
 }
