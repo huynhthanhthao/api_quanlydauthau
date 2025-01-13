@@ -37,8 +37,14 @@ export class CategoryController {
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
-  update(@Body() data: UpdateCategoryDto, @Param('id') id: string) {
-    return this.categoryService.update(id, data)
+  update(
+    @Body() data: UpdateCategoryDto,
+    @Param('id') id: string,
+    @Req() request: RequestJWT
+  ) {
+    const { userId } = request
+
+    return this.categoryService.update(id, data, userId)
   }
 
   @Get(':id')

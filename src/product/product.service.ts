@@ -34,7 +34,7 @@ export class ProductService {
     })
   }
 
-  async update(id: string, data: UpdateProductDto) {
+  async update(id: string, data: UpdateProductDto, userId: string) {
     return await this.prisma.product.update({
       where: { id },
       data: {
@@ -42,6 +42,7 @@ export class ProductService {
         desc: data.desc,
         thumb: data.name,
         producer: data.producer,
+        updaterId: userId,
         categories: {
           set: data.categoryIds?.map(id => ({ id }))
         }

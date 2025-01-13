@@ -31,14 +31,15 @@ export class CategoryService {
     })
   }
 
-  async update(id: string, data: UpdateCategoryDto) {
+  async update(id: string, data: UpdateCategoryDto, userId: string) {
     return await this.prisma.category.update({
       where: { id },
       data: {
         name: data.name,
         desc: data.desc,
         thumb: data.thumb,
-        parentId: data.parentId
+        parentId: data.parentId,
+        updaterId: userId
       }
     })
   }

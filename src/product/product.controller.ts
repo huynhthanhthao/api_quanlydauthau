@@ -37,8 +37,13 @@ export class ProductController {
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
-  update(@Body() data: UpdateProductDto, @Param('id') id: string) {
-    return this.productService.update(id, data)
+  update(
+    @Body() data: UpdateProductDto,
+    @Param('id') id: string,
+    @Req() request: RequestJWT
+  ) {
+    const { userId } = request
+    return this.productService.update(id, data, userId)
   }
 
   @Delete(':id')
