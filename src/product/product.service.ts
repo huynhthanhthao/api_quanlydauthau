@@ -60,6 +60,15 @@ export class ProductService {
         OR: keySearch.map(key => ({
           [key]: { contains: keyword }
         }))
+      }),
+      ...(data.categoryIds && {
+        categories: {
+          some: {
+            id: {
+              in: data.categoryIds
+            }
+          }
+        }
       })
     }
 
