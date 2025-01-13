@@ -175,7 +175,7 @@ model Product {
 model Unit {
   id        String   @id @default(uuid())
   name      String   @db.Text
-  code      String?  @db.Text
+  code      String?  
   desc      String?  @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -183,6 +183,8 @@ model Unit {
   updaterId String?
   creator   User?    @relation("creator", fields: [creatorId], references: [id])
   updater   User?    @relation("updater", fields: [updaterId], references: [id])
+
+  @@unique([code, creatorId])
 }
 
 model Quotation {

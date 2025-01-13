@@ -11,6 +11,7 @@ import { ProductModule } from './product/product.module'
 import { CategoryModule } from './category/category.module'
 import { TrashModule } from './trash/trash.module'
 import { MediaModule } from './media/media.module'
+import { UnitModule } from './unit/unit.module';
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { MediaModule } from './media/media.module'
     ProductModule,
     CategoryModule,
     TrashModule,
-    MediaModule
+    MediaModule,
+    UnitModule
   ],
   controllers: [AppController],
   providers: [AppService]

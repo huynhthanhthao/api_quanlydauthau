@@ -37,3 +37,13 @@ export const productSelect: Prisma.ProductSelect = {
     }
   }
 }
+
+export const unitSelect: Prisma.UnitSelect = {
+  id: true,
+  name: true,
+  code: true,
+  desc: true,
+  updatedAt: true,
+  creator: true,
+  updater: true
+}

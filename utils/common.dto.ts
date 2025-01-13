@@ -1,3 +1,5 @@
+import { IsNotEmpty } from 'class-validator'
+
 export class FindManyDto {
   page?: number
   perPage?: number
@@ -8,4 +10,12 @@ export class FindManyDto {
 
 export class DeleteManyDto {
   ids: string[]
+}
+
+export class checkExistenceDto {
+  @IsNotEmpty()
+  key: string
+
+  @IsNotEmpty()
+  value: string
 }
