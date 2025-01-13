@@ -50,8 +50,12 @@ export class JwtAuthGuard implements CanActivate {
 
       request.roles = user.roles
       request.userId = user.id
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      throw new HttpException('Thông tin đăng nhập không hợp lệ!', error)
+      throw new HttpException(
+        'Token đã hết hạn hoặc không hợp lệ!',
+        HttpStatus.UNAUTHORIZED
+      )
     }
 
     return true
