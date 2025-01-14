@@ -13,6 +13,7 @@ import { TrashModule } from './trash/trash.module'
 import { MediaModule } from './media/media.module'
 import { UnitModule } from './unit/unit.module'
 import { ProjectModule } from './project/project.module'
+import { QuotationModule } from './quotation/quotation.module';
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { ProjectModule } from './project/project.module'
     TrashModule,
     MediaModule,
     UnitModule,
-    ProjectModule
+    ProjectModule,
+    QuotationModule
   ],
   controllers: [AppController],
   providers: [AppService]
