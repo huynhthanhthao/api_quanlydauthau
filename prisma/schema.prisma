@@ -142,10 +142,7 @@ model Category {
   name          String     @db.Text
   thumb         String?    @db.Text
   desc          String?    @db.Text
-  parentId      String?
   products      Product[]
-  parent        Category?  @relation("CategoryParent", fields: [parentId], references: [id])
-  subCategories Category[] @relation("CategoryParent")
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
   creatorId     String?

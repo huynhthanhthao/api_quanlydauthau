@@ -5,18 +5,7 @@ export const categorySelect: Prisma.CategorySelect = {
   name: true,
   thumb: true,
   desc: true,
-  parentId: true,
-  updatedAt: true,
-  parent: {
-    select: {
-      id: true,
-      name: true,
-      thumb: true,
-      desc: true,
-      parentId: true,
-      updatedAt: true
-    }
-  }
+  updatedAt: true
 }
 
 export const productSelect: Prisma.ProductSelect = {
@@ -32,7 +21,6 @@ export const productSelect: Prisma.ProductSelect = {
       name: true,
       thumb: true,
       desc: true,
-      parentId: true,
       updatedAt: true
     }
   }

@@ -9,8 +9,6 @@ export class CreateCategoryDto {
   thumb?: string
 
   desc?: string
-
-  parentId?: string
 }
 
 export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {}

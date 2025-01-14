@@ -25,7 +25,6 @@ export class CategoryService {
         name: data.name,
         desc: data.desc,
         thumb: data.thumb,
-        parentId: data.parentId,
         creatorId: userId
       }
     })
@@ -38,7 +37,6 @@ export class CategoryService {
         name: data.name,
         desc: data.desc,
         thumb: data.thumb,
-        parentId: data.parentId,
         updaterId: userId
       }
     })
