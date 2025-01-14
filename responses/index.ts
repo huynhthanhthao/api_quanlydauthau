@@ -53,5 +53,12 @@ export const projectSelect: Prisma.ProjectSelect = {
   address: true,
   status: true,
   updatedAt: true,
-  projectItems: true
+  projectItems: {
+    select: {
+      id: true,
+      productCapture: true,
+      quantity: true,
+      updatedAt: true
+    }
+  }
 }

@@ -11,8 +11,8 @@ import { ProductModule } from './product/product.module'
 import { CategoryModule } from './category/category.module'
 import { TrashModule } from './trash/trash.module'
 import { MediaModule } from './media/media.module'
-import { UnitModule } from './unit/unit.module';
-import { ProjectModule } from './project/project.module';
+import { UnitModule } from './unit/unit.module'
+import { ProjectModule } from './project/project.module'
 
 @Module({
   imports: [
