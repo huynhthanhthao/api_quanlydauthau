@@ -57,14 +57,17 @@ export class TrashService {
   }
 
   async findMany(data: FindManyTrashDto) {
-    const { page, perPage } = data
+    const { page, perPage, orderKey, orderValue } = data
 
     const where: Prisma.TrashWhereInput = {}
 
     return await paginate(
       this.prisma.trash,
       {
-        where
+        where,
+        orderBy: {
+          [orderKey]: orderValue
+        }
       },
       {
         page,

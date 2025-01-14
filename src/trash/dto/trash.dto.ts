@@ -3,6 +3,8 @@ import { DeleteManyDto, FindManyDto } from 'utils/common.dto'
 
 export class FindManyTrashDto extends FindManyDto {
   categoryIds?: string[]
+  orderKey?: string = 'deletedAt'
+  orderValue?: string = 'desc'
 }
 
 export class DeleteManyTrashDto extends DeleteManyDto {}
