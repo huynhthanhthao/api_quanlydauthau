@@ -111,6 +111,7 @@ model User {
 model Project {
   id           String        @id @default(uuid())
   name         String
+  code         String        @unique
   price        Float
   status       ProjectStatus
   address      String?       @db.Text
@@ -125,17 +126,15 @@ model Project {
 }
 
 model ProjectItem {
-  id           String   @id @default(uuid())
-  projectId    String
-  productId    String
-  productName  String   @db.Text
-  productThumb String?  @db.Text
-  productDesc  String?  @db.Text
-  quantity     Int
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  project      Project  @relation(fields: [projectId], references: [id])
-  product      Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+  id             String   @id @default(uuid())
+  projectId      String
+  productId      String?
+  productCapture Json
+  quantity       Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  project        Project  @relation(fields: [projectId], references: [id])
+  product        Product? @relation(fields: [productId], references: [id])
 }
 
 model Category {
@@ -175,7 +174,7 @@ model Product {
 model Unit {
   id        String   @id @default(uuid())
   name      String   @db.Text
-  code      String?  
+  code      String?
   desc      String?  @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -229,7 +228,7 @@ model QuotationItem {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   quotation     Quotation @relation(fields: [quotationId], references: [id])
-  product       Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  product       Product   @relation(fields: [productId], references: [id])
 }
 
 model QuotationHistory {

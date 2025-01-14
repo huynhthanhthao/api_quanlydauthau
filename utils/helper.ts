@@ -59,3 +59,13 @@ export function CustomFileInterceptor(
     limits: { fileSize }
   })
 }
+
+export function generateCodeUUID() {
+  const uuid = crypto.randomUUID()
+  return uuid
+    .replace(/-/g, '')
+    .split('')
+    .map(char => char.charCodeAt(0).toString())
+    .join('')
+    .slice(0, 15)
+}

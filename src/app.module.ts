@@ -12,6 +12,7 @@ import { CategoryModule } from './category/category.module'
 import { TrashModule } from './trash/trash.module'
 import { MediaModule } from './media/media.module'
 import { UnitModule } from './unit/unit.module';
+import { ProjectModule } from './project/project.module';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { UnitModule } from './unit/unit.module';
     CategoryModule,
     TrashModule,
     MediaModule,
-    UnitModule
+    UnitModule,
+    ProjectModule
   ],
   controllers: [AppController],
   providers: [AppService]

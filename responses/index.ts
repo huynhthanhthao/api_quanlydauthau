@@ -38,6 +38,15 @@ export const productSelect: Prisma.ProductSelect = {
   }
 }
 
+export const productCaptureSelect: Prisma.ProductSelect = {
+  id: true,
+  name: true,
+  thumb: true,
+  desc: true,
+  producer: true,
+  updatedAt: true
+}
+
 export const unitSelect: Prisma.UnitSelect = {
   id: true,
   name: true,
@@ -46,4 +55,15 @@ export const unitSelect: Prisma.UnitSelect = {
   updatedAt: true,
   creator: true,
   updater: true
+}
+
+export const projectSelect: Prisma.ProjectSelect = {
+  id: true,
+  name: true,
+  code: true,
+  desc: true,
+  address: true,
+  status: true,
+  updatedAt: true,
+  projectItems: true
 }
