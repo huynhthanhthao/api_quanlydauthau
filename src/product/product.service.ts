@@ -51,7 +51,7 @@ export class ProductService {
   }
 
   async findMany(data: FindManyProductDto) {
-    const { page, perPage, keyword } = data
+    const { page, perPage, keyword, orderKey, orderValue } = data
 
     const keySearch = ['name', 'desc', 'producer']
 
@@ -76,7 +76,10 @@ export class ProductService {
       this.prisma.product,
       {
         where,
-        select: productSelect
+        select: productSelect,
+        orderBy: {
+          [orderKey]: orderValue
+        }
       },
       {
         page,
