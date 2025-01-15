@@ -17,6 +17,7 @@ import {
   CreateProjectDto,
   DeleteManyProjectDto,
   FindManyProjectDto,
+  FindManyQuotationDto,
   UpdateProjectDto
 } from './dto/project.dto'
 import { RequestJWT } from 'types'
@@ -60,6 +61,16 @@ export class ProjectController {
   deleteMany(@Body() data: DeleteManyProjectDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.projectService.deleteMany(data, userId)
+  }
+
+  @Get(':projectId/quotation')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  findManyQuotation(
+    @Param('projectId') projectId: string,
+    @Query() data: FindManyQuotationDto
+  ) {
+    return this.projectService.findManyQuotation(projectId, data)
   }
 
   @Get(':id')

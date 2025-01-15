@@ -6,12 +6,17 @@ import {
   CreateProjectItemDto,
   DeleteManyProjectDto,
   FindManyProjectDto,
+  FindManyQuotationDto,
   UpdateProjectDto
 } from './dto/project.dto'
 import { Prisma, PrismaClient, ProjectStatus } from '.prisma/client'
 import { generateCodeUUID, paginate } from 'utils/helper'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
-import { productCaptureSelect, projectSelect } from 'responses'
+import {
+  productCaptureSelect,
+  projectSelect,
+  quotationDetailSelect
+} from 'responses'
 
 @Injectable()
 export class ProjectService {
@@ -180,5 +185,35 @@ export class ProjectService {
         }
       })
     })
+  }
+
+  async findManyQuotation(projectId: string, data: FindManyQuotationDto) {
+    const { page, perPage, keyword, orderKey, orderValue } = data
+
+    const keySearch = ['name', 'desc']
+
+    const where: Prisma.QuotationWhereInput = {
+      ...(keyword && {
+        OR: keySearch.map(key => ({
+          [key]: { contains: keyword }
+        }))
+      }),
+      projectId
+    }
+
+    return await paginate(
+      this.prisma.quotation,
+      {
+        where,
+        select: quotationDetailSelect,
+        orderBy: {
+          [orderKey]: orderValue
+        }
+      },
+      {
+        page,
+        perPage
+      }
+    )
   }
 }

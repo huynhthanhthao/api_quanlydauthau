@@ -46,4 +46,6 @@ export class FindManyProjectDto extends FindManyDto {
   statuses?: ProjectStatus[]
 }
 
+export class FindManyQuotationDto extends FindManyDto {}
+
 export class DeleteManyProjectDto extends DeleteManyDto {}
