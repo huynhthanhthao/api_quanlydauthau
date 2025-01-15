@@ -23,7 +23,7 @@ export class ProjectService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly trashService: TrashService
-  ) {}
+  ) { }
 
   async create(data: CreateProjectDto, userId: string) {
     const projectItems = await this.getProjectItems(data.projectItems)
@@ -74,17 +74,34 @@ export class ProjectService {
     return data
   }
 
-  async update(id: string, data: UpdateProjectDto, userId: string) {
+  async updateMyProject(id: string, data: UpdateProjectDto, userId: string) {
+    const currentProject = await this.prisma.project.findFirstOrThrow({
+      where: { id },
+      select: { status: true, creatorId: true }
+    })
+
+    if (currentProject.status !== ProjectStatus.PENDING)
+      throw new HttpException(
+        'Không thể cập nhật dự án này vì đã được duyệt!',
+        HttpStatus.CONFLICT
+      )
+
+    if (
+      data.status === ProjectStatus.APPROVED ||
+      data.status === ProjectStatus.BIDDING
+    )
+      throw new HttpException(
+        'Không thể cập nhật trạng thái này!',
+        HttpStatus.CONFLICT
+      )
+
     const projectItems = await this.getProjectItems(data.projectItems)
 
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       await prisma.projectItem.deleteMany({ where: { projectId: id } })
 
       return prisma.project.update({
-        where: {
-          id,
-          creatorId: userId
-        },
+        where: { id },
         data: {
           name: data.name,
           price: data.price,
@@ -102,7 +119,58 @@ export class ProjectService {
     })
   }
 
-  async findMany(data: FindManyProjectDto, userId: string) {
+  async updateStatus(id: string, data: UpdateProjectDto) {
+    return this.prisma.project.update({
+      where: {
+        id
+      },
+      data: {
+        status: data.status
+      }
+    })
+  }
+
+  async findMyProjects(data: FindManyProjectDto, userId: string) {
+    const conditions: Prisma.ProjectWhereInput = {
+      creatorId: userId
+    }
+
+    return this.findManyBase(conditions, data)
+  }
+
+  async findMany(data: FindManyProjectDto) {
+    const conditions: Prisma.ProjectWhereInput = {}
+
+    return this.findManyBase(conditions, data)
+  }
+
+  async findPublicProjects(data: FindManyProjectDto) {
+    const { statuses } = data
+
+    const conditions: Prisma.ProjectWhereInput = {
+      AND: [
+        {
+          status: {
+            notIn: ['PENDING', 'CANCELED', 'COMPLETED']
+          }
+        },
+        {
+          ...(statuses && {
+            status: {
+              in: statuses
+            }
+          })
+        }
+      ]
+    }
+
+    return this.findManyBase(conditions, data)
+  }
+
+  async findManyBase(
+    conditions: Prisma.ProjectWhereInput,
+    data: FindManyProjectDto
+  ) {
     const { page, perPage, keyword, orderKey, orderValue, statuses } = data
 
     const keySearch = ['name', 'desc', 'code', 'address']
@@ -118,7 +186,7 @@ export class ProjectService {
           in: statuses
         }
       }),
-      creatorId: userId
+      ...conditions
     }
 
     return await paginate(

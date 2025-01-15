@@ -21,9 +21,14 @@ export class CreateProjectDto {
   @Type(() => CreateProjectItemDto)
   projectItems?: CreateProjectItemDto[]
 
+  @IsEnum(ProjectStatus)
+  status?: ProjectStatus
+
   address?: string
 
   desc?: string
+
+
 }
 
 export class CreateProjectItemDto {

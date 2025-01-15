@@ -37,13 +37,19 @@ export class ProjectController {
 
   @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
-  update(
+  updateMyProject(
     @Body() data: UpdateProjectDto,
     @Param('id') id: string,
     @Req() request: RequestJWT
   ) {
     const { userId } = request
-    return this.projectService.update(id, data, userId)
+    return this.projectService.updateMyProject(id, data, userId)
+  }
+
+  @Patch(':id')
+  @HttpCode(HttpStatus.OK)
+  updateStatus(@Param('id') id: string, @Body() data: UpdateProjectDto) {
+    return this.projectService.updateStatus(id, data)
   }
 
   @Delete('me/:id')
@@ -80,8 +86,23 @@ export class ProjectController {
 
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  findMany(@Query() data: FindManyProjectDto, @Req() request: RequestJWT) {
+  findMyProjects(
+    @Query() data: FindManyProjectDto,
+    @Req() request: RequestJWT
+  ) {
     const { userId } = request
-    return this.projectService.findMany(data, userId)
+    return this.projectService.findMyProjects(data, userId)
+  }
+
+  @Get('')
+  @HttpCode(HttpStatus.OK)
+  findMany(@Query() data: FindManyProjectDto) {
+    return this.projectService.findMany(data)
+  }
+
+  @Get('public')
+  @HttpCode(HttpStatus.OK)
+  findPublicProjects(@Query() data: FindManyProjectDto) {
+    return this.projectService.findPublicProjects(data)
   }
 }

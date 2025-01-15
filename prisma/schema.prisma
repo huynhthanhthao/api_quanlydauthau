@@ -272,8 +272,8 @@ enum QuotationStatus {
 
 enum ProjectStatus {
   PENDING
+  APPROVED
   BIDDING
-  IN_PROGRESS
   CANCELED
   COMPLETED
 }
