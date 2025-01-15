@@ -82,7 +82,8 @@ export class ProjectService {
 
       return prisma.project.update({
         where: {
-          id
+          id,
+          creatorId: userId
         },
         data: {
           name: data.name,
@@ -101,7 +102,7 @@ export class ProjectService {
     })
   }
 
-  async findMany(data: FindManyProjectDto) {
+  async findMany(data: FindManyProjectDto, userId: string) {
     const { page, perPage, keyword, orderKey, orderValue, statuses } = data
 
     const keySearch = ['name', 'desc', 'code', 'address']
@@ -116,7 +117,8 @@ export class ProjectService {
         status: {
           in: statuses
         }
-      })
+      }),
+      creatorId: userId
     }
 
     return await paginate(
@@ -135,9 +137,9 @@ export class ProjectService {
     )
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, userId: string) {
     return this.prisma.project.findUniqueOrThrow({
-      where: { id },
+      where: { id, creatorId: userId },
       select: projectSelect
     })
   }
@@ -159,7 +161,8 @@ export class ProjectService {
         where: {
           id: {
             in: data.ids
-          }
+          },
+          creatorId: userId
         }
       })
     })
@@ -179,7 +182,7 @@ export class ProjectService {
       await this.trashService.create(dataTrash, prisma)
 
       return prisma.project.delete({
-        where: { id },
+        where: { id, creatorId: userId },
         include: {
           projectItems: true
         }
@@ -187,7 +190,11 @@ export class ProjectService {
     })
   }
 
-  async findManyQuotation(projectId: string, data: FindManyQuotationDto) {
+  async findManyQuotation(
+    projectId: string,
+    data: FindManyQuotationDto,
+    userId: string
+  ) {
     const { page, perPage, keyword, orderKey, orderValue } = data
 
     const keySearch = ['name', 'desc']
@@ -198,7 +205,10 @@ export class ProjectService {
           [key]: { contains: keyword }
         }))
       }),
-      projectId
+      project: {
+        id: projectId,
+        creatorId: userId
+      }
     }
 
     return await paginate(

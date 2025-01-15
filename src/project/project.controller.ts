@@ -68,22 +68,26 @@ export class ProjectController {
   @HttpCode(HttpStatus.OK)
   findManyQuotation(
     @Param('projectId') projectId: string,
-    @Query() data: FindManyQuotationDto
+    @Query() data: FindManyQuotationDto,
+    @Req() request: RequestJWT
   ) {
-    return this.projectService.findManyQuotation(projectId, data)
+    const { userId } = request
+    return this.projectService.findManyQuotation(projectId, data, userId)
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id') id: string) {
-    return this.projectService.findOne(id)
+  findOne(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.projectService.findOne(id, userId)
   }
 
   @Get('')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  findMany(@Query() data: FindManyProjectDto) {
-    return this.projectService.findMany(data)
+  findMany(@Query() data: FindManyProjectDto, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.projectService.findMany(data, userId)
   }
 }
