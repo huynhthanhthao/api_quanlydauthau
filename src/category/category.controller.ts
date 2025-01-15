@@ -48,14 +48,12 @@ export class CategoryController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   findOne(@Param('id') id: string) {
     return this.categoryService.findOne(id)
   }
 
   @Get('')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   findMany(@Query() data: FindManyCategoryDto) {
     return this.categoryService.findMany(data)
