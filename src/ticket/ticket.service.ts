@@ -59,7 +59,14 @@ export class TicketService {
   ) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const ticket = await prisma.ticket.update({
-        where: { id: ticketId },
+        where: {
+          id: ticketId,
+          assignees: {
+            some: {
+              id: userId
+            }
+          }
+        },
         data: { lastCommentAt: new Date() },
         include: {
           assignees: { select: { id: true } }
