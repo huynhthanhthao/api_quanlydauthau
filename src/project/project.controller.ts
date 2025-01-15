@@ -28,14 +28,14 @@ import { JwtAuthGuard } from 'guards/jwt-auth.guard'
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  @Post('')
+  @Post('me')
   @HttpCode(HttpStatus.OK)
   create(@Body() data: CreateProjectDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.projectService.create(data, userId)
   }
 
-  @Patch(':id')
+  @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
   update(
     @Body() data: UpdateProjectDto,
@@ -46,21 +46,21 @@ export class ProjectController {
     return this.projectService.update(id, data, userId)
   }
 
-  @Delete(':id')
+  @Delete('me/:id')
   @HttpCode(HttpStatus.OK)
   delete(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.projectService.delete(id, userId)
   }
 
-  @Delete('')
+  @Delete('me')
   @HttpCode(HttpStatus.OK)
   deleteMany(@Body() data: DeleteManyProjectDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.projectService.deleteMany(data, userId)
   }
 
-  @Get(':projectId/quotation')
+  @Get('me/:projectId/quotation')
   @HttpCode(HttpStatus.OK)
   findManyQuotation(
     @Param('projectId') projectId: string,
@@ -71,14 +71,14 @@ export class ProjectController {
     return this.projectService.findManyQuotation(projectId, data, userId)
   }
 
-  @Get(':id')
+  @Get('me/:id')
   @HttpCode(HttpStatus.OK)
   findOne(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.projectService.findOne(id, userId)
   }
 
-  @Get('')
+  @Get('me')
   @HttpCode(HttpStatus.OK)
   findMany(@Query() data: FindManyProjectDto, @Req() request: RequestJWT) {
     const { userId } = request

@@ -28,14 +28,14 @@ import { checkExistenceDto } from 'utils/common.dto'
 export class UnitController {
   constructor(private readonly unitService: UnitService) {}
 
-  @Post('')
+  @Post('me')
   @HttpCode(HttpStatus.OK)
   create(@Body() data: CreateUnitDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.unitService.create(data, userId)
   }
 
-  @Patch(':id')
+  @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
   update(
     @Body() data: UpdateUnitDto,
@@ -46,33 +46,33 @@ export class UnitController {
     return this.unitService.update(id, data, userId)
   }
 
-  @Delete(':id')
+  @Delete('me/:id')
   @HttpCode(HttpStatus.OK)
   delete(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.unitService.delete(id, userId)
   }
 
-  @Delete('')
+  @Delete('me')
   @HttpCode(HttpStatus.OK)
   deleteMany(@Body() data: DeleteManyUnitDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.unitService.deleteMany(data, userId)
   }
 
-  @Get(':id')
+  @Get('me/:id')
   @HttpCode(HttpStatus.OK)
   findOne(@Param('id') id: string) {
     return this.unitService.findOne(id)
   }
 
-  @Get('')
+  @Get('me')
   @HttpCode(HttpStatus.OK)
   findMany(@Query() data: FindManyUnitDto) {
     return this.unitService.findMany(data)
   }
 
-  @Post('/check-existence')
+  @Post('me/check-existence')
   @HttpCode(HttpStatus.OK)
   checkExistence(@Body() data: checkExistenceDto, @Req() request: RequestJWT) {
     const { userId } = request

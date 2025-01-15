@@ -28,14 +28,14 @@ import {
 export class QuotationController {
   constructor(private readonly quotationService: QuotationService) {}
 
-  @Post('')
+  @Post('me')
   @HttpCode(HttpStatus.OK)
   create(@Body() data: CreateQuotationDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.create(data, userId)
   }
 
-  @Patch(':id')
+  @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
   update(
     @Body() data: UpdateQuotationDto,
@@ -46,28 +46,28 @@ export class QuotationController {
     return this.quotationService.update(id, data, userId)
   }
 
-  @Delete(':id')
+  @Delete('me/:id')
   @HttpCode(HttpStatus.OK)
   delete(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.delete(id, userId)
   }
 
-  @Delete('')
+  @Delete('me')
   @HttpCode(HttpStatus.OK)
   deleteMany(@Body() data: DeleteManyQuotationDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.deleteMany(data, userId)
   }
 
-  @Get(':id')
+  @Get('me/:id')
   @HttpCode(HttpStatus.OK)
   findOne(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.findOne(id, userId)
   }
 
-  @Get('')
+  @Get('me')
   @HttpCode(HttpStatus.OK)
   findMany(@Query() data: FindManyQuotationDto, @Req() request: RequestJWT) {
     const { userId } = request

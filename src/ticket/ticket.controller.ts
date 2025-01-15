@@ -27,14 +27,14 @@ import {
 export class TicketController {
   constructor(private readonly ticketService: TicketService) {}
 
-  @Post('')
+  @Post('me')
   @HttpCode(HttpStatus.OK)
   create(@Body() data: CreateTicketDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.ticketService.create(data, userId)
   }
 
-  @Post(':ticketId/comment')
+  @Post('me/:ticketId/comment')
   @HttpCode(HttpStatus.OK)
   createTicketComment(
     @Body() data: CreateTicketCommentDto,
@@ -45,7 +45,7 @@ export class TicketController {
     return this.ticketService.createTicketComment(ticketId, data, userId)
   }
 
-  @Patch(':id')
+  @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
   update(
     @Body() data: UpdateTicketDto,
@@ -56,7 +56,7 @@ export class TicketController {
     return this.ticketService.update(id, data, userId)
   }
 
-  @Get(':ticket/comment')
+  @Get('me/:ticket/comment')
   @HttpCode(HttpStatus.OK)
   findManyTicketComment(
     @Param('ticketId') ticketId: string,
@@ -67,14 +67,14 @@ export class TicketController {
     return this.ticketService.findManyTicketComment(ticketId, data, userId)
   }
 
-  @Get(':id')
+  @Get('me/:id')
   @HttpCode(HttpStatus.OK)
   findOne(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.ticketService.findOne(id, userId)
   }
 
-  @Get('')
+  @Get('me')
   @HttpCode(HttpStatus.OK)
   findMany(@Query() data: FindManyTicketDto, @Req() request: RequestJWT) {
     const { userId } = request

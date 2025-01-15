@@ -26,7 +26,7 @@ import { RequestJWT } from 'types'
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Post('')
+  @Post('me')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
   create(@Body() data: CreateProductDto, @Req() request: RequestJWT) {
@@ -34,7 +34,7 @@ export class ProductController {
     return this.productService.create(data, userId)
   }
 
-  @Patch(':id')
+  @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
   update(
@@ -46,7 +46,7 @@ export class ProductController {
     return this.productService.update(id, data, userId)
   }
 
-  @Delete(':id')
+  @Delete('me/:id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   delete(@Param('id') id: string, @Req() request: RequestJWT) {
@@ -54,7 +54,7 @@ export class ProductController {
     return this.productService.delete(id, userId)
   }
 
-  @Delete('')
+  @Delete('me')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
   deleteMany(@Body() data: DeleteManyProductDto, @Req() request: RequestJWT) {
@@ -62,7 +62,7 @@ export class ProductController {
     return this.productService.deleteMany(data, userId)
   }
 
-  @Get(':id')
+  @Get('me/:id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   findOne(@Param('id') id: string, @Req() request: RequestJWT) {
@@ -70,7 +70,7 @@ export class ProductController {
     return this.productService.findOne(id, userId)
   }
 
-  @Get('')
+  @Get('me')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   findMany(@Query() data: FindManyProductDto, @Req() request: RequestJWT) {
