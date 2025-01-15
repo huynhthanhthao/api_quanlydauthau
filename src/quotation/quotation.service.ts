@@ -79,7 +79,8 @@ export class QuotationService {
 
       return prisma.quotation.update({
         where: {
-          id
+          id,
+          creatorId: userId
         },
         data: {
           name: data.name,
@@ -155,7 +156,8 @@ export class QuotationService {
         where: {
           id: {
             in: data.ids
-          }
+          },
+          creatorId: userId
         }
       })
     })
@@ -175,7 +177,7 @@ export class QuotationService {
       await this.trashService.create(dataTrash, prisma)
 
       return prisma.quotation.delete({
-        where: { id },
+        where: { id, creatorId: userId },
         include: {
           items: true
         }
