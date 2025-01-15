@@ -27,8 +27,6 @@ export class CreateProjectDto {
   address?: string
 
   desc?: string
-
-
 }
 
 export class CreateProjectItemDto {

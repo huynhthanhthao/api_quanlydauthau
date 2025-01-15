@@ -23,7 +23,7 @@ export class ProjectService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly trashService: TrashService
-  ) { }
+  ) {}
 
   async create(data: CreateProjectDto, userId: string) {
     const projectItems = await this.getProjectItems(data.projectItems)
