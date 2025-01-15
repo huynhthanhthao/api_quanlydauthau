@@ -149,6 +149,17 @@ export const ticketSelect: Prisma.TicketSelect = {
       phone: true,
       avatar: true
     }
+  },
+  project: {
+    select: {
+      id: true,
+      name: true,
+      code: true,
+      desc: true,
+      address: true,
+      status: true,
+      updatedAt: true
+    }
   }
 }
 
