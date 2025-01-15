@@ -36,7 +36,7 @@ export class ProductService {
 
   async update(id: string, data: UpdateProductDto, userId: string) {
     return await this.prisma.product.update({
-      where: { id },
+      where: { id, creatorId: userId },
       data: {
         name: data.name,
         desc: data.desc,
@@ -50,7 +50,7 @@ export class ProductService {
     })
   }
 
-  async findMany(data: FindManyProductDto) {
+  async findMany(data: FindManyProductDto, userId: string) {
     const { page, perPage, keyword, orderKey, orderValue } = data
 
     const keySearch = ['name', 'desc', 'producer']
@@ -69,7 +69,8 @@ export class ProductService {
             }
           }
         }
-      })
+      }),
+      creatorId: userId
     }
 
     return await paginate(
@@ -88,9 +89,9 @@ export class ProductService {
     )
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, userId: string) {
     return this.prisma.product.findUniqueOrThrow({
-      where: { id },
+      where: { id, creatorId: userId },
       select: productSelect
     })
   }
@@ -109,7 +110,8 @@ export class ProductService {
         where: {
           id: {
             in: data.ids
-          }
+          },
+          creatorId: userId
         }
       })
     })
@@ -125,7 +127,7 @@ export class ProductService {
 
       await this.trashService.create(dataTrash, prisma)
 
-      return prisma.product.delete({ where: { id } })
+      return prisma.product.delete({ where: { id, creatorId: userId } })
     })
   }
 }

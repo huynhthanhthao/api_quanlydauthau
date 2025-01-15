@@ -65,14 +65,16 @@ export class ProductController {
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id') id: string) {
-    return this.productService.findOne(id)
+  findOne(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.productService.findOne(id, userId)
   }
 
   @Get('')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  findMany(@Query() data: FindManyProductDto) {
-    return this.productService.findMany(data)
+  findMany(@Query() data: FindManyProductDto, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.productService.findMany(data, userId)
   }
 }
