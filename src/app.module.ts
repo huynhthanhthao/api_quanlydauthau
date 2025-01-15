@@ -13,7 +13,10 @@ import { TrashModule } from './trash/trash.module'
 import { MediaModule } from './media/media.module'
 import { UnitModule } from './unit/unit.module'
 import { ProjectModule } from './project/project.module'
-import { QuotationModule } from './quotation/quotation.module';
+import { QuotationModule } from './quotation/quotation.module'
+import { TicketModule } from './ticket/ticket.module'
+import { CronModule } from './cron/cron.module'
+import { ScheduleModule } from '@nestjs/schedule'
 
 @Module({
   imports: [
@@ -31,6 +34,7 @@ import { QuotationModule } from './quotation/quotation.module';
       global: true,
       secret: process.env.SECRET_KEY
     }),
+    ScheduleModule.forRoot(),
     CityModule,
     DistrictModule,
     AuthModule,
@@ -40,7 +44,9 @@ import { QuotationModule } from './quotation/quotation.module';
     MediaModule,
     UnitModule,
     ProjectModule,
-    QuotationModule
+    QuotationModule,
+    TicketModule,
+    CronModule
   ],
   controllers: [AppController],
   providers: [AppService]

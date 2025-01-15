@@ -1,0 +1,88 @@
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+  UseGuards
+} from '@nestjs/common'
+import { TicketService } from './ticket.service'
+import { JwtAuthGuard } from 'guards/jwt-auth.guard'
+import { RequestJWT } from 'types'
+import {
+  CreateTicketCommentDto,
+  CreateTicketDto,
+  FindManyTicketCommentDto,
+  FindManyTicketDto,
+  UpdateTicketDto
+} from './dto/ticket.dto'
+
+@Controller('ticket')
+export class TicketController {
+  constructor(private readonly ticketService: TicketService) {}
+
+  @Post('')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  create(@Body() data: CreateTicketDto, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.ticketService.create(data, userId)
+  }
+
+  @Post(':ticketId/comment')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  createTicketComment(
+    @Body() data: CreateTicketCommentDto,
+    @Req() request: RequestJWT,
+    @Param('ticketId') ticketId: string
+  ) {
+    const { userId } = request
+    return this.ticketService.createTicketComment(ticketId, data, userId)
+  }
+
+  @Patch(':id')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  update(
+    @Body() data: UpdateTicketDto,
+    @Param('id') id: string,
+    @Req() request: RequestJWT
+  ) {
+    const { userId } = request
+    return this.ticketService.update(id, data, userId)
+  }
+
+  @Get(':ticket/comment')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  findManyTicketComment(
+    @Param('ticketId') ticketId: string,
+    @Query() data: FindManyTicketCommentDto,
+    @Req() request: RequestJWT
+  ) {
+    const { userId } = request
+    return this.ticketService.findManyTicketComment(ticketId, data, userId)
+  }
+
+  @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  findOne(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.ticketService.findOne(id, userId)
+  }
+
+  @Get('')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  findMany(@Query() data: FindManyTicketDto, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.ticketService.findMany(data, userId)
+  }
+}

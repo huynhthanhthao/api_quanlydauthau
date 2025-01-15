@@ -31,6 +31,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/schedule": "^4.1.2",
     "@nodeteam/nestjs-prisma-pagination": "^1.0.6",
     "api_phanmemdauthau": "file:",
     "bcrypt": "^5.1.1",

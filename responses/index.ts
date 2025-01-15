@@ -41,8 +41,14 @@ export const unitSelect: Prisma.UnitSelect = {
   code: true,
   desc: true,
   updatedAt: true,
-  creator: true,
-  updater: true
+  creator: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      avatar: true
+    }
+  }
 }
 
 export const projectSelect: Prisma.ProjectSelect = {
@@ -109,5 +115,53 @@ export const quotationDetailSelect: Prisma.QuotationSelect = {
       updatedAt: true
     }
   },
-  updatedAt: true
+  updatedAt: true,
+  creator: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      avatar: true
+    }
+  }
+}
+
+export const ticketSelect: Prisma.TicketSelect = {
+  id: true,
+  type: true,
+  code: true,
+  status: true,
+  title: true,
+  createdAt: true,
+  lastCommentAt: true,
+  creator: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      avatar: true
+    }
+  },
+  assignees: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      avatar: true
+    }
+  }
+}
+
+export const ticketCommentSelect: Prisma.TicketCommentSelect = {
+  id: true,
+  content: true,
+  createdAt: true,
+  creator: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      avatar: true
+    }
+  }
 }
