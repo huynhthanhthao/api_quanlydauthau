@@ -22,13 +22,13 @@ import {
   UpdateTicketDto
 } from './dto/ticket.dto'
 
+@UseGuards(JwtAuthGuard)
 @Controller('ticket')
 export class TicketController {
   constructor(private readonly ticketService: TicketService) {}
 
   @Post('')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
   create(@Body() data: CreateTicketDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.ticketService.create(data, userId)
@@ -36,7 +36,6 @@ export class TicketController {
 
   @Post(':ticketId/comment')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
   createTicketComment(
     @Body() data: CreateTicketCommentDto,
     @Req() request: RequestJWT,
@@ -48,7 +47,6 @@ export class TicketController {
 
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
   update(
     @Body() data: UpdateTicketDto,
     @Param('id') id: string,
@@ -59,7 +57,6 @@ export class TicketController {
   }
 
   @Get(':ticket/comment')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   findManyTicketComment(
     @Param('ticketId') ticketId: string,
@@ -71,7 +68,6 @@ export class TicketController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   findOne(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
@@ -79,7 +75,6 @@ export class TicketController {
   }
 
   @Get('')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   findMany(@Query() data: FindManyTicketDto, @Req() request: RequestJWT) {
     const { userId } = request

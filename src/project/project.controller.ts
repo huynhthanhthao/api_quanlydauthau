@@ -23,13 +23,13 @@ import {
 import { RequestJWT } from 'types'
 import { JwtAuthGuard } from 'guards/jwt-auth.guard'
 
+@UseGuards(JwtAuthGuard)
 @Controller('project')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
   @Post('')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
   create(@Body() data: CreateProjectDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.projectService.create(data, userId)
@@ -37,7 +37,6 @@ export class ProjectController {
 
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
   update(
     @Body() data: UpdateProjectDto,
     @Param('id') id: string,
@@ -48,7 +47,6 @@ export class ProjectController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   delete(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
@@ -57,14 +55,12 @@ export class ProjectController {
 
   @Delete('')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
   deleteMany(@Body() data: DeleteManyProjectDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.projectService.deleteMany(data, userId)
   }
 
   @Get(':projectId/quotation')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   findManyQuotation(
     @Param('projectId') projectId: string,
@@ -76,7 +72,6 @@ export class ProjectController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   findOne(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
@@ -84,7 +79,6 @@ export class ProjectController {
   }
 
   @Get('')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   findMany(@Query() data: FindManyProjectDto, @Req() request: RequestJWT) {
     const { userId } = request
