@@ -23,6 +23,12 @@ export const productSelect: Prisma.ProductSelect = {
       desc: true,
       updatedAt: true
     }
+  },
+  productAttributes: {
+    select: {
+      key: true,
+      value: true
+    }
   }
 }
 

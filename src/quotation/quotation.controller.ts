@@ -82,4 +82,11 @@ export class QuotationController {
     const { userId } = request
     return this.quotationService.findManyMyQuotations(data, userId)
   }
+
+  @Patch(':id/approve')
+  @HttpCode(HttpStatus.OK)
+  approveQuote(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.quotationService.approveQuote(id, userId)
+  }
 }

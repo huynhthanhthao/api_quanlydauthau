@@ -1,5 +1,10 @@
 import { PrismaService } from 'nestjs-prisma'
-import { PrismaClient, Prisma, QuotationStatus } from '.prisma/client'
+import {
+  PrismaClient,
+  Prisma,
+  QuotationStatus,
+  ProjectStatus
+} from '.prisma/client'
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import {
   productCaptureSelect,
@@ -186,6 +191,62 @@ export class QuotationService {
           items: true
         }
       })
+    })
+  }
+
+  async approveQuote(quotationId: string, userId: string) {
+    return await this.prisma.$transaction(async (prisma: PrismaClient) => {
+      const project = await prisma.project.findFirstOrThrow({
+        where: {
+          quotations: {
+            some: { id: quotationId }
+          },
+          creatorId: userId
+        }
+      })
+
+      if (project.status === ProjectStatus.COMPLETED)
+        throw new HttpException(
+          'Không thể duyệt báo giá dự án này vì đã hoàn thành!',
+          HttpStatus.CONFLICT
+        )
+
+      const updateProjectStatus = prisma.project.update({
+        where: { id: project.id },
+        data: {
+          status: ProjectStatus.QUOTED,
+          updaterId: userId
+        }
+      })
+
+      const cancelApprovedQuotations = prisma.quotation.updateMany({
+        where: {
+          projectId: project.id,
+          status: QuotationStatus.APPROVED
+        },
+        data: {
+          status: QuotationStatus.CANCELED,
+          updaterId: userId
+        }
+      })
+
+      const approveQuotation = prisma.quotation.update({
+        where: {
+          id: quotationId
+        },
+        data: {
+          status: QuotationStatus.APPROVED,
+          updaterId: userId
+        }
+      })
+
+      await Promise.all([
+        updateProjectStatus,
+        cancelApprovedQuotations,
+        approveQuotation
+      ])
+
+      return approveQuotation
     })
   }
 }
