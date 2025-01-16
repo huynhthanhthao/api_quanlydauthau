@@ -1,6 +1,11 @@
 import { PartialType } from '@nestjs/mapped-types'
-import { Transform, TransformFnParams } from 'class-transformer'
-import { ArrayNotEmpty, IsNotEmpty } from 'class-validator'
+import { Transform, TransformFnParams, Type } from 'class-transformer'
+import {
+  ArrayNotEmpty,
+  IsNotEmpty,
+  IsOptional,
+  ValidateNested
+} from 'class-validator'
 import { DeleteManyDto, FindManyDto } from 'utils/Common.dto'
 
 export class CreateProductDto {
@@ -10,11 +15,24 @@ export class CreateProductDto {
   @ArrayNotEmpty()
   categoryIds: string[]
 
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateProductAttributeDto)
+  productAttributes?: CreateProductAttributeDto[]
+
   desc?: string
 
   thumb?: string
 
   producer?: string
+}
+
+export class CreateProductAttributeDto {
+  @IsNotEmpty()
+  key: string
+
+  @IsNotEmpty()
+  value: string
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}

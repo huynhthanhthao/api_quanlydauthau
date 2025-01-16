@@ -155,20 +155,31 @@ model Category {
 }
 
 model Product {
-  id             String          @id @default(uuid())
-  name           String          @db.Text
-  thumb          String?         @db.Text
-  desc           String?         @db.Text
-  producer       String?         @db.Text
-  categories     Category[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  creatorId      String?
-  updaterId      String?
-  creator        User?           @relation("creator", fields: [creatorId], references: [id])
-  updater        User?           @relation("updater", fields: [updaterId], references: [id])
-  projectItems   ProjectItem[]
-  quotationItems QuotationItem[]
+  id                String             @id @default(uuid())
+  name              String             @db.Text
+  thumb             String?            @db.Text
+  desc              String?            @db.Text
+  producer          String?            @db.Text
+  categories        Category[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  creatorId         String?
+  updaterId         String?
+  creator           User?              @relation("creator", fields: [creatorId], references: [id])
+  updater           User?              @relation("updater", fields: [updaterId], references: [id])
+  projectItems      ProjectItem[]
+  quotationItems    QuotationItem[]
+  productAttributes productAttribute[] @relation("productAttribute")
+}
+
+model productAttribute {
+  key       String   
+  value     String   @db.Text
+  productId String
+  product   Product? @relation("productAttribute", fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([key, productId])
 }
 
 model Unit {

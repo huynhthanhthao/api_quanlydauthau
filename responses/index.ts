@@ -26,6 +26,30 @@ export const productSelect: Prisma.ProductSelect = {
   }
 }
 
+export const productDetailSelect: Prisma.ProductSelect = {
+  id: true,
+  name: true,
+  thumb: true,
+  desc: true,
+  producer: true,
+  updatedAt: true,
+  categories: {
+    select: {
+      id: true,
+      name: true,
+      thumb: true,
+      desc: true,
+      updatedAt: true
+    }
+  },
+  productAttributes: {
+    select: {
+      key: true,
+      value: true
+    }
+  }
+}
+
 export const productCaptureSelect: Prisma.ProductSelect = {
   id: true,
   name: true,

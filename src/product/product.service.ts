@@ -8,7 +8,7 @@ import {
 } from './dto/product.dto'
 import { Prisma, PrismaClient } from '.prisma/client'
 import { paginate } from 'utils/helper'
-import { productSelect } from 'responses'
+import { productDetailSelect, productSelect } from 'responses'
 import { TrashService } from 'src/trash/trash.service'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 
@@ -19,7 +19,7 @@ export class ProductService {
     private readonly trashService: TrashService
   ) {}
 
-  async createMyProject(data: CreateProductDto, userId: string) {
+  async createMyProduct(data: CreateProductDto, userId: string) {
     return await this.prisma.product.create({
       data: {
         name: data.name,
@@ -29,28 +29,44 @@ export class ProductService {
         creatorId: userId,
         categories: {
           connect: data.categoryIds.map(id => ({ id }))
+        },
+        productAttributes: {
+          create: data.productAttributes
         }
+      },
+      include: {
+        productAttributes: true
       }
     })
   }
 
-  async updateMyProject(id: string, data: UpdateProductDto, userId: string) {
-    return await this.prisma.product.update({
-      where: { id, creatorId: userId },
-      data: {
-        name: data.name,
-        desc: data.desc,
-        thumb: data.name,
-        producer: data.producer,
-        updaterId: userId,
-        categories: {
-          set: data.categoryIds?.map(id => ({ id }))
+  async updateMyProduct(id: string, data: UpdateProductDto, userId: string) {
+    return await this.prisma.$transaction(async (prisma: PrismaClient) => {
+      await prisma.productAttribute.deleteMany({ where: { productId: id } })
+
+      return await prisma.product.update({
+        where: { id, creatorId: userId },
+        data: {
+          name: data.name,
+          desc: data.desc,
+          thumb: data.name,
+          producer: data.producer,
+          updaterId: userId,
+          categories: {
+            set: data.categoryIds?.map(id => ({ id }))
+          },
+          productAttributes: {
+            create: data.productAttributes
+          }
+        },
+        include: {
+          productAttributes: true
         }
-      }
+      })
     })
   }
 
-  async findManyMyProjects(data: FindManyProductDto, userId: string) {
+  async findManyMyProducts(data: FindManyProductDto, userId: string) {
     const { page, perPage, keyword, orderKey, orderValue } = data
 
     const keySearch = ['name', 'desc', 'producer']
@@ -89,19 +105,22 @@ export class ProductService {
     )
   }
 
-  async findOneMyProject(id: string, userId: string) {
+  async findOneMyProduct(id: string, userId: string) {
     return this.prisma.product.findUniqueOrThrow({
       where: { id, creatorId: userId },
-      select: productSelect
+      select: productDetailSelect
     })
   }
 
-  async deleteManyMyProjects(data: DeleteManyProductDto, userId: string) {
+  async deleteManyMyProducts(data: DeleteManyProductDto, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const dataTrash: CreateManyTrashDto = {
         ids: data.ids,
         userId,
-        modelName: 'Product'
+        modelName: 'Product',
+        include: {
+          productAttributes: true
+        }
       }
 
       await this.trashService.createMany(dataTrash, prisma)
@@ -117,12 +136,15 @@ export class ProductService {
     })
   }
 
-  async deleteMyProject(id: string, userId: string) {
+  async deleteMyProduct(id: string, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const dataTrash: CreateTrashDto = {
         id,
         userId,
-        modelName: 'Product'
+        modelName: 'Product',
+        include: {
+          productAttributes: true
+        }
       }
 
       await this.trashService.create(dataTrash, prisma)
