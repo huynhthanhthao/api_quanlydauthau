@@ -1,6 +1,6 @@
 import { AnyObject, PaginationArgs } from 'types'
 import { paginator, PaginatorTypes } from '@nodeteam/nestjs-prisma-pagination'
-import { DESTINATION_PATH, MAX_SIZE_FILE, PER_PAGE } from 'enums'
+import { PUBLIC_PATH, MAX_SIZE_FILE, PER_PAGE } from 'enums'
 import { PrismaClient } from '@prisma/client'
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
@@ -24,11 +24,11 @@ export async function paginate<
 export function CustomFilesInterceptor(
   fieldName: string,
   maxFiles: number,
-  fileSize: number = MAX_SIZE_FILE
+  destination: string
 ) {
   return FilesInterceptor(fieldName, maxFiles, {
     storage: diskStorage({
-      destination: DESTINATION_PATH,
+      destination: destination,
       filename: (req, file, cb) => {
         const randomName = Array(32)
           .fill(null)
@@ -37,17 +37,14 @@ export function CustomFilesInterceptor(
         cb(null, `${randomName}${extname(file.originalname)}`)
       }
     }),
-    limits: { fileSize }
+    limits: { fileSize: MAX_SIZE_FILE }
   })
 }
 
-export function CustomFileInterceptor(
-  fieldName: string,
-  fileSize: number = MAX_SIZE_FILE
-) {
+export function CustomFileInterceptor(fieldName: string) {
   return FileInterceptor(fieldName, {
     storage: diskStorage({
-      destination: DESTINATION_PATH,
+      destination: PUBLIC_PATH,
       filename: (req, file, cb) => {
         const randomName = Array(32)
           .fill(null)
@@ -56,7 +53,7 @@ export function CustomFileInterceptor(
         cb(null, `${randomName}${extname(file.originalname)}`)
       }
     }),
-    limits: { fileSize }
+    limits: { fileSize: MAX_SIZE_FILE }
   })
 }
 

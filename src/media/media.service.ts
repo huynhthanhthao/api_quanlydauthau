@@ -8,4 +8,8 @@ export class MediaService {
   async uploadMultiple(fileURLs: string[]) {
     return fileURLs
   }
+
+  async uploadToProject(fileURLs: string[]) {
+    return fileURLs
+  }
 }
