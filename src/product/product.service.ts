@@ -49,7 +49,7 @@ export class ProductService {
         data: {
           name: data.name,
           desc: data.desc,
-          thumb: data.name,
+          thumb: data.thumb,
           producer: data.producer,
           updaterId: userId,
           categories: {
