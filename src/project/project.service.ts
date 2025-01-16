@@ -25,7 +25,7 @@ export class ProjectService {
     private readonly trashService: TrashService
   ) {}
 
-  async create(data: CreateProjectDto, userId: string) {
+  async createMyProject(data: CreateProjectDto, userId: string) {
     const projectItems = await this.getProjectItems(data.projectItems)
 
     return this.prisma.project.create({
@@ -212,7 +212,7 @@ export class ProjectService {
     })
   }
 
-  async deleteMany(data: DeleteManyProjectDto, userId: string) {
+  async deleteManyMyProjects(data: DeleteManyProjectDto, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const dataProject: CreateManyTrashDto = {
         ids: data.ids,
@@ -236,7 +236,7 @@ export class ProjectService {
     })
   }
 
-  async delete(id: string, userId: string) {
+  async deleteMyProject(id: string, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const dataTrash: CreateTrashDto = {
         id,
@@ -258,7 +258,7 @@ export class ProjectService {
     })
   }
 
-  async findManyQuotation(
+  async findManyMyQuotations(
     projectId: string,
     data: FindManyQuotationDto,
     userId: string

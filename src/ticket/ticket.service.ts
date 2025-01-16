@@ -15,7 +15,7 @@ import {
 export class TicketService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(data: CreateTicketDto, userId: string) {
+  async createMyTicket(data: CreateTicketDto, userId: string) {
     const assigneeIds = [userId, data.assigneeId]
 
     return this.prisma.ticket.create({
@@ -52,7 +52,7 @@ export class TicketService {
     )
   }
 
-  async createTicketComment(
+  async createMyTicketComment(
     ticketId: string,
     data: CreateTicketCommentDto,
     userId: string
@@ -86,7 +86,11 @@ export class TicketService {
     })
   }
 
-  async update(id: string, { status }: UpdateTicketDto, userId: string) {
+  async updateMyTicket(
+    id: string,
+    { status }: UpdateTicketDto,
+    userId: string
+  ) {
     const ticket = await this.prisma.ticket.findFirstOrThrow({ where: { id } })
 
     const transitions = {
@@ -117,7 +121,7 @@ export class TicketService {
     })
   }
 
-  async findMany(data: FindManyTicketDto, userId: string) {
+  async findManyMyTickets(data: FindManyTicketDto, userId: string) {
     const { page, perPage, keyword, orderKey, orderValue } = data
 
     const keySearch = ['title']
@@ -151,7 +155,7 @@ export class TicketService {
     )
   }
 
-  async findManyTicketComment(
+  async findManyMyTicketComments(
     ticketId: string,
     data: FindManyTicketCommentDto,
     userId: string
@@ -192,7 +196,7 @@ export class TicketService {
     )
   }
 
-  async findOne(id: string, userId: string) {
+  async findOneMyTicket(id: string, userId: string) {
     return this.prisma.ticket.findUniqueOrThrow({
       where: {
         id,

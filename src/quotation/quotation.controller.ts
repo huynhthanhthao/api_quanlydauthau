@@ -30,47 +30,56 @@ export class QuotationController {
 
   @Post('me')
   @HttpCode(HttpStatus.OK)
-  create(@Body() data: CreateQuotationDto, @Req() request: RequestJWT) {
+  createMyQuotation(
+    @Body() data: CreateQuotationDto,
+    @Req() request: RequestJWT
+  ) {
     const { userId } = request
-    return this.quotationService.create(data, userId)
+    return this.quotationService.createMyQuotation(data, userId)
   }
 
   @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
-  update(
+  updateMyQuotations(
     @Body() data: UpdateQuotationDto,
     @Param('id') id: string,
     @Req() request: RequestJWT
   ) {
     const { userId } = request
-    return this.quotationService.update(id, data, userId)
+    return this.quotationService.updateMyQuotations(id, data, userId)
   }
 
   @Delete('me/:id')
   @HttpCode(HttpStatus.OK)
-  delete(@Param('id') id: string, @Req() request: RequestJWT) {
+  deleteMyQuotation(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.quotationService.delete(id, userId)
+    return this.quotationService.deleteMyQuotation(id, userId)
   }
 
   @Delete('me')
   @HttpCode(HttpStatus.OK)
-  deleteMany(@Body() data: DeleteManyQuotationDto, @Req() request: RequestJWT) {
+  deleteManyMyQuotations(
+    @Body() data: DeleteManyQuotationDto,
+    @Req() request: RequestJWT
+  ) {
     const { userId } = request
-    return this.quotationService.deleteMany(data, userId)
+    return this.quotationService.deleteManyMyQuotations(data, userId)
   }
 
   @Get('me/:id')
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id') id: string, @Req() request: RequestJWT) {
+  findOneMyQuotation(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.quotationService.findOne(id, userId)
+    return this.quotationService.findOneMyQuotation(id, userId)
   }
 
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  findMany(@Query() data: FindManyQuotationDto, @Req() request: RequestJWT) {
+  findManyMyQuotations(
+    @Query() data: FindManyQuotationDto,
+    @Req() request: RequestJWT
+  ) {
     const { userId } = request
-    return this.quotationService.findMany(data, userId)
+    return this.quotationService.findManyMyQuotations(data, userId)
   }
 }

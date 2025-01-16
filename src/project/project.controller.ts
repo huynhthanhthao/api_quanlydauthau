@@ -32,7 +32,7 @@ export class ProjectController {
   @HttpCode(HttpStatus.OK)
   create(@Body() data: CreateProjectDto, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.projectService.create(data, userId)
+    return this.projectService.createMyProject(data, userId)
   }
 
   @Patch('me/:id')
@@ -56,14 +56,14 @@ export class ProjectController {
   @HttpCode(HttpStatus.OK)
   delete(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.projectService.delete(id, userId)
+    return this.projectService.deleteMyProject(id, userId)
   }
 
   @Delete('me')
   @HttpCode(HttpStatus.OK)
   deleteMany(@Body() data: DeleteManyProjectDto, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.projectService.deleteMany(data, userId)
+    return this.projectService.deleteManyMyProjects(data, userId)
   }
 
   @Get('me/:projectId/quotation')
@@ -74,7 +74,7 @@ export class ProjectController {
     @Req() request: RequestJWT
   ) {
     const { userId } = request
-    return this.projectService.findManyQuotation(projectId, data, userId)
+    return this.projectService.findManyMyQuotations(projectId, data, userId)
   }
 
   @Get('me/:id')

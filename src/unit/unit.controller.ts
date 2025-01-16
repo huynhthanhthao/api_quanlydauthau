@@ -30,46 +30,49 @@ export class UnitController {
 
   @Post('me')
   @HttpCode(HttpStatus.OK)
-  create(@Body() data: CreateUnitDto, @Req() request: RequestJWT) {
+  createMyUnit(@Body() data: CreateUnitDto, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.unitService.create(data, userId)
+    return this.unitService.createMyUnit(data, userId)
   }
 
   @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
-  update(
+  updateMyUnit(
     @Body() data: UpdateUnitDto,
     @Param('id') id: string,
     @Req() request: RequestJWT
   ) {
     const { userId } = request
-    return this.unitService.update(id, data, userId)
+    return this.unitService.updateMyUnit(id, data, userId)
   }
 
   @Delete('me/:id')
   @HttpCode(HttpStatus.OK)
-  delete(@Param('id') id: string, @Req() request: RequestJWT) {
+  deleteMyUnit(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.unitService.delete(id, userId)
+    return this.unitService.deleteMyUnit(id, userId)
   }
 
   @Delete('me')
   @HttpCode(HttpStatus.OK)
-  deleteMany(@Body() data: DeleteManyUnitDto, @Req() request: RequestJWT) {
+  deleteManyMyUnits(
+    @Body() data: DeleteManyUnitDto,
+    @Req() request: RequestJWT
+  ) {
     const { userId } = request
-    return this.unitService.deleteMany(data, userId)
+    return this.unitService.deleteManyMyUnits(data, userId)
   }
 
   @Get('me/:id')
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id') id: string) {
-    return this.unitService.findOne(id)
+  findOneMyUnit(@Param('id') id: string) {
+    return this.unitService.findOneMyUnit(id)
   }
 
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  findMany(@Query() data: FindManyUnitDto) {
-    return this.unitService.findMany(data)
+  findManyMyUnits(@Query() data: FindManyUnitDto) {
+    return this.unitService.findManyMyUnits(data)
   }
 
   @Post('me/check-existence')

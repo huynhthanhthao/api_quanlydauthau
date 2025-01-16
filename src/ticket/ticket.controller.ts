@@ -29,55 +29,58 @@ export class TicketController {
 
   @Post('me')
   @HttpCode(HttpStatus.OK)
-  create(@Body() data: CreateTicketDto, @Req() request: RequestJWT) {
+  createMyTicket(@Body() data: CreateTicketDto, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.ticketService.create(data, userId)
+    return this.ticketService.createMyTicket(data, userId)
   }
 
   @Post('me/:ticketId/comment')
   @HttpCode(HttpStatus.OK)
-  createTicketComment(
+  createMyTicketComment(
     @Body() data: CreateTicketCommentDto,
     @Req() request: RequestJWT,
     @Param('ticketId') ticketId: string
   ) {
     const { userId } = request
-    return this.ticketService.createTicketComment(ticketId, data, userId)
+    return this.ticketService.createMyTicketComment(ticketId, data, userId)
   }
 
   @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
-  update(
+  updateMyTicket(
     @Body() data: UpdateTicketDto,
     @Param('id') id: string,
     @Req() request: RequestJWT
   ) {
     const { userId } = request
-    return this.ticketService.update(id, data, userId)
+    return this.ticketService.updateMyTicket(id, data, userId)
   }
 
   @Get('me/:ticket/comment')
   @HttpCode(HttpStatus.OK)
-  findManyTicketComment(
+  findManyMyTicketComments(
     @Param('ticketId') ticketId: string,
     @Query() data: FindManyTicketCommentDto,
     @Req() request: RequestJWT
   ) {
     const { userId } = request
-    return this.ticketService.findManyTicketComment(ticketId, data, userId)
+    return this.ticketService.findManyMyTicketComments(ticketId, data, userId)
   }
 
   @Get('me/:id')
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id') id: string, @Req() request: RequestJWT) {
+  findOneMyTicket(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.ticketService.findOne(id, userId)
+    return this.ticketService.findOneMyTicket(id, userId)
   }
 
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  findMany(@Query() data: FindManyTicketDto, @Req() request: RequestJWT) {
+  findManyMyTickets(
+    @Query() data: FindManyTicketDto,
+    @Req() request: RequestJWT
+  ) {
     const { userId } = request
-    return this.ticketService.findMany(data, userId)
+    return this.ticketService.findManyMyTickets(data, userId)
   }
 }

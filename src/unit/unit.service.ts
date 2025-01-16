@@ -20,7 +20,7 @@ export class UnitService {
     private readonly trashService: TrashService
   ) {}
 
-  async create(data: CreateUnitDto, userId: string) {
+  async createMyUnit(data: CreateUnitDto, userId: string) {
     return await this.prisma.unit.create({
       data: {
         name: data.name,
@@ -31,7 +31,7 @@ export class UnitService {
     })
   }
 
-  async update(id: string, data: UpdateUnitDto, userId: string) {
+  async updateMyUnit(id: string, data: UpdateUnitDto, userId: string) {
     return await this.prisma.unit.update({
       where: { id },
       data: {
@@ -43,7 +43,7 @@ export class UnitService {
     })
   }
 
-  async findMany(data: FindManyUnitDto) {
+  async findManyMyUnits(data: FindManyUnitDto) {
     const { page, perPage, keyword, orderKey, orderValue } = data
 
     const keySearch = ['name', 'desc', 'code']
@@ -72,14 +72,14 @@ export class UnitService {
     )
   }
 
-  async findOne(id: string) {
+  async findOneMyUnit(id: string) {
     return this.prisma.unit.findUniqueOrThrow({
       where: { id },
       select: unitSelect
     })
   }
 
-  async deleteMany(data: DeleteManyUnitDto, userId: string) {
+  async deleteManyMyUnits(data: DeleteManyUnitDto, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const dataUnit: CreateManyTrashDto = {
         ids: data.ids,
@@ -99,7 +99,7 @@ export class UnitService {
     })
   }
 
-  async delete(id: string, userId: string) {
+  async deleteMyUnit(id: string, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const dataTrash: CreateTrashDto = {
         id,

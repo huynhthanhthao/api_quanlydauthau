@@ -24,7 +24,7 @@ export class QuotationService {
     private readonly trashService: TrashService
   ) {}
 
-  async create(data: CreateQuotationDto, userId: string) {
+  async createMyQuotation(data: CreateQuotationDto, userId: string) {
     const items = await this.getQuotationItems(data.items)
 
     return this.prisma.quotation.create({
@@ -71,7 +71,11 @@ export class QuotationService {
     return data
   }
 
-  async update(id: string, data: UpdateQuotationDto, userId: string) {
+  async updateMyQuotations(
+    id: string,
+    data: UpdateQuotationDto,
+    userId: string
+  ) {
     const items = await this.getQuotationItems(data.items)
 
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
@@ -97,7 +101,7 @@ export class QuotationService {
     })
   }
 
-  async findMany(data: FindManyQuotationDto, userId: string) {
+  async findManyMyQuotations(data: FindManyQuotationDto, userId: string) {
     const { page, perPage, keyword, orderKey, orderValue, statuses } = data
 
     const keySearch = ['name', 'desc']
@@ -132,14 +136,14 @@ export class QuotationService {
     )
   }
 
-  async findOne(id: string, userId: string) {
+  async findOneMyQuotation(id: string, userId: string) {
     return this.prisma.quotation.findUniqueOrThrow({
       where: { id, creatorId: userId },
       select: quotationDetailSelect
     })
   }
 
-  async deleteMany(data: DeleteManyQuotationDto, userId: string) {
+  async deleteManyMyQuotations(data: DeleteManyQuotationDto, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const dataProject: CreateManyTrashDto = {
         ids: data.ids,
@@ -163,7 +167,7 @@ export class QuotationService {
     })
   }
 
-  async delete(id: string, userId: string) {
+  async deleteMyQuotation(id: string, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const dataTrash: CreateTrashDto = {
         id,

@@ -29,52 +29,58 @@ export class ProductController {
   @Post('me')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
-  create(@Body() data: CreateProductDto, @Req() request: RequestJWT) {
+  createMyProject(@Body() data: CreateProductDto, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.productService.create(data, userId)
+    return this.productService.createMyProject(data, userId)
   }
 
   @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
-  update(
+  updateMyProject(
     @Body() data: UpdateProductDto,
     @Param('id') id: string,
     @Req() request: RequestJWT
   ) {
     const { userId } = request
-    return this.productService.update(id, data, userId)
+    return this.productService.updateMyProject(id, data, userId)
   }
 
   @Delete('me/:id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  delete(@Param('id') id: string, @Req() request: RequestJWT) {
+  deleteMyProject(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.productService.delete(id, userId)
+    return this.productService.deleteMyProject(id, userId)
   }
 
   @Delete('me')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
-  deleteMany(@Body() data: DeleteManyProductDto, @Req() request: RequestJWT) {
+  deleteManyMyProjects(
+    @Body() data: DeleteManyProductDto,
+    @Req() request: RequestJWT
+  ) {
     const { userId } = request
-    return this.productService.deleteMany(data, userId)
+    return this.productService.deleteManyMyProjects(data, userId)
   }
 
   @Get('me/:id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id') id: string, @Req() request: RequestJWT) {
+  findOneMyProject(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.productService.findOne(id, userId)
+    return this.productService.findOneMyProject(id, userId)
   }
 
   @Get('me')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  findMany(@Query() data: FindManyProductDto, @Req() request: RequestJWT) {
+  findManyMyProjects(
+    @Query() data: FindManyProductDto,
+    @Req() request: RequestJWT
+  ) {
     const { userId } = request
-    return this.productService.findMany(data, userId)
+    return this.productService.findManyMyProjects(data, userId)
   }
 }
