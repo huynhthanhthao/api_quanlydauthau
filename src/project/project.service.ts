@@ -86,15 +86,6 @@ export class ProjectService {
         HttpStatus.CONFLICT
       )
 
-    if (
-      data.status === ProjectStatus.APPROVED ||
-      data.status === ProjectStatus.BIDDING
-    )
-      throw new HttpException(
-        'Không thể cập nhật trạng thái này!',
-        HttpStatus.CONFLICT
-      )
-
     const projectItems = await this.getProjectItems(data.projectItems)
 
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
@@ -116,17 +107,6 @@ export class ProjectService {
           projectItems: true
         }
       })
-    })
-  }
-
-  async updateStatus(id: string, data: UpdateProjectDto) {
-    return this.prisma.project.update({
-      where: {
-        id
-      },
-      data: {
-        status: data.status
-      }
     })
   }
 
@@ -293,5 +273,42 @@ export class ProjectService {
         perPage
       }
     )
+  }
+
+  async cancelMyProject(id: string, userId: string) {
+    return this.prisma.project.update({
+      where: { id, creatorId: userId },
+      data: {
+        status: 'CANCELED',
+        updaterId: userId
+      }
+    })
+  }
+
+  async approve(id: string) {
+    return this.prisma.project.update({
+      where: { id },
+      data: {
+        status: 'APPROVED'
+      }
+    })
+  }
+
+  async cancel(id: string) {
+    return this.prisma.project.update({
+      where: { id },
+      data: {
+        status: 'CANCELED'
+      }
+    })
+  }
+
+  async complete(id: string) {
+    return this.prisma.project.update({
+      where: { id },
+      data: {
+        status: 'COMPLETED'
+      }
+    })
   }
 }

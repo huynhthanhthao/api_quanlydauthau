@@ -46,12 +46,6 @@ export class ProjectController {
     return this.projectService.updateMyProject(id, data, userId)
   }
 
-  @Patch(':id')
-  @HttpCode(HttpStatus.OK)
-  updateStatus(@Param('id') id: string, @Body() data: UpdateProjectDto) {
-    return this.projectService.updateStatus(id, data)
-  }
-
   @Delete('me/:id')
   @HttpCode(HttpStatus.OK)
   delete(@Param('id') id: string, @Req() request: RequestJWT) {
@@ -104,5 +98,31 @@ export class ProjectController {
   @HttpCode(HttpStatus.OK)
   findPublicProjects(@Query() data: FindManyProjectDto) {
     return this.projectService.findPublicProjects(data)
+  }
+
+  @Patch('me/:id/cancel')
+  @HttpCode(HttpStatus.OK)
+  cancelMyProject(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+
+    return this.projectService.cancelMyProject(id, userId)
+  }
+
+  @Patch(':id/approve')
+  @HttpCode(HttpStatus.OK)
+  approve(@Param('id') id: string) {
+    return this.projectService.approve(id)
+  }
+
+  @Patch(':id/cancel')
+  @HttpCode(HttpStatus.OK)
+  cancel(@Param('id') id: string) {
+    return this.projectService.cancel(id)
+  }
+
+  @Patch(':id/complete')
+  @HttpCode(HttpStatus.OK)
+  complete(@Param('id') id: string) {
+    return this.projectService.complete(id)
   }
 }

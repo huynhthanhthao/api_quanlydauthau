@@ -16,12 +16,22 @@ model Role {
   updatedAt   DateTime     @updatedAt
 }
 
+model PermissionGroup {
+  id          String       @id @default(uuid())
+  name        String       @db.Text
+  permissions Permission[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
 model Permission {
-  id        String   @id @default(uuid())
-  name      String   @db.Text
-  roles     Role[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                String           @id @default(uuid())
+  name              String           @db.Text
+  roles             Role[]
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  permissionGroup   PermissionGroup? @relation(fields: [permissionGroupId], references: [id])
+  permissionGroupId String?
 }
 
 model Company {
@@ -173,7 +183,7 @@ model Product {
 }
 
 model productAttribute {
-  key       String   
+  key       String
   value     String   @db.Text
   productId String
   product   Product? @relation("productAttribute", fields: [productId], references: [id], onDelete: Cascade)
@@ -277,14 +287,13 @@ model Trash {
 enum QuotationStatus {
   PENDING
   APPROVED
-  REJECTED
+  CANCELED
   COMPLETED
 }
 
 enum ProjectStatus {
   PENDING
   APPROVED
-  BIDDING
   CANCELED
   COMPLETED
 }
