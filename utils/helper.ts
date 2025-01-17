@@ -9,16 +9,22 @@ import { extname } from 'path'
 export async function paginate<
   T extends keyof PrismaClient,
   M extends PrismaClient[T]
->(
-  prismaModel: M,
-  queryArgs: AnyObject,
-  paginationArgs: PaginationArgs
-): Promise<ReturnType<PaginatorTypes.PaginateFunction>> {
+>(prismaModel: M, queryArgs: AnyObject, paginationArgs: PaginationArgs) {
   const paginateFn: PaginatorTypes.PaginateFunction = paginator({
     perPage: paginationArgs.perPage || PER_PAGE
   })
 
-  return await paginateFn(prismaModel, queryArgs, paginationArgs)
+  const result = await paginateFn(prismaModel, queryArgs, paginationArgs)
+
+  const totalPages = Math.ceil(result.meta.total / result.meta.perPage)
+
+  return {
+    ...result,
+    meta: {
+      ...result.meta,
+      totalPages
+    }
+  }
 }
 
 export function CustomFilesInterceptor(

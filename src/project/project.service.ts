@@ -14,6 +14,8 @@ import { generateCodeUUID, paginate } from 'utils/helper'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import {
   productCaptureSelect,
+  productSelect,
+  projectPublicSelect,
   projectSelect,
   quotationDetailSelect
 } from 'responses'
@@ -116,13 +118,13 @@ export class ProjectService {
       creatorId: userId
     }
 
-    return this.findManyBase(conditions, data)
+    return this.findManyBase(conditions, data, projectSelect)
   }
 
   async findMany(data: FindManyProjectDto) {
     const conditions: Prisma.ProjectWhereInput = {}
 
-    return this.findManyBase(conditions, data)
+    return this.findManyBase(conditions, data, projectSelect)
   }
 
   async findPublicProjects(data: FindManyProjectDto) {
@@ -145,12 +147,13 @@ export class ProjectService {
       ]
     }
 
-    return this.findManyBase(conditions, data)
+    return this.findManyBase(conditions, data, projectPublicSelect)
   }
 
   async findManyBase(
     conditions: Prisma.ProjectWhereInput,
-    data: FindManyProjectDto
+    data: FindManyProjectDto,
+    select: Prisma.ProjectSelect
   ) {
     const { page, perPage, keyword, orderKey, orderValue, statuses } = data
 
@@ -174,7 +177,7 @@ export class ProjectService {
       this.prisma.project,
       {
         where,
-        select: projectSelect,
+        select: select,
         orderBy: {
           [orderKey]: orderValue
         }
@@ -189,7 +192,7 @@ export class ProjectService {
   async findOne(id: string, userId: string) {
     return this.prisma.project.findUniqueOrThrow({
       where: { id, creatorId: userId },
-      select: projectSelect
+      select: productSelect
     })
   }
 
