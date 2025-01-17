@@ -15,8 +15,6 @@ export class CreateProductDto {
   desc?: string
 
   thumb?: string
-
-  producer?: string
 }
 
 export class CreateProductAttributeDto {

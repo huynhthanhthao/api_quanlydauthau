@@ -25,7 +25,6 @@ export class ProductService {
         name: data.name,
         desc: data.desc,
         thumb: data.thumb,
-        producer: data.producer,
         creatorId: userId,
         productAttributes: {
           create: data.productAttributes
@@ -47,7 +46,6 @@ export class ProductService {
           name: data.name,
           desc: data.desc,
           thumb: data.thumb,
-          producer: data.producer,
           updaterId: userId,
           productAttributes: {
             create: data.productAttributes

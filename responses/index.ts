@@ -13,7 +13,6 @@ export const productSelect: Prisma.ProductSelect = {
   name: true,
   thumb: true,
   desc: true,
-  producer: true,
   updatedAt: true,
   productAttributes: {
     select: {
@@ -28,7 +27,6 @@ export const productDetailSelect: Prisma.ProductSelect = {
   name: true,
   thumb: true,
   desc: true,
-  producer: true,
   updatedAt: true,
   productAttributes: {
     select: {
@@ -43,7 +41,6 @@ export const productCaptureSelect: Prisma.ProductSelect = {
   name: true,
   thumb: true,
   desc: true,
-  producer: true,
   updatedAt: true
 }
 
