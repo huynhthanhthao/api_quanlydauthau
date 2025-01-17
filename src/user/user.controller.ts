@@ -20,7 +20,8 @@ import {
   UpdateUserDto,
   FindManyUserDto,
   DeleteManyUserDto,
-  ChangePasswordDto
+  ChangePasswordDto,
+  ChangeMyPasswordDto
 } from './dto/user.dto'
 
 @Controller('user')
@@ -34,29 +35,29 @@ export class UserController {
     return this.userService.create(data)
   }
 
-  @Patch(':id')
+  @Patch('change-my-password')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
-  update(@Body() data: UpdateUserDto, @Param('id') id: string) {
-    return this.userService.update(id, data)
+  changeMyPassword(
+    @Body() data: ChangeMyPasswordDto,
+    @Req() request: RequestJWT
+  ) {
+    const { userId } = request
+    return this.userService.changeMyPassword(userId, data)
   }
 
-  @Patch(':id/change-password')
+  @Patch('change-password/:id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
   changePassword(@Body() data: ChangePasswordDto, @Param('id') id: string) {
     return this.userService.changePassword(id, data)
   }
 
-  @Patch('change-password')
+  @Patch(':id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
-  changeMyPassword(
-    @Body() data: ChangePasswordDto,
-    @Req() request: RequestJWT
-  ) {
-    const { userId } = request
-    return this.userService.changePassword(userId, data)
+  update(@Body() data: UpdateUserDto, @Param('id') id: string) {
+    return this.userService.update(id, data)
   }
 
   @Get(':id')

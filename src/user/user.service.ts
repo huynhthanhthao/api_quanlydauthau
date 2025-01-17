@@ -1,12 +1,13 @@
 import * as bcrypt from 'bcrypt'
 import { PrismaService } from 'nestjs-prisma'
 import { Prisma, PrismaClient, UserStatus } from '.prisma/client'
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { userDetailSelect, userSelect } from 'responses'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import { TrashService } from 'src/trash/trash.service'
 import { paginate } from 'utils/helper'
 import {
+  ChangeMyPasswordDto,
   ChangePasswordDto,
   CreateUserDto,
   DeleteManyUserDto,
@@ -145,7 +146,26 @@ export class UserService {
     return await this.prisma.user.update({
       where: { id: userId },
       data: {
-        password: bcrypt.hashSync(data.password, 20)
+        password: bcrypt.hashSync(data.password, 10)
+      }
+    })
+  }
+
+  async changeMyPassword(userId: string, data: ChangeMyPasswordDto) {
+    const user = await this.prisma.user.findUniqueOrThrow({
+      where: { id: userId },
+      select: { password: true }
+    })
+
+    const isValid = bcrypt.compareSync(data.oldPassword, user.password)
+
+    if (!isValid)
+      throw new HttpException('Mật khẩu cũ không đúng!', HttpStatus.CONFLICT)
+
+    return await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        password: bcrypt.hashSync(data.newPassword, 10)
       }
     })
   }

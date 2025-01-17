@@ -1,5 +1,10 @@
 import { PartialType } from '@nestjs/mapped-types'
-import { ArrayNotEmpty, IsNotEmpty, IsPhoneNumber, Min } from 'class-validator'
+import {
+  ArrayNotEmpty,
+  IsNotEmpty,
+  IsPhoneNumber,
+  MinLength
+} from 'class-validator'
 import { DeleteManyDto, FindManyDto } from 'utils/Common.dto'
 
 export class CreateUserDto {
@@ -28,12 +33,18 @@ export class CreateUserDto {
   address?: string
 }
 
-export class ChangePasswordDto {
+export class ChangeMyPasswordDto {
   @IsNotEmpty()
-  username: string
+  oldPassword: string
 
   @IsNotEmpty()
-  @Min(6)
+  @MinLength(6)
+  newPassword: string
+}
+
+export class ChangePasswordDto {
+  @IsNotEmpty()
+  @MinLength(6)
   password: string
 }
 
