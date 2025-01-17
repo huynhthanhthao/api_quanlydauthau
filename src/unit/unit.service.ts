@@ -113,14 +113,13 @@ export class UnitService {
     })
   }
 
-  async checkExistence(data: checkExistenceDto, userId: string) {
-    const unit = await this.prisma.unit.findFirst({
+  async checkExistence(data: checkExistenceDto) {
+    const user = await this.prisma.user.findFirst({
       where: {
-        creatorId: userId,
         [data.key]: data.value
       }
     })
 
-    return unit ? true : false
+    return user ? true : false
   }
 }

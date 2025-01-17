@@ -21,7 +21,6 @@ import {
 import { UnitService } from './unit.service'
 import { RequestJWT } from 'types'
 import { JwtAuthGuard } from 'guards/jwt-auth.guard'
-import { checkExistenceDto } from 'utils/common.dto'
 
 @UseGuards(JwtAuthGuard)
 @Controller('unit')
@@ -73,12 +72,5 @@ export class UnitController {
   @HttpCode(HttpStatus.OK)
   findManyMyUnits(@Query() data: FindManyUnitDto) {
     return this.unitService.findManyMyUnits(data)
-  }
-
-  @Post('me/check-existence')
-  @HttpCode(HttpStatus.OK)
-  checkExistence(@Body() data: checkExistenceDto, @Req() request: RequestJWT) {
-    const { userId } = request
-    return this.unitService.checkExistence(data, userId)
   }
 }
