@@ -14,7 +14,6 @@ import { generateCodeUUID, paginate } from 'utils/helper'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import {
   productCaptureSelect,
-  productSelect,
   projectPublicSelect,
   projectSelect,
   quotationDetailSelect
@@ -192,7 +191,7 @@ export class ProjectService {
   async findOne(id: string, userId: string) {
     return this.prisma.project.findUniqueOrThrow({
       where: { id, creatorId: userId },
-      select: productSelect
+      select: projectSelect
     })
   }
 
