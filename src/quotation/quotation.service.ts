@@ -68,6 +68,7 @@ export class QuotationService {
           productId: item.productId,
           productCapture: product,
           attachedFiles: item.attachedFiles,
+          unit: item.unit,
           quantity: item.quantity
         }
       })

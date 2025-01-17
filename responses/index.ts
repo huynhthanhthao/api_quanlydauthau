@@ -15,15 +15,6 @@ export const productSelect: Prisma.ProductSelect = {
   desc: true,
   producer: true,
   updatedAt: true,
-  categories: {
-    select: {
-      id: true,
-      name: true,
-      thumb: true,
-      desc: true,
-      updatedAt: true
-    }
-  },
   productAttributes: {
     select: {
       key: true,
@@ -39,15 +30,6 @@ export const productDetailSelect: Prisma.ProductSelect = {
   desc: true,
   producer: true,
   updatedAt: true,
-  categories: {
-    select: {
-      id: true,
-      name: true,
-      thumb: true,
-      desc: true,
-      updatedAt: true
-    }
-  },
   productAttributes: {
     select: {
       key: true,
@@ -94,7 +76,8 @@ export const projectSelect: Prisma.ProjectSelect = {
       id: true,
       productCapture: true,
       quantity: true,
-      updatedAt: true
+      updatedAt: true,
+      unit: true
     }
   }
 }
@@ -131,7 +114,8 @@ export const quotationDetailSelect: Prisma.QuotationSelect = {
       productCapture: true,
       attachedFiles: true,
       quantity: true,
-      updatedAt: true
+      updatedAt: true,
+      unit: true
     }
   },
   project: {

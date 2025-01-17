@@ -17,7 +17,7 @@ model Role {
 }
 
 model PermissionGroup {
-  id          String       @id @default(uuid())
+  code        String       @id
   name        String       @db.Text
   permissions Permission[]
   createdAt   DateTime     @default(now())
@@ -25,12 +25,12 @@ model PermissionGroup {
 }
 
 model Permission {
-  id                String           @id @default(uuid())
+  code              String           @id
   name              String           @db.Text
   roles             Role[]
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
-  permissionGroup   PermissionGroup? @relation(fields: [permissionGroupId], references: [id])
+  permissionGroup   PermissionGroup? @relation(fields: [permissionGroupId], references: [code])
   permissionGroupId String?
 }
 
@@ -85,57 +85,57 @@ model Ward {
 }
 
 model User {
-  id               String            @id @default(uuid())
-  name             String            @db.Text
-  username         String            @unique
+  id               String          @id @default(uuid())
+  name             String          @db.Text
+  username         String          @unique
   password         String
-  status           UserStatus        @default(ACTIVE)
-  email            String?           @unique
-  phone            String?           @unique
-  avatar           String?           @db.Text
+  status           UserStatus      @default(ACTIVE)
+  email            String?         @unique
+  phone            String?         @unique
+  avatar           String?         @db.Text
   wardId           Int?
-  ward             Ward?             @relation(fields: [wardId], references: [code])
-  address          String?           @db.Text
+  ward             Ward?           @relation(fields: [wardId], references: [code])
+  address          String?         @db.Text
   birthDate        DateTime?
-  roles            Role[]            @relation("userRole")
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  createProjects   Project[]         @relation("creator")
-  updateProjects   Project[]         @relation("updater")
-  createProducts   Product[]         @relation("creator")
-  updateProducts   Product[]         @relation("updater")
-  createUnits      Unit[]            @relation("creator")
-  updateUnits      Unit[]            @relation("updater")
-  createQuotations Quotation[]       @relation("creator")
-  updateQuotations Quotation[]       @relation("updater")
-  createCompanies  Company[]         @relation("creator")
-  updateCompanies  Company[]         @relation("updater")
-  createTickets    Ticket[]          @relation("creator")
-  updateTickets    Ticket[]          @relation("updater")
-  assigneeTickets  Ticket[]          @relation("assigneeTicket")
-  createCategories Category[]        @relation("creator")
-  updateCategories Category[]        @relation("updater")
-  createTrash      Trash[]           @relation("creator")
+  roles            Role[]          @relation("userRole")
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  createProjects   Project[]       @relation("creator")
+  updateProjects   Project[]       @relation("updater")
+  createProducts   Product[]       @relation("creator")
+  updateProducts   Product[]       @relation("updater")
+  createUnits      Unit[]          @relation("creator")
+  updateUnits      Unit[]          @relation("updater")
+  createQuotations Quotation[]     @relation("creator")
+  updateQuotations Quotation[]     @relation("updater")
+  createCompanies  Company[]       @relation("creator")
+  updateCompanies  Company[]       @relation("updater")
+  createTickets    Ticket[]        @relation("creator")
+  updateTickets    Ticket[]        @relation("updater")
+  assigneeTickets  Ticket[]        @relation("assigneeTicket")
+  createCategories Category[]      @relation("creator")
+  updateCategories Category[]      @relation("updater")
+  createTrash      Trash[]         @relation("creator")
   ticketComments   TicketComment[]
 }
 
 model Project {
-  id              String            @id @default(uuid())
-  name            String
-  code            String            @unique
-  price           Float
-  status          ProjectStatus
-  address         String?           @db.Text
-  desc            String?           @db.Text
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  creatorId       String?
-  updaterId       String?
-  creator         User?             @relation("creator", fields: [creatorId], references: [id])
-  updater         User?             @relation("updater", fields: [updaterId], references: [id])
-  projectItems    ProjectItem[]
-  quotations      Quotation[]
-  tickets         Ticket[]
+  id           String        @id @default(uuid())
+  name         String
+  code         String        @unique
+  price        Float
+  status       ProjectStatus
+  address      String?       @db.Text
+  desc         String?       @db.Text
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  creatorId    String?
+  updaterId    String?
+  creator      User?         @relation("creator", fields: [creatorId], references: [id])
+  updater      User?         @relation("updater", fields: [updaterId], references: [id])
+  projectItems ProjectItem[]
+  quotations   Quotation[]
+  tickets      Ticket[]
 }
 
 model ProjectItem {
@@ -143,6 +143,7 @@ model ProjectItem {
   projectId      String
   productId      String?
   productCapture Json
+  unit           String   @db.Text
   quantity       Int
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
@@ -151,17 +152,16 @@ model ProjectItem {
 }
 
 model Category {
-  id        String    @id @default(uuid())
-  name      String    @db.Text
-  thumb     String?   @db.Text
-  desc      String?   @db.Text
-  products  Product[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id        String   @id @default(uuid())
+  name      String   @db.Text
+  thumb     String?  @db.Text
+  desc      String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   creatorId String?
   updaterId String?
-  creator   User?     @relation("creator", fields: [creatorId], references: [id])
-  updater   User?     @relation("updater", fields: [updaterId], references: [id])
+  creator   User?    @relation("creator", fields: [creatorId], references: [id])
+  updater   User?    @relation("updater", fields: [updaterId], references: [id])
 }
 
 model Product {
@@ -170,7 +170,6 @@ model Product {
   thumb             String?            @db.Text
   desc              String?            @db.Text
   producer          String?            @db.Text
-  categories        Category[]
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   creatorId         String?
@@ -208,20 +207,20 @@ model Unit {
 }
 
 model Quotation {
-  id              String            @id @default(uuid())
-  name            String            @db.Text
-  desc            String?           @db.Text
-  price           Float
-  projectId       String
-  project         Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  status          QuotationStatus
-  items           QuotationItem[]
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  creatorId       String?
-  updaterId       String?
-  creator         User?             @relation("creator", fields: [creatorId], references: [id])
-  updater         User?             @relation("updater", fields: [updaterId], references: [id])
+  id        String          @id @default(uuid())
+  name      String          @db.Text
+  desc      String?         @db.Text
+  price     Float
+  projectId String
+  project   Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  status    QuotationStatus
+  items     QuotationItem[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  creatorId String?
+  updaterId String?
+  creator   User?           @relation("creator", fields: [creatorId], references: [id])
+  updater   User?           @relation("updater", fields: [updaterId], references: [id])
 }
 
 model Ticket {
@@ -256,6 +255,7 @@ model QuotationItem {
   id             String    @id @default(uuid())
   quotationId    String
   productId      String?
+  unit           String    @db.Text
   productCapture Json
   attachedFiles  Json?
   quantity       Int

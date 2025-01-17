@@ -66,7 +66,8 @@ export class ProjectService {
         return {
           productId: product.id,
           productCapture: product,
-          quantity: item.quantity
+          quantity: item.quantity,
+          unit: item.unit
         }
       })
     )

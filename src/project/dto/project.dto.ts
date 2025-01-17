@@ -36,6 +36,9 @@ export class CreateProjectItemDto {
   @IsNotEmpty()
   @Min(0)
   quantity: number
+
+  @IsNotEmpty()
+  unit: string
 }
 
 export class UpdateProjectDto extends PartialType(CreateProjectDto) {}

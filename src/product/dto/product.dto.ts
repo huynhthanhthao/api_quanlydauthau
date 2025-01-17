@@ -1,19 +1,11 @@
 import { PartialType } from '@nestjs/mapped-types'
 import { Transform, TransformFnParams, Type } from 'class-transformer'
-import {
-  ArrayNotEmpty,
-  IsNotEmpty,
-  IsOptional,
-  ValidateNested
-} from 'class-validator'
+import { IsNotEmpty, IsOptional, ValidateNested } from 'class-validator'
 import { DeleteManyDto, FindManyDto } from 'utils/Common.dto'
 
 export class CreateProductDto {
   @IsNotEmpty()
   name: string
-
-  @ArrayNotEmpty()
-  categoryIds: string[]
 
   @IsOptional()
   @ValidateNested({ each: true })

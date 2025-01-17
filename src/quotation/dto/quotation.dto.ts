@@ -28,6 +28,9 @@ export class CreateQuotationItemDto {
   quantity: number
 
   attachedFiles?: string[]
+
+  @IsNotEmpty()
+  unit: string
 }
 
 export class UpdateQuotationDto extends PartialType(CreateQuotationDto) {}

@@ -17,6 +17,7 @@ import { QuotationModule } from './quotation/quotation.module'
 import { TicketModule } from './ticket/ticket.module'
 import { CronModule } from './cron/cron.module'
 import { ScheduleModule } from '@nestjs/schedule'
+import { RoleModule } from './role/role.module';
 
 @Module({
   imports: [
@@ -46,7 +47,8 @@ import { ScheduleModule } from '@nestjs/schedule'
     ProjectModule,
     QuotationModule,
     TicketModule,
-    CronModule
+    CronModule,
+    RoleModule
   ],
   controllers: [AppController],
   providers: [AppService]

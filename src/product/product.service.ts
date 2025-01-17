@@ -27,9 +27,6 @@ export class ProductService {
         thumb: data.thumb,
         producer: data.producer,
         creatorId: userId,
-        categories: {
-          connect: data.categoryIds.map(id => ({ id }))
-        },
         productAttributes: {
           create: data.productAttributes
         }
@@ -52,9 +49,6 @@ export class ProductService {
           thumb: data.thumb,
           producer: data.producer,
           updaterId: userId,
-          categories: {
-            set: data.categoryIds?.map(id => ({ id }))
-          },
           productAttributes: {
             create: data.productAttributes
           }

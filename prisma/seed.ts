@@ -14,18 +14,25 @@ const readJsonFile = async (filePath: string) => {
   }
 }
 
+const permissionGroups = [
+  {
+    name: 'Quản trị',
+    permissions: [{}]
+  },
+  {
+    name: 'Người dùng mặc định',
+    permissions: []
+  }
+]
+
 const roles = [
   {
     name: 'Quản trị',
-    permissionIds: []
+    permissions: []
   },
   {
-    name: 'Chủ dự án',
-    permissionIds: []
-  },
-  {
-    name: 'Nhà cung cấp',
-    permissionIds: []
+    name: 'Người dùng mặc định',
+    permissions: []
   }
 ]
 
@@ -40,9 +47,7 @@ async function main() {
         data: {
           name: role.name,
           permissions: {
-            connect: role.permissionIds.map(permissionId => ({
-              id: permissionId
-            }))
+            create: role.permissions
           }
         }
       })
