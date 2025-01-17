@@ -82,6 +82,17 @@ export class QuotationService {
     data: UpdateQuotationDto,
     userId: string
   ) {
+    const quotation = await this.prisma.quotation.findFirstOrThrow({
+      where: { id },
+      select: { status: true }
+    })
+
+    if (quotation.status !== QuotationStatus.PENDING)
+      throw new HttpException(
+        'Không thể cập nhật báo giá này vì đã được duyệt hoặc bị từ chối!',
+        HttpStatus.NOT_FOUND
+      )
+
     const items = await this.getQuotationItems(data.items)
 
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
@@ -206,9 +217,12 @@ export class QuotationService {
         }
       })
 
-      if (project.status === ProjectStatus.COMPLETED)
+      if (
+        project.status === ProjectStatus.COMPLETED ||
+        project.status === ProjectStatus.QUOTED
+      )
         throw new HttpException(
-          'Không thể duyệt báo giá dự án này vì đã hoàn thành!',
+          'Không thể duyệt báo giá dự án này!',
           HttpStatus.CONFLICT
         )
 
