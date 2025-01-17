@@ -61,7 +61,7 @@ export class ProductService {
   async findManyMyProducts(data: FindManyProductDto, userId: string) {
     const { page, perPage, keyword, orderKey, orderValue } = data
 
-    const keySearch = ['name', 'desc', 'producer']
+    const keySearch = ['name', 'desc']
 
     const where: Prisma.ProductWhereInput = {
       ...(keyword && {
