@@ -21,6 +21,7 @@ export class CreateProjectDto {
   @Type(() => CreateProjectItemDto)
   projectItems?: CreateProjectItemDto[]
 
+  @IsOptional()
   @IsEnum(ProjectStatus)
   status?: ProjectStatus
 

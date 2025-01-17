@@ -35,23 +35,25 @@ model Permission {
 }
 
 model Company {
-  id                     String    @id @default(uuid())
-  name                   String    @db.Text
-  address                String?   @db.Text
+  id                     String   @id @default(uuid())
+  name                   String   @db.Text
+  address                String?  @db.Text
   email                  String?
   phone                  String?
   tax                    String?
-  website                String?   @db.Text
-  logo                   String?   @db.Text
-  representativeName     String?   @db.Text
-  representativePosition String?   @db.Text
-  foundedAt              DateTime?
-  createdAt              DateTime  @default(now())
-  updatedAt              DateTime  @updatedAt
+  website                String?  @db.Text
+  logo                   String?  @db.Text
+  representativeName     String?  @db.Text
+  representativePosition String?  @db.Text
+  wardCode               Int?
+  ward                   Ward?    @relation(fields: [wardCode], references: [code])
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
   creatorId              String?
   updaterId              String?
-  creator                User?     @relation("creator", fields: [creatorId], references: [id])
-  updater                User?     @relation("updater", fields: [updaterId], references: [id])
+  creator                User?    @relation("creator", fields: [creatorId], references: [id])
+  updater                User?    @relation("updater", fields: [updaterId], references: [id])
+  users                  User[]
 }
 
 model City {
@@ -82,6 +84,7 @@ model Ward {
   districtId    Int
   district      District? @relation(fields: [districtId], references: [code])
   users         User[]
+  companies     Company[]
 }
 
 model User {
@@ -93,11 +96,13 @@ model User {
   email            String?         @unique
   phone            String?         @unique
   avatar           String?         @db.Text
-  wardId           Int?
-  ward             Ward?           @relation(fields: [wardId], references: [code])
+  wardCode         Int?
+  ward             Ward?           @relation(fields: [wardCode], references: [code])
   address          String?         @db.Text
   birthDate        DateTime?
   roles            Role[]          @relation("userRole")
+  companyId        String?
+  company          Company?        @relation(fields: [companyId], references: [id])
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
   createProjects   Project[]       @relation("creator")
@@ -169,7 +174,6 @@ model Product {
   name              String             @db.Text
   thumb             String?            @db.Text
   desc              String?            @db.Text
-  producer          String?            @db.Text
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   creatorId         String?
