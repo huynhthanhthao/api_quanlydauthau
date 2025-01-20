@@ -17,12 +17,12 @@ import { QuotationModule } from './quotation/quotation.module'
 import { TicketModule } from './ticket/ticket.module'
 import { CronModule } from './cron/cron.module'
 import { ScheduleModule } from '@nestjs/schedule'
-import { RoleModule } from './role/role.module';
-import { UserModule } from './user/user.module';
-import { CompanyModule } from './company/company.module';
-import { WardModule } from './ward/ward.module';
-import { PermissionModule } from './permission/permission.module';
-import { PermissionGroupModule } from './permission-group/permission-group.module';
+import { RoleModule } from './role/role.module'
+import { UserModule } from './user/user.module'
+import { CompanyModule } from './company/company.module'
+import { WardModule } from './ward/ward.module'
+import { PermissionModule } from './permission/permission.module'
+import { PermissionGroupModule } from './permission-group/permission-group.module'
 
 @Module({
   imports: [
@@ -38,7 +38,7 @@ import { PermissionGroupModule } from './permission-group/permission-group.modul
     }),
     JwtModule.register({
       global: true,
-      secret: process.env.SECRET_KEY
+      secret: process.env.SECRET_KEY_TOKEN
     }),
     ScheduleModule.forRoot(),
     CityModule,

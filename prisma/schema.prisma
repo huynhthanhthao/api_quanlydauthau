@@ -123,6 +123,7 @@ model User {
   updateCategories Category[]      @relation("updater")
   createTrash      Trash[]         @relation("creator")
   ticketComments   TicketComment[]
+  userSessions     UserSession[]
 }
 
 model Project {
@@ -278,6 +279,16 @@ model Trash {
   isRestored Boolean  @default(false)
   creatorId  String?
   creator    User?    @relation("creator", fields: [creatorId], references: [id])
+}
+
+model UserSession {
+  id           String   @id @default(uuid())
+  refreshToken String   @db.Text
+  userId       String   
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 enum QuotationStatus {

@@ -38,4 +38,9 @@ export class AuthController {
 
     return this.authService.getMe(token)
   }
+
+  @Post('refresh-token')
+  async refreshToken(@Body() body: { token: string }) {
+    return this.authService.refreshToken(body.token)
+  }
 }

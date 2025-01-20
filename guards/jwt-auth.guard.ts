@@ -31,7 +31,7 @@ export class JwtAuthGuard implements CanActivate {
 
     try {
       const payload: TokenSign = await this.jwtService.verifyAsync(token, {
-        secret: process.env.SECRET_KEY
+        secret: process.env.SECRET_KEY_TOKEN
       })
 
       const user = await this.prisma.user.findUniqueOrThrow({
