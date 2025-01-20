@@ -329,6 +329,78 @@ export const userDetailSelect: Prisma.UserSelect = {
     select: {
       id: true,
       name: true,
+      permissions: {
+        select: {
+          code: true,
+          name: true
+        }
+      }
+    }
+  }
+}
+
+export const userLoginSelect: Prisma.UserSelect = {
+  id: true,
+  name: true,
+  username: true,
+  password: true,
+  status: true,
+  email: true,
+  phone: true,
+  avatar: true,
+  address: true,
+  birthDate: true,
+  company: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      logo: true
+    }
+  },
+  updatedAt: true,
+  ward: {
+    select: {
+      code: true,
+      codeName: true,
+      name: true,
+      district: {
+        select: {
+          code: true,
+          codeName: true,
+          shortCodeName: true,
+          city: {
+            select: {
+              code: true,
+              name: true,
+              phoneCode: true
+            }
+          }
+        }
+      }
+    }
+  },
+  roles: {
+    select: {
+      id: true,
+      name: true,
+      permissions: {
+        select: {
+          code: true,
+          name: true
+        }
+      }
+    }
+  }
+}
+
+export const permissionGroupSelect: Prisma.PermissionGroupSelect = {
+  id: true,
+  name: true,
+  subGroups: {
+    select: {
+      id: true,
+      name: true,
       permissions: true
     }
   }

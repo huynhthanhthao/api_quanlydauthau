@@ -1,0 +1,180 @@
+[
+  {
+    "name": "Dành cho người dùng mặc định",
+    "subGroups": [
+      {
+        "name": "Quản lý thông tin cá nhân",
+        "permissions": [
+          {
+            "code": "UPDATE_MY_PROFILE",
+            "name": "Cập nhật thông tin cá nhân"
+          },
+          {
+            "code": "CHANGE_MY_PASSWORD",
+            "name": "Đổi mật khẩu"
+          }
+        ]
+      },
+      {
+        "name": "Quản lý sản phẩm",
+        "permissions": [
+          {
+            "code": "VIEW_PRODUCT",
+            "name": "Xem danh sách sản phẩm"
+          },
+          {
+            "code": "CREATE_PRODUCT",
+            "name": "Thêm mới sản phẩm"
+          },
+          {
+            "code": "UPDATE_PRODUCT",
+            "name": "Cập nhật sản phẩm"
+          },
+            {
+            "code": "DELETE_PRODUCT",
+            "name": "Xóa sản phẩm"
+          }
+        ]
+      },
+      {
+        "name": "Quản lý dự án",
+        "permissions": [
+          {
+            "code": "VIEW_PROJECT",
+            "name": "Xem danh sách dự án"
+          },
+          {
+            "code": "VIEW_PUBLIC_PROJECT",
+            "name": "Xem danh sách dự án đã được duyệt"
+          },
+          {
+            "code": "CREATE_PROJECT",
+            "name": "Thêm mới dự án"
+          },
+          {
+            "code": "UPDATE_PROJECT",
+            "name": "Cập nhật thông tin dự án"
+          },
+          {
+            "code": "DELETE_PROJECT",
+            "name": "Xóa dự án"
+          },
+          {
+            "code": "CANCEL_PROJECT",
+            "name": "Hủy dự án"
+          }
+        ]
+      },
+      {
+        "name": "Quản lý báo giá",
+        "permissions": [
+          {
+            "code": "VIEW_QUOTATION",
+            "name": "Xem danh sách báo giá"
+          },
+          {
+            "code": "CREATE_QUOTATION",
+            "name": "Tạo báo giá"
+          },
+          {
+            "code": "UPDATE_QUOTATION",
+            "name": "Cập nhật thông tin báo giá"
+          },
+          {
+            "code": "DELETE_QUOTATION",
+            "name": "Xóa báo giá"
+          },
+          {
+            "code": "APPROVE_QUOTATION",
+            "name": "Duyệt báo giá"
+          }
+        ]
+      },
+      {
+        "name": "Quản lý ticket",
+        "permissions": [
+          {
+            "code": "VIEW_TICKET",
+            "name": "Xem danh sách ticket"
+          },
+          {
+            "code": "SEND_TICKET",
+            "name": "Gửi ticket"
+          },
+          {
+            "code": "UPDATE_STATUS_TICKET",
+            "name": "Cập nhật trạng thái ticket"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Dành cho quản trị viên",
+    "subGroups": [
+      {
+        "name": "Quản lý thông tin công ty",
+        "permissions": [
+          {
+            "code": "ADMIN_VIEW_COMPANY",
+            "name": "Xem danh sách công ty"
+          },
+          {
+            "code": "ADMIN_CREATE_COMPANY",
+            "name": "Tạo mới công ty"
+          },
+          {
+            "code": "ADMIN_UPDATE_COMPANY",
+            "name": "Cập nhật thông tin công ty"
+          },
+          {
+            "code": "ADMIN_DELETE_COMPANY",
+            "name": "Xóa công ty"
+          }
+        ]
+      },
+      {
+        "name": "Quản lý người dùng",
+        "permissions": [
+          {
+            "code": "ADMIN_VIEW_USER",
+            "name": "Xem danh sách người dùng"
+          },
+          {
+            "code": "ADMIN_CREATE_USER",
+            "name": "Tạo mới người dùng"
+          },
+          {
+            "code": "ADMIN_UPDATE_USER",
+            "name": "Cập nhật thông tin người dùng"
+          },
+          {
+            "code": "ADMIN_DELETE_USER",
+            "name": "Xóa người dùng"
+          }
+        ]
+      },
+      {
+        "name": "Quản lý dự án",
+        "permissions": [
+          {
+            "code": "ADMIN_VIEW_PROJECT",
+            "name": "Xem danh sách dự án"
+          },
+          {
+            "code": "ADMIN_APPROVE_PROJECT",
+            "name": "Duyệt dự án"
+          },
+          {
+            "code": "ADMIN_CANCEL_PROJECT",
+            "name": "Hủy dự án"
+          },
+          {
+            "code": "ADMIN_COMPLETE_PROJECT",
+            "name": "Duyệt hoàn thành dự án"
+          }
+        ]
+      }
+    ]
+  }
+]

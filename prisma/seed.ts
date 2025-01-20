@@ -1,6 +1,7 @@
-import { PrismaClient } from '@prisma/client'
 import * as fs from 'fs/promises'
 import * as bcrypt from 'bcrypt'
+
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -14,88 +15,98 @@ const readJsonFile = async (filePath: string) => {
   }
 }
 
-const permissionGroups = [
-  {
-    name: 'Quản trị',
-    permissions: [{}]
-  },
-  {
-    name: 'Người dùng mặc định',
-    permissions: []
-  }
-]
-
-const roles = [
-  {
-    name: 'Quản trị',
-    permissions: []
-  },
-  {
-    name: 'Người dùng mặc định',
-    permissions: []
-  }
-]
-
 async function main() {
-  await prisma.permission.createMany({
-    data: []
-  })
+  return await prisma.$transaction(async (tx: PrismaClient) => {
+    const permissionGroups = await readJsonFile(
+      'jsonData/permission-groups.json'
+    )
 
-  await Promise.all(
-    roles.map(role =>
-      prisma.role.create({
+    const provinces = await readJsonFile('jsonData/provinces.json')
+
+    const groupPromises = permissionGroups.map(group =>
+      tx.permissionGroup.create({
         data: {
-          name: role.name,
-          permissions: {
-            create: role.permissions
+          name: group.name,
+          subGroups: {
+            create: group.subGroups.map(subGroup => ({
+              name: subGroup.name,
+              permissions: {
+                create: subGroup.permissions.map(permission => ({
+                  code: permission.code,
+                  name: permission.name
+                }))
+              }
+            }))
           }
         }
       })
     )
-  )
 
-  await prisma.user.create({
-    data: {
-      name: 'admin',
-      password: bcrypt.hashSync('aA@123', 10),
-      username: 'admin'
-    }
-  })
+    const cityPromises = provinces.map(async province => {
+      const city = await tx.city.create({
+        data: {
+          code: province.code,
+          name: province.name,
+          phoneCode: province.phone_code,
+          divisionType: province.division_type,
+          districts: {
+            create: province.districts.map(district => ({
+              code: district.code,
+              name: district.name,
+              codeName: district.codename,
+              divisionType: district.division_type,
+              shortCodeName: district.short_codename,
+              wards: {
+                create: district.wards.map(ward => ({
+                  code: ward.code,
+                  name: ward.name,
+                  codeName: ward.codename,
+                  divisionType: ward.division_type,
+                  shortCodeName: ward.short_codename
+                }))
+              }
+            }))
+          }
+        }
+      })
 
-  const provinces = await readJsonFile('jsonData/provinces.json')
+      return `Created city: ${city.name}`
+    })
 
-  const cityPromises = provinces.map(async province => {
-    const city = await prisma.city.create({
+    await Promise.all([cityPromises, groupPromises])
+
+    const roles = await readJsonFile('jsonData/roles.json')
+
+    const rolePromises = roles.map(role =>
+      tx.role.create({
+        data: {
+          name: role.name,
+          permissions: {
+            connect: role.permissions.map(permission => ({
+              code: permission.code
+            }))
+          }
+        }
+      })
+    )
+
+    const createdRoles = await Promise.all(rolePromises)
+
+    const adminRole = createdRoles.find(role => role.name === 'Quản trị viên')
+
+    await tx.user.create({
       data: {
-        code: province.code,
-        name: province.name,
-        phoneCode: province.phone_code,
-        divisionType: province.division_type,
-        districts: {
-          create: province.districts.map(district => ({
-            code: district.code,
-            name: district.name,
-            codeName: district.codename,
-            divisionType: district.division_type,
-            shortCodeName: district.short_codename,
-            wards: {
-              create: district.wards.map(ward => ({
-                code: ward.code,
-                name: ward.name,
-                codeName: ward.codename,
-                divisionType: ward.division_type,
-                shortCodeName: ward.short_codename
-              }))
-            }
-          }))
+        name: 'admin3',
+        password: bcrypt.hashSync('aA@123', 10),
+        username: 'admin3',
+        roles: {
+          connect: {
+            id: adminRole.id
+          }
         }
       }
     })
-
-    return `Created city: ${city.name}`
   })
-
-  await Promise.all(cityPromises)
 }
 
 main()

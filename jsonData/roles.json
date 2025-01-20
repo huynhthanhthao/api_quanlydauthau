@@ -1,0 +1,168 @@
+[
+  {
+    "name": "Quản trị viên",
+    "permissions": [
+      {
+          "code": "ADMIN_APPROVE_PROJECT"
+      },
+      {
+          "code": "ADMIN_CANCEL_PROJECT"
+      },
+      {
+          "code": "ADMIN_COMPLETE_PROJECT"
+      },
+      {
+          "code": "ADMIN_CREATE_COMPANY"
+      },
+      {
+          "code": "ADMIN_CREATE_USER"
+      },
+      {
+          "code": "ADMIN_DELETE_COMPANY"
+      },
+      {
+          "code": "ADMIN_DELETE_USER"
+      },
+      {
+          "code": "ADMIN_UPDATE_COMPANY"
+      },
+      {
+          "code": "ADMIN_UPDATE_USER"
+      },
+      {
+          "code": "ADMIN_VIEW_COMPANY"
+      },
+      {
+          "code": "ADMIN_VIEW_PROJECT"
+      },
+      {
+          "code": "ADMIN_VIEW_USER"
+      },
+      {
+          "code": "APPROVE_QUOTATION"
+      },
+      {
+          "code": "CANCEL_PROJECT"
+      },
+      {
+          "code": "CHANGE_MY_PASSWORD"
+      },
+      {
+          "code": "CREATE_PRODUCT"
+      },
+      {
+          "code": "CREATE_PROJECT"
+      },
+      {
+          "code": "CREATE_QUOTATION"
+      },
+      {
+          "code": "DELETE_PRODUCT"
+      },
+      {
+          "code": "DELETE_PROJECT"
+      },
+      {
+          "code": "DELETE_QUOTATION"
+      },
+      {
+          "code": "SEND_TICKET"
+      },
+      {
+          "code": "UPDATE_MY_PROFILE"
+      },
+      {
+          "code": "UPDATE_PRODUCT"
+      },
+      {
+          "code": "UPDATE_PROJECT"
+      },
+      {
+          "code": "UPDATE_QUOTATION"
+      },
+      {
+          "code": "UPDATE_STATUS_TICKET"
+      },
+      {
+          "code": "VIEW_PRODUCT"
+      },
+      {
+          "code": "VIEW_PROJECT"
+      },
+      {
+          "code": "VIEW_PUBLIC_PROJECT"
+      },
+      {
+          "code": "VIEW_QUOTATION"
+      },
+      {
+          "code": "VIEW_TICKET"
+      }
+    ]
+  },
+  {
+    "name": "Người dùng mặc định",
+    "permissions": [
+      {
+          "code": "APPROVE_QUOTATION"
+      },
+      {
+          "code": "CANCEL_PROJECT"
+      },
+      {
+          "code": "CHANGE_MY_PASSWORD"
+      },
+      {
+          "code": "CREATE_PRODUCT"
+      },
+      {
+          "code": "CREATE_PROJECT"
+      },
+      {
+          "code": "CREATE_QUOTATION"
+      },
+      {
+          "code": "DELETE_PRODUCT"
+      },
+      {
+          "code": "DELETE_PROJECT"
+      },
+      {
+          "code": "DELETE_QUOTATION"
+      },
+      {
+          "code": "SEND_TICKET"
+      },
+      {
+          "code": "UPDATE_MY_PROFILE"
+      },
+      {
+          "code": "UPDATE_PRODUCT"
+      },
+      {
+          "code": "UPDATE_PROJECT"
+      },
+      {
+          "code": "UPDATE_QUOTATION"
+      },
+      {
+          "code": "UPDATE_STATUS_TICKET"
+      },
+      {
+          "code": "VIEW_PRODUCT"
+      },
+      {
+          "code": "VIEW_PROJECT"
+      },
+      {
+          "code": "VIEW_PUBLIC_PROJECT"
+      },
+      {
+          "code": "VIEW_QUOTATION"
+      },
+      {
+          "code": "VIEW_TICKET"
+      }
+    ]
+  }
+]

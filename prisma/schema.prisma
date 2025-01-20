@@ -17,11 +17,13 @@ model Role {
 }
 
 model PermissionGroup {
-  code        String       @id
-  name        String       @db.Text
+  id          String            @id @default(uuid())
+  name        String            @db.Text
+  parent      PermissionGroup?  @relation("SelfRelation", fields: [parentId], references: [id])
+  subGroups   PermissionGroup[] @relation("SelfRelation")
+  parentId    String?
   permissions Permission[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt   DateTime          @default(now())
 }
 
 model Permission {
@@ -29,8 +31,7 @@ model Permission {
   name              String           @db.Text
   roles             Role[]
   createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
-  permissionGroup   PermissionGroup? @relation(fields: [permissionGroupId], references: [code])
+  permissionGroup   PermissionGroup? @relation(fields: [permissionGroupId], references: [id])
   permissionGroupId String?
 }
 

@@ -1,11 +1,12 @@
-import { UserStatus } from '@prisma/client'
 import * as bcrypt from 'bcrypt'
+import { UserStatus } from '@prisma/client'
 import { JwtService } from '@nestjs/jwt'
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { PrismaService } from 'nestjs-prisma'
 import { LoginDto } from './dto/auth.dto'
 import { JWT_TOKEN_TIME } from 'enums'
 import { TokenSign } from 'types'
+import { userLoginSelect } from 'responses'
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,8 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({
       where: {
         username: data.username
-      }
+      },
+      select: userLoginSelect
     })
 
     if (!user || !bcrypt.compareSync(data.password, user.password))
@@ -60,7 +62,8 @@ export class AuthService {
       const user = await this.prisma.user.findUnique({
         where: {
           id: payload.userId
-        }
+        },
+        select: userLoginSelect
       })
 
       delete user.password

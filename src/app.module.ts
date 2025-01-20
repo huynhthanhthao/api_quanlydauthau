@@ -21,6 +21,8 @@ import { RoleModule } from './role/role.module';
 import { UserModule } from './user/user.module';
 import { CompanyModule } from './company/company.module';
 import { WardModule } from './ward/ward.module';
+import { PermissionModule } from './permission/permission.module';
+import { PermissionGroupModule } from './permission-group/permission-group.module';
 
 @Module({
   imports: [
@@ -54,7 +56,9 @@ import { WardModule } from './ward/ward.module';
     RoleModule,
     UserModule,
     CompanyModule,
-    WardModule
+    WardModule,
+    PermissionModule,
+    PermissionGroupModule
   ],
   controllers: [AppController],
   providers: [AppService]
