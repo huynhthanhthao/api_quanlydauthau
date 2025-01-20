@@ -21,14 +21,19 @@ import {
   DeleteManyCompanyDto,
   FindManyCompanyDto
 } from './dto/company.dto'
+import { Roles } from 'guards/roles.decorator'
+import { RolesGuard } from 'guards/role.guard'
+import { adminPermissions } from 'enums'
+import { extractPermissions } from 'utils/helper'
 
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('company')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
   @Post('')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
+  @Roles(adminPermissions.company.create)
   create(@Body() data: CreateCompanyDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.companyService.create(data, userId)
@@ -36,7 +41,7 @@ export class CompanyController {
 
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
+  @Roles(adminPermissions.company.update)
   update(
     @Body() data: UpdateCompanyDto,
     @Param('id') id: string,
@@ -47,8 +52,8 @@ export class CompanyController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
+  @Roles(adminPermissions.company.delete)
   delete(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.companyService.delete(id, userId)
@@ -56,22 +61,22 @@ export class CompanyController {
 
   @Delete('')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
+  @Roles(adminPermissions.company.delete)
   deleteMany(@Body() data: DeleteManyCompanyDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.companyService.deleteMany(data, userId)
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(adminPermissions.company))
   findOne(@Param('id') id: string) {
     return this.companyService.findOne(id)
   }
 
   @Get('')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(adminPermissions.company))
   findMany(@Query() data: FindManyCompanyDto) {
     return this.companyService.findMany(data)
   }

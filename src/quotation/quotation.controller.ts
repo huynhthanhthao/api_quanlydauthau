@@ -22,14 +22,19 @@ import {
   DeleteManyQuotationDto,
   FindManyQuotationDto
 } from './dto/quotation.dto'
+import { RolesGuard } from 'guards/role.guard'
+import { Roles } from 'guards/roles.decorator'
+import { userPermissions } from 'enums'
+import { extractPermissions } from 'utils/helper'
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('quotation')
 export class QuotationController {
   constructor(private readonly quotationService: QuotationService) {}
 
   @Post('me')
   @HttpCode(HttpStatus.OK)
+  @Roles(userPermissions.quotation.create)
   createMyQuotation(
     @Body() data: CreateQuotationDto,
     @Req() request: RequestJWT
@@ -40,6 +45,7 @@ export class QuotationController {
 
   @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
+  @Roles(userPermissions.quotation.update)
   updateMyQuotations(
     @Body() data: UpdateQuotationDto,
     @Param('id') id: string,
@@ -51,6 +57,7 @@ export class QuotationController {
 
   @Delete('me/:id')
   @HttpCode(HttpStatus.OK)
+  @Roles(userPermissions.quotation.delete)
   deleteMyQuotation(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.deleteMyQuotation(id, userId)
@@ -58,6 +65,7 @@ export class QuotationController {
 
   @Delete('me')
   @HttpCode(HttpStatus.OK)
+  @Roles(userPermissions.quotation.delete)
   deleteManyMyQuotations(
     @Body() data: DeleteManyQuotationDto,
     @Req() request: RequestJWT
@@ -68,6 +76,7 @@ export class QuotationController {
 
   @Get('me/:id')
   @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(userPermissions.quotation))
   findOneMyQuotation(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.findOneMyQuotation(id, userId)
@@ -75,6 +84,7 @@ export class QuotationController {
 
   @Get('me')
   @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(userPermissions.quotation))
   findManyMyQuotations(
     @Query() data: FindManyQuotationDto,
     @Req() request: RequestJWT
@@ -85,8 +95,9 @@ export class QuotationController {
 
   @Patch(':id/approve')
   @HttpCode(HttpStatus.OK)
-  approveQuote(@Param('id') id: string, @Req() request: RequestJWT) {
+  @Roles(userPermissions.quotation.approve)
+  approveQuoteInMyProject(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.quotationService.approveQuote(id, userId)
+    return this.quotationService.approveQuoteInMyProject(id, userId)
   }
 }

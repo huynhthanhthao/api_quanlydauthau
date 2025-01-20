@@ -21,14 +21,19 @@ import {
   FindManyTicketDto,
   UpdateTicketDto
 } from './dto/ticket.dto'
+import { RolesGuard } from 'guards/role.guard'
+import { userPermissions } from 'enums'
+import { Roles } from 'guards/roles.decorator'
+import { extractPermissions } from 'utils/helper'
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('ticket')
 export class TicketController {
   constructor(private readonly ticketService: TicketService) {}
 
   @Post('me')
   @HttpCode(HttpStatus.OK)
+  @Roles(userPermissions.ticket.send)
   createMyTicket(@Body() data: CreateTicketDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.ticketService.createMyTicket(data, userId)
@@ -36,6 +41,7 @@ export class TicketController {
 
   @Post('me/:ticketId/comment')
   @HttpCode(HttpStatus.OK)
+  @Roles(userPermissions.ticket.send)
   createMyTicketComment(
     @Body() data: CreateTicketCommentDto,
     @Req() request: RequestJWT,
@@ -47,6 +53,7 @@ export class TicketController {
 
   @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
+  @Roles(userPermissions.ticket.updateStatus)
   updateMyTicket(
     @Body() data: UpdateTicketDto,
     @Param('id') id: string,
@@ -58,6 +65,7 @@ export class TicketController {
 
   @Get('me/:ticket/comment')
   @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(userPermissions.ticket))
   findManyMyTicketComments(
     @Param('ticketId') ticketId: string,
     @Query() data: FindManyTicketCommentDto,
@@ -69,6 +77,7 @@ export class TicketController {
 
   @Get('me/:id')
   @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(userPermissions.ticket))
   findOneMyTicket(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.ticketService.findOneMyTicket(id, userId)
@@ -76,6 +85,7 @@ export class TicketController {
 
   @Get('me')
   @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(userPermissions.ticket))
   findManyMyTickets(
     @Query() data: FindManyTicketDto,
     @Req() request: RequestJWT

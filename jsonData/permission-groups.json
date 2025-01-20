@@ -1,6 +1,6 @@
 [
   {
-    "name": "Dành cho người dùng mặc định",
+    "name": "Chức năng mặc định",
     "subGroups": [
       {
         "name": "Quản lý thông tin cá nhân",
@@ -110,29 +110,8 @@
     ]
   },
   {
-    "name": "Dành cho quản trị viên",
+    "name": "Chức năng mặc định dành cho quản trị",
     "subGroups": [
-      {
-        "name": "Quản lý thông tin công ty",
-        "permissions": [
-          {
-            "code": "ADMIN_VIEW_COMPANY",
-            "name": "Xem danh sách công ty"
-          },
-          {
-            "code": "ADMIN_CREATE_COMPANY",
-            "name": "Tạo mới công ty"
-          },
-          {
-            "code": "ADMIN_UPDATE_COMPANY",
-            "name": "Cập nhật thông tin công ty"
-          },
-          {
-            "code": "ADMIN_DELETE_COMPANY",
-            "name": "Xóa công ty"
-          }
-        ]
-      },
       {
         "name": "Quản lý người dùng",
         "permissions": [
@@ -151,6 +130,48 @@
           {
             "code": "ADMIN_DELETE_USER",
             "name": "Xóa người dùng"
+          }
+        ]
+      },
+       {
+        "name": "Quản lý nhóm quyền",
+        "permissions": [
+          {
+            "code": "ADMIN_VIEW_ROLE",
+            "name": "Xem danh sách nhóm quyền"
+          },
+          {
+            "code": "ADMIN_CREATE_ROLE",
+            "name": "Tạo mới nhóm quyền"
+          },
+          {
+            "code": "ADMIN_UPDATE_ROLE",
+            "name": "Cập nhật thông tin nhóm quyền"
+          },
+          {
+            "code": "ADMIN_DELETE_ROLE",
+            "name": "Xóa nhóm quyền"
+          }
+        ]
+      },
+      {
+        "name": "Quản lý thông tin công ty",
+        "permissions": [
+          {
+            "code": "ADMIN_VIEW_COMPANY",
+            "name": "Xem danh sách công ty"
+          },
+          {
+            "code": "ADMIN_CREATE_COMPANY",
+            "name": "Tạo mới công ty"
+          },
+          {
+            "code": "ADMIN_UPDATE_COMPANY",
+            "name": "Cập nhật thông tin công ty"
+          },
+          {
+            "code": "ADMIN_DELETE_COMPANY",
+            "name": "Xóa công ty"
           }
         ]
       },

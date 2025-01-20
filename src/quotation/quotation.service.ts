@@ -206,7 +206,7 @@ export class QuotationService {
     })
   }
 
-  async approveQuote(quotationId: string, userId: string) {
+  async approveQuoteInMyProject(quotationId: string, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const project = await prisma.project.findFirstOrThrow({
         where: {

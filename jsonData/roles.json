@@ -2,167 +2,25 @@
   {
     "name": "Quản trị viên",
     "permissions": [
-      {
-          "code": "ADMIN_APPROVE_PROJECT"
-      },
-      {
-          "code": "ADMIN_CANCEL_PROJECT"
-      },
-      {
-          "code": "ADMIN_COMPLETE_PROJECT"
-      },
-      {
-          "code": "ADMIN_CREATE_COMPANY"
-      },
-      {
-          "code": "ADMIN_CREATE_USER"
-      },
-      {
-          "code": "ADMIN_DELETE_COMPANY"
-      },
-      {
-          "code": "ADMIN_DELETE_USER"
-      },
-      {
-          "code": "ADMIN_UPDATE_COMPANY"
-      },
-      {
-          "code": "ADMIN_UPDATE_USER"
-      },
-      {
-          "code": "ADMIN_VIEW_COMPANY"
-      },
-      {
-          "code": "ADMIN_VIEW_PROJECT"
-      },
-      {
-          "code": "ADMIN_VIEW_USER"
-      },
-      {
-          "code": "APPROVE_QUOTATION"
-      },
-      {
-          "code": "CANCEL_PROJECT"
-      },
-      {
-          "code": "CHANGE_MY_PASSWORD"
-      },
-      {
-          "code": "CREATE_PRODUCT"
-      },
-      {
-          "code": "CREATE_PROJECT"
-      },
-      {
-          "code": "CREATE_QUOTATION"
-      },
-      {
-          "code": "DELETE_PRODUCT"
-      },
-      {
-          "code": "DELETE_PROJECT"
-      },
-      {
-          "code": "DELETE_QUOTATION"
-      },
-      {
-          "code": "SEND_TICKET"
-      },
-      {
-          "code": "UPDATE_MY_PROFILE"
-      },
-      {
-          "code": "UPDATE_PRODUCT"
-      },
-      {
-          "code": "UPDATE_PROJECT"
-      },
-      {
-          "code": "UPDATE_QUOTATION"
-      },
-      {
-          "code": "UPDATE_STATUS_TICKET"
-      },
-      {
-          "code": "VIEW_PRODUCT"
-      },
-      {
-          "code": "VIEW_PROJECT"
-      },
-      {
-          "code": "VIEW_PUBLIC_PROJECT"
-      },
-      {
-          "code": "VIEW_QUOTATION"
-      },
-      {
-          "code": "VIEW_TICKET"
-      }
+      "UPDATE_MY_PROFILE", "CHANGE_MY_PASSWORD",
+      "VIEW_PRODUCT", "CREATE_PRODUCT", "UPDATE_PRODUCT", "DELETE_PRODUCT",
+      "VIEW_PROJECT", "VIEW_PUBLIC_PROJECT", "CREATE_PROJECT", "UPDATE_PROJECT", "DELETE_PROJECT", "CANCEL_PROJECT",
+      "VIEW_QUOTATION", "CREATE_QUOTATION", "UPDATE_QUOTATION", "DELETE_QUOTATION", "APPROVE_QUOTATION",
+      "VIEW_TICKET", "SEND_TICKET", "UPDATE_STATUS_TICKET",
+      "ADMIN_VIEW_USER", "ADMIN_CREATE_USER", "ADMIN_UPDATE_USER", "ADMIN_DELETE_USER",
+      "ADMIN_VIEW_ROLE", "ADMIN_CREATE_ROLE", "ADMIN_UPDATE_ROLE", "ADMIN_DELETE_ROLE",
+      "ADMIN_VIEW_COMPANY", "ADMIN_CREATE_COMPANY", "ADMIN_UPDATE_COMPANY", "ADMIN_DELETE_COMPANY",
+      "ADMIN_VIEW_PROJECT", "ADMIN_APPROVE_PROJECT", "ADMIN_CANCEL_PROJECT", "ADMIN_COMPLETE_PROJECT"
     ]
   },
   {
     "name": "Người dùng mặc định",
     "permissions": [
-      {
-          "code": "APPROVE_QUOTATION"
-      },
-      {
-          "code": "CANCEL_PROJECT"
-      },
-      {
-          "code": "CHANGE_MY_PASSWORD"
-      },
-      {
-          "code": "CREATE_PRODUCT"
-      },
-      {
-          "code": "CREATE_PROJECT"
-      },
-      {
-          "code": "CREATE_QUOTATION"
-      },
-      {
-          "code": "DELETE_PRODUCT"
-      },
-      {
-          "code": "DELETE_PROJECT"
-      },
-      {
-          "code": "DELETE_QUOTATION"
-      },
-      {
-          "code": "SEND_TICKET"
-      },
-      {
-          "code": "UPDATE_MY_PROFILE"
-      },
-      {
-          "code": "UPDATE_PRODUCT"
-      },
-      {
-          "code": "UPDATE_PROJECT"
-      },
-      {
-          "code": "UPDATE_QUOTATION"
-      },
-      {
-          "code": "UPDATE_STATUS_TICKET"
-      },
-      {
-          "code": "VIEW_PRODUCT"
-      },
-      {
-          "code": "VIEW_PROJECT"
-      },
-      {
-          "code": "VIEW_PUBLIC_PROJECT"
-      },
-      {
-          "code": "VIEW_QUOTATION"
-      },
-      {
-          "code": "VIEW_TICKET"
-      }
+      "UPDATE_MY_PROFILE", "CHANGE_MY_PASSWORD",
+      "VIEW_PRODUCT", "CREATE_PRODUCT", "UPDATE_PRODUCT", "DELETE_PRODUCT",
+      "VIEW_PROJECT", "VIEW_PUBLIC_PROJECT", "CREATE_PROJECT", "UPDATE_PROJECT", "DELETE_PROJECT", "CANCEL_PROJECT",
+      "VIEW_QUOTATION", "CREATE_QUOTATION", "UPDATE_QUOTATION", "DELETE_QUOTATION", "APPROVE_QUOTATION",
+      "VIEW_TICKET", "SEND_TICKET", "UPDATE_STATUS_TICKET"
     ]
   }
 ]

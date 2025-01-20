@@ -21,14 +21,19 @@ import {
 } from './dto/product.dto'
 import { JwtAuthGuard } from 'guards/jwt-auth.guard'
 import { RequestJWT } from 'types'
+import { RolesGuard } from 'guards/role.guard'
+import { userPermissions } from 'enums'
+import { Roles } from 'guards/roles.decorator'
+import { extractPermissions } from 'utils/helper'
 
 @Controller('product')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post('me')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
+  @Roles(userPermissions.product.create)
   createMyProduct(@Body() data: CreateProductDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.productService.createMyProduct(data, userId)
@@ -36,7 +41,7 @@ export class ProductController {
 
   @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
+  @Roles(userPermissions.product.update)
   updateMyProduct(
     @Body() data: UpdateProductDto,
     @Param('id') id: string,
@@ -47,8 +52,8 @@ export class ProductController {
   }
 
   @Delete('me/:id')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
+  @Roles(userPermissions.product.delete)
   deleteMyProduct(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.productService.deleteMyProduct(id, userId)
@@ -56,7 +61,7 @@ export class ProductController {
 
   @Delete('me')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
+  @Roles(userPermissions.product.delete)
   deleteManyMyProducts(
     @Body() data: DeleteManyProductDto,
     @Req() request: RequestJWT
@@ -66,16 +71,16 @@ export class ProductController {
   }
 
   @Get('me/:id')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(userPermissions.product))
   findOneMyProduct(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.productService.findOneMyProduct(id, userId)
   }
 
   @Get('me')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(userPermissions.product))
   findManyMyProducts(
     @Query() data: FindManyProductDto,
     @Req() request: RequestJWT

@@ -21,28 +21,33 @@ import {
   DeleteManyRoleDto,
   FindManyRoleDto
 } from './dto/role.dto'
+import { RolesGuard } from 'guards/role.guard'
+import { adminPermissions } from 'enums'
+import { Roles } from 'guards/roles.decorator'
+import { extractPermissions } from 'utils/helper'
 
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('role')
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @Post('')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
+  @Roles(adminPermissions.role.create)
   create(@Body() data: CreateRoleDto) {
     return this.roleService.create(data)
   }
 
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
+  @Roles(adminPermissions.role.update)
   update(@Body() data: UpdateRoleDto, @Param('id') id: string) {
     return this.roleService.update(id, data)
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
+  @Roles(adminPermissions.role.delete)
   delete(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.roleService.delete(id, userId)
@@ -50,22 +55,22 @@ export class RoleController {
 
   @Delete('')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
+  @Roles(adminPermissions.role.delete)
   deleteMany(@Body() data: DeleteManyRoleDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.roleService.deleteMany(data, userId)
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(adminPermissions.role))
   findOne(@Param('id') id: string) {
     return this.roleService.findOne(id)
   }
 
   @Get('')
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(adminPermissions.role))
   findMany(@Query() data: FindManyRoleDto) {
     return this.roleService.findMany(data)
   }

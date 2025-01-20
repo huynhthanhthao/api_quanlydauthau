@@ -72,3 +72,7 @@ export function generateCodeUUID() {
     .join('')
     .slice(0, 15)
 }
+
+export function extractPermissions(data: AnyObject) {
+  return Object.values(data)
+}
