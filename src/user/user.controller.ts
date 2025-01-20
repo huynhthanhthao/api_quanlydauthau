@@ -53,6 +53,14 @@ export class UserController {
     return this.userService.changePassword(id, data)
   }
 
+  @Patch('me')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  updateMyProfile(@Body() data: UpdateUserDto, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.userService.updateMyProfile(userId, data)
+  }
+
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
