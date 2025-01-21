@@ -279,6 +279,8 @@ export class ProjectService {
   }
 
   async cancelMyProject(id: string, userId: string) {
+    await this.checkStatusProject(id)
+
     return this.prisma.project.update({
       where: { id, creatorId: userId },
       data: {
@@ -289,6 +291,8 @@ export class ProjectService {
   }
 
   async approve(id: string) {
+    await this.checkStatusProject(id)
+
     return this.prisma.project.update({
       where: { id },
       data: {
@@ -298,6 +302,8 @@ export class ProjectService {
   }
 
   async cancel(id: string) {
+    await this.checkStatusProject(id)
+
     return this.prisma.project.update({
       where: { id },
       data: {
@@ -307,11 +313,29 @@ export class ProjectService {
   }
 
   async complete(id: string) {
+    await this.checkStatusProject(id)
+
     return this.prisma.project.update({
       where: { id },
       data: {
         status: 'COMPLETED'
       }
     })
+  }
+
+  async checkStatusProject(id: string) {
+    const project = await this.prisma.project.findFirstOrThrow({
+      where: { id },
+      select: { status: true }
+    })
+
+    if (
+      project.status === ProjectStatus.CANCELED ||
+      project.status === ProjectStatus.COMPLETED
+    )
+      throw new HttpException(
+        'Không thể cập nhật trạng thái dự án.',
+        HttpStatus.BAD_REQUEST
+      )
   }
 }
