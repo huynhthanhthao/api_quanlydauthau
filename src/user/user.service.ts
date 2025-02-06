@@ -36,12 +36,10 @@ export class UserService {
         address: data.address,
         birthDate: data.birthDate,
         companyId: data.companyId,
-        roles: {
-          connect: data.roleIds.map(id => ({ id }))
-        }
+        roleId: data.roleId
       },
       include: {
-        roles: true
+        role: true
       }
     })
   }
@@ -59,7 +57,7 @@ export class UserService {
         birthDate: data.birthDate
       },
       include: {
-        roles: true
+        role: true
       }
     })
   }
@@ -79,12 +77,10 @@ export class UserService {
         birthDate: data.birthDate,
         companyId: data.companyId,
         ...(data.password && { password: bcrypt.hashSync(data.password, 10) }),
-        roles: {
-          set: data.roleIds?.map(id => ({ id }))
-        }
+        roleId: data.roleId
       },
       include: {
-        roles: true
+        role: true
       }
     })
   }
@@ -131,7 +127,7 @@ export class UserService {
         ids: data.ids,
         userId,
         modelName: 'User',
-        include: { roles: true }
+        include: { role: true }
       }
 
       await this.trashService.createMany(dataTrash, prisma)
@@ -151,12 +147,13 @@ export class UserService {
       const dataTrash: CreateTrashDto = {
         id,
         userId,
-        modelName: 'User'
+        modelName: 'User',
+        include: { role: true }
       }
 
       await this.trashService.create(dataTrash, prisma)
 
-      return prisma.user.delete({ where: { id }, include: { roles: true } })
+      return prisma.user.delete({ where: { id } })
     })
   }
 

@@ -43,7 +43,7 @@ export class JwtAuthGuard implements CanActivate {
           status: UserStatus.ACTIVE
         },
         include: {
-          roles: {
+          role: {
             include: {
               permissions: true
             }
@@ -51,7 +51,7 @@ export class JwtAuthGuard implements CanActivate {
         }
       })
 
-      request.roles = user.roles
+      request.role = user.role
       request.userId = user.id
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {

@@ -269,7 +269,7 @@ export const userSelect: Prisma.UserSelect = {
   avatar: true,
   address: true,
   updatedAt: true,
-  roles: {
+  role: {
     select: {
       id: true,
       name: true
@@ -325,7 +325,7 @@ export const userDetailSelect: Prisma.UserSelect = {
       }
     }
   },
-  roles: {
+  role: {
     select: {
       id: true,
       name: true,
@@ -380,7 +380,7 @@ export const userLoginSelect: Prisma.UserSelect = {
       }
     }
   },
-  roles: {
+  role: {
     select: {
       id: true,
       name: true,

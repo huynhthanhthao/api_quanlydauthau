@@ -11,9 +11,9 @@ model Role {
   id          String       @id @default(uuid())
   name        String       @db.Text
   permissions Permission[]
-  users       User[]       @relation("userRole")
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  users       User[]
 }
 
 model PermissionGroup {
@@ -101,7 +101,8 @@ model User {
   ward             Ward?           @relation(fields: [wardCode], references: [code])
   address          String?         @db.Text
   birthDate        DateTime?
-  roles            Role[]          @relation("userRole")
+  roleId           String?
+  role             Role?           @relation(fields: [roleId], references: [id])
   companyId        String?
   company          Company?        @relation(fields: [companyId], references: [id])
   createdAt        DateTime        @default(now())
@@ -284,7 +285,7 @@ model Trash {
 model UserSession {
   id           String   @id @default(uuid())
   refreshToken String   @db.Text
-  userId       String   
+  userId       String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

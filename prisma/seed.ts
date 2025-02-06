@@ -98,11 +98,7 @@ async function main() {
       name: 'admin',
       password: bcrypt.hashSync('aA@123', 10),
       username: 'admin',
-      roles: {
-        connect: {
-          id: adminRole.id
-        }
-      }
+      roleId: adminRole.id
     }
   })
 }

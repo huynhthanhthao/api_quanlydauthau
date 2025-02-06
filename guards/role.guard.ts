@@ -1,13 +1,9 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import { PrismaService } from 'nestjs-prisma'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(
-    private reflector: Reflector,
-    private prisma: PrismaService
-  ) {}
+  constructor(private reflector: Reflector) {}
 
   async canActivate(context: ExecutionContext) {
     const requiredRoles = this.reflector.get<string[]>(
@@ -21,14 +17,11 @@ export class RolesGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest()
 
-    const userPermissionCodes = new Set(
-      request.roles?.flatMap(role =>
-        role.permissions.map(permission => permission.code)
-      ) || []
-    )
+    const userPermissionCodes =
+      request.role?.permissions.map(permission => permission.code) || []
 
     const hasPermission = requiredRoles.some(role =>
-      userPermissionCodes.has(role)
+      userPermissionCodes.includes(role)
     )
 
     return hasPermission

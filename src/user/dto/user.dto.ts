@@ -1,11 +1,6 @@
 import { UserStatus } from '@prisma/client'
 import { PartialType } from '@nestjs/mapped-types'
-import {
-  ArrayNotEmpty,
-  IsNotEmpty,
-  IsPhoneNumber,
-  MinLength
-} from 'class-validator'
+import { IsNotEmpty, IsPhoneNumber, MinLength } from 'class-validator'
 import { DeleteManyDto, FindManyDto } from 'utils/Common.dto'
 
 export class CreateUserDto {
@@ -18,9 +13,6 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string
 
-  @ArrayNotEmpty()
-  roleIds: string[]
-
   @IsNotEmpty()
   companyId: string
 
@@ -28,7 +20,7 @@ export class CreateUserDto {
   phone?: string
 
   status?: UserStatus
-
+  roleId?: string
   birthDate?: Date
   email?: string
   avatar?: string
