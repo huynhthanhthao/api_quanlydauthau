@@ -20,8 +20,11 @@ export class JwtAuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = this.getRequest(context)
     const authHeader = request.headers?.authorization
+    const xApiKey = request.headers['x-api-key']
 
     if (!authHeader) return false
+
+    if (xApiKey !== process.env.X_API_KEY) return false
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, token] = authHeader.split(' ')
