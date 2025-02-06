@@ -28,7 +28,7 @@ export class UserService {
         name: data.name,
         username: data.username,
         password: bcrypt.hashSync(data.password, 10),
-        status: UserStatus.ACTIVE,
+        status: data.status || UserStatus.ACTIVE,
         email: data.email,
         phone: data.phone,
         avatar: data.avatar,
@@ -70,7 +70,7 @@ export class UserService {
       data: {
         name: data.name,
         username: data.username,
-        status: UserStatus.ACTIVE,
+        status: data.status,
         email: data.email,
         phone: data.phone,
         avatar: data.avatar,

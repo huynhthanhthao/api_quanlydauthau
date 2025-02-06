@@ -1,3 +1,4 @@
+import { UserStatus } from '@prisma/client'
 import { PartialType } from '@nestjs/mapped-types'
 import {
   ArrayNotEmpty,
@@ -25,6 +26,8 @@ export class CreateUserDto {
 
   @IsPhoneNumber('VN')
   phone?: string
+
+  status?: UserStatus
 
   birthDate?: Date
   email?: string
