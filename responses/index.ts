@@ -77,6 +77,22 @@ export const projectSelect: Prisma.ProjectSelect = {
       updatedAt: true,
       unit: true
     }
+  },
+  creator: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      avatar: true,
+      company: {
+        select: {
+          id: true,
+          name: true,
+          phone: true,
+          logo: true
+        }
+      }
+    }
   }
 }
 
@@ -95,6 +111,22 @@ export const projectPublicSelect: Prisma.ProjectSelect = {
       quantity: true,
       updatedAt: true,
       unit: true
+    }
+  },
+  creator: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      avatar: true,
+      company: {
+        select: {
+          id: true,
+          name: true,
+          phone: true,
+          logo: true
+        }
+      }
     }
   }
 }
