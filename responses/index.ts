@@ -69,6 +69,7 @@ export const projectSelect: Prisma.ProjectSelect = {
   status: true,
   price: true,
   updatedAt: true,
+  createdAt: true,
   projectItems: {
     select: {
       id: true,
@@ -96,7 +97,7 @@ export const projectSelect: Prisma.ProjectSelect = {
   }
 }
 
-export const projectPublicSelect: Prisma.ProjectSelect = {
+export const publicProjectSelect: Prisma.ProjectSelect = {
   id: true,
   name: true,
   code: true,
@@ -104,6 +105,7 @@ export const projectPublicSelect: Prisma.ProjectSelect = {
   address: true,
   status: true,
   updatedAt: true,
+  createdAt: true,
   projectItems: {
     select: {
       id: true,

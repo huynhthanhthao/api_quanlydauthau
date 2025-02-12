@@ -99,6 +99,13 @@ export class ProjectController {
     return this.projectService.findMyProjects(data, userId)
   }
 
+  @Get('public/:projectId')
+  @HttpCode(HttpStatus.OK)
+  @Roles(userPermissions.project.viewPublic)
+  findOnePublicProject(@Param('projectId') projectId: string) {
+    return this.projectService.findOnePublicProject(projectId)
+  }
+
   @Get('public')
   @HttpCode(HttpStatus.OK)
   @Roles(userPermissions.project.viewPublic)

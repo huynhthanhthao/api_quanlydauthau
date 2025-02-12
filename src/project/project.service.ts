@@ -14,7 +14,7 @@ import { generateCodeUUID, paginate } from 'utils/helper'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import {
   productCaptureSelect,
-  projectPublicSelect,
+  publicProjectSelect,
   projectSelect,
   quotationDetailSelect
 } from 'responses'
@@ -146,7 +146,19 @@ export class ProjectService {
       ]
     }
 
-    return this.findManyBase(conditions, data, projectPublicSelect)
+    return this.findManyBase(conditions, data, publicProjectSelect)
+  }
+
+  async findOnePublicProject(id: string) {
+    return this.prisma.project.findUniqueOrThrow({
+      where: {
+        id,
+        status: {
+          notIn: ['PENDING', 'CANCELED', 'COMPLETED']
+        }
+      },
+      select: publicProjectSelect
+    })
   }
 
   async findManyBase(

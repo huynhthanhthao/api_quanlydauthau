@@ -1,6 +1,10 @@
 import { PartialType } from '@nestjs/mapped-types'
-import { IsEmail, IsNotEmpty, IsPhoneNumber } from 'class-validator'
-import { DeleteManyDto, FindManyDto } from 'utils/Common.dto'
+import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator'
+import {
+  DeleteManyDto,
+  FindManyDto,
+  IsVietnamesePhoneNumber
+} from 'utils/Common.dto'
 
 export class CreateCompanyDto {
   @IsNotEmpty()
@@ -9,7 +13,8 @@ export class CreateCompanyDto {
   @IsEmail()
   email?: string
 
-  @IsPhoneNumber('VN')
+  @IsOptional()
+  @IsVietnamesePhoneNumber()
   phone?: string
 
   address?: string
