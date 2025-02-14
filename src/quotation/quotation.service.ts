@@ -119,7 +119,15 @@ export class QuotationService {
   }
 
   async findManyMyQuotations(data: FindManyQuotationDto, userId: string) {
-    const { page, perPage, keyword, orderKey, orderValue, statuses } = data
+    const {
+      page,
+      perPage,
+      keyword,
+      orderKey,
+      orderValue,
+      statuses,
+      projectId
+    } = data
 
     const keySearch = ['name', 'desc']
 
@@ -134,6 +142,7 @@ export class QuotationService {
           in: statuses
         }
       }),
+      ...(projectId && { projectId }),
       creatorId: userId
     }
 

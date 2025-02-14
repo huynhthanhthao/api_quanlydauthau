@@ -42,6 +42,8 @@ export class FindManyQuotationDto extends FindManyDto {
   })
   @IsEnum(QuotationStatus, { each: true })
   statuses?: QuotationStatus[]
+
+  projectId?: string
 }
 
 export class DeleteManyQuotationDto extends DeleteManyDto {}

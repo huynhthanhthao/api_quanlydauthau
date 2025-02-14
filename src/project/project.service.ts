@@ -16,7 +16,8 @@ import {
   productCaptureSelect,
   publicProjectSelect,
   projectSelect,
-  quotationDetailSelect
+  quotationDetailSelect,
+  publicProjectDetailSelect
 } from 'responses'
 
 @Injectable()
@@ -157,7 +158,7 @@ export class ProjectService {
           notIn: ['PENDING', 'CANCELED', 'COMPLETED']
         }
       },
-      select: publicProjectSelect
+      select: publicProjectDetailSelect
     })
   }
 

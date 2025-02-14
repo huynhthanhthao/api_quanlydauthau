@@ -41,6 +41,7 @@ export const productCaptureSelect: Prisma.ProductSelect = {
   name: true,
   thumb: true,
   desc: true,
+  productAttributes: true,
   updatedAt: true
 }
 
@@ -106,6 +107,33 @@ export const publicProjectSelect: Prisma.ProjectSelect = {
   status: true,
   updatedAt: true,
   createdAt: true,
+  creator: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      avatar: true,
+      company: {
+        select: {
+          id: true,
+          name: true,
+          phone: true,
+          logo: true
+        }
+      }
+    }
+  }
+}
+
+export const publicProjectDetailSelect: Prisma.ProjectSelect = {
+  id: true,
+  name: true,
+  code: true,
+  desc: true,
+  address: true,
+  status: true,
+  updatedAt: true,
+  createdAt: true,
   projectItems: {
     select: {
       id: true,
@@ -150,7 +178,8 @@ export const quotationSelect: Prisma.QuotationSelect = {
       updatedAt: true
     }
   },
-  updatedAt: true
+  updatedAt: true,
+  createdAt: true
 }
 
 export const quotationDetailSelect: Prisma.QuotationSelect = {
@@ -181,6 +210,7 @@ export const quotationDetailSelect: Prisma.QuotationSelect = {
     }
   },
   updatedAt: true,
+  createdAt: true,
   creator: {
     select: {
       id: true,
