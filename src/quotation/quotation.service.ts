@@ -67,9 +67,11 @@ export class QuotationService {
         return {
           productId: item.productId,
           productCapture: product,
-          attachedFiles: item.attachedFiles,
           unit: item.unit,
-          quantity: item.quantity
+          quantity: item.quantity,
+          attachedFiles: {
+            connect: item.attachedFileIds.map(id => ({ id }))
+          }
         }
       })
     )

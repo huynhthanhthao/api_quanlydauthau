@@ -1,15 +1,24 @@
 import { Injectable } from '@nestjs/common'
+import { CreatedMediaDto } from './dto/media.dto'
+import { PrismaService } from 'nestjs-prisma'
+import { mediaSelect } from 'responses'
 @Injectable()
 export class MediaService {
-  async upload(fileURL: string) {
-    return fileURL
+  constructor(private readonly prisma: PrismaService) {}
+  async upload(data: CreatedMediaDto) {
+    return this.prisma.media.create({ data, select: mediaSelect })
   }
 
-  async uploadMultiple(fileURLs: string[]) {
-    return fileURLs
-  }
+  async uploadMultiple(data: CreatedMediaDto[]) {
+    await this.prisma.media.createMany({ data })
 
-  async uploadToProject(fileURLs: string[]) {
-    return fileURLs
+    return this.prisma.media.findMany({
+      where: {
+        path: {
+          in: data.map(d => d.path)
+        }
+      },
+      select: mediaSelect
+    })
   }
 }

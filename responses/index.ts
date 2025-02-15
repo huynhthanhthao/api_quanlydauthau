@@ -480,3 +480,10 @@ export const roleSelect: Prisma.RoleSelect = {
     }
   }
 }
+
+export const mediaSelect: Prisma.MediaSelect = {
+  id: true,
+  name: true,
+  path: true,
+  createdAt: true
+}

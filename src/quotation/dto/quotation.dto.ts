@@ -27,7 +27,7 @@ export class CreateQuotationItemDto {
   @IsNotEmpty()
   quantity: number
 
-  attachedFiles?: string[]
+  attachedFileIds?: string[]
 
   @IsNotEmpty()
   unit: string

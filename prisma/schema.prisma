@@ -264,12 +264,21 @@ model QuotationItem {
   productId      String?
   unit           String    @db.Text
   productCapture Json
-  attachedFiles  Json?
+  attachedFiles  Media[]
   quantity       Int
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   quotation      Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
   product        Product?  @relation(fields: [productId], references: [id])
+}
+
+model Media {
+  id              String         @id @default(uuid())
+  name            String
+  path            String
+  createdAt       DateTime       @default(now())
+  quotationItem   QuotationItem? @relation(fields: [quotationItemId], references: [id])
+  quotationItemId String?
 }
 
 model Trash {
