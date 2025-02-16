@@ -43,7 +43,7 @@ export class TrashService {
       throw new HttpException(`Không tìm thấy dữ liệu!`, HttpStatus.NOT_FOUND)
     }
 
-    await Promise.all(
+    return await Promise.all(
       entities.map(async entity => {
         await prisma.trash.create({
           data: {

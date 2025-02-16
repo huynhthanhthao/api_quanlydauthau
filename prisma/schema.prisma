@@ -230,6 +230,12 @@ model Quotation {
   updater   User?           @relation("updater", fields: [updaterId], references: [id])
 }
 
+model QuotationHistory {
+  id               String   @id @default(uuid())
+  quotationCapture Json
+  createdAt        DateTime @default(now())
+}
+
 model Ticket {
   id            String          @id @default(uuid())
   code          String          @unique
@@ -305,6 +311,7 @@ enum QuotationStatus {
   PENDING
   APPROVED
   CANCELED
+  REQUESTED_EDIT
 }
 
 enum ProjectStatus {

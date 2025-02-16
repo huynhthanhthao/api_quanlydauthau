@@ -89,11 +89,7 @@ export class QuotationService {
       select: { status: true }
     })
 
-    if (quotation.status !== QuotationStatus.PENDING)
-      throw new HttpException(
-        'Không thể cập nhật báo giá này vì đã được duyệt hoặc bị từ chối!',
-        HttpStatus.NOT_FOUND
-      )
+    this.checkQuotationIsEditable(quotation)
 
     const items = await this.getQuotationItems(data.items)
 
@@ -118,6 +114,15 @@ export class QuotationService {
         }
       })
     })
+  }
+
+  checkQuotationIsEditable(quotation: { status: QuotationStatus }) {
+    if (quotation.status !== QuotationStatus.REQUESTED_EDIT) {
+      throw new HttpException(
+        'Báo giá không thể điều chỉnh hoặc xóa ở trạng thái hiện tại!',
+        HttpStatus.CONFLICT
+      )
+    }
   }
 
   async findManyMyQuotations(data: FindManyQuotationDto, userId: string) {
@@ -173,6 +178,15 @@ export class QuotationService {
 
   async deleteManyMyQuotations(data: DeleteManyQuotationDto, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
+      const quotations = await prisma.quotation.findMany({
+        where: {
+          id: { in: data.ids },
+          creatorId: userId
+        }
+      })
+
+      quotations.forEach(this.checkQuotationIsEditable)
+
       const dataProject: CreateManyTrashDto = {
         ids: data.ids,
         userId,
@@ -197,6 +211,12 @@ export class QuotationService {
 
   async deleteMyQuotation(id: string, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
+      const quotation = await prisma.quotation.findUnique({
+        where: { id, creatorId: userId }
+      })
+
+      this.checkQuotationIsEditable(quotation)
+
       const dataTrash: CreateTrashDto = {
         id,
         userId,
