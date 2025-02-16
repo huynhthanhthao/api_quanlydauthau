@@ -87,6 +87,10 @@
           {
             "code": "APPROVE_QUOTATION",
             "name": "Duyệt báo giá"
+          },
+          {
+            "code": "REQUESTED_EDIT",
+            "name": "Yêu cầu điều chỉnh báo giá"
           }
         ]
       },

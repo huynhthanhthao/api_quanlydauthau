@@ -51,6 +51,7 @@ export const userPermissions = {
   },
   quotation: {
     approve: 'APPROVE_QUOTATION',
+    requestEdit: 'REQUEST_EDIT',
     create: 'CREATE_QUOTATION',
     delete: 'DELETE_QUOTATION',
     update: 'UPDATE_QUOTATION',

@@ -93,6 +93,14 @@ export class QuotationController {
     return this.quotationService.findManyMyQuotations(data, userId)
   }
 
+  @Patch(':id/request-edit')
+  @HttpCode(HttpStatus.OK)
+  @Roles(userPermissions.quotation.requestEdit)
+  requestEdit(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.quotationService.requestEdit(id, userId)
+  }
+
   @Patch(':id/approve')
   @HttpCode(HttpStatus.OK)
   @Roles(userPermissions.quotation.approve)
