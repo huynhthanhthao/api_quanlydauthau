@@ -184,7 +184,6 @@ model Product {
   creator           User?              @relation("creator", fields: [creatorId], references: [id])
   updater           User?              @relation("updater", fields: [updaterId], references: [id])
   projectItems      ProjectItem[]
-  quotationItems    QuotationItem[]
   productAttributes ProductAttribute[] @relation("productAttribute")
 }
 
@@ -214,26 +213,29 @@ model Unit {
 }
 
 model Quotation {
-  id        String          @id @default(uuid())
-  name      String          @db.Text
-  desc      String?         @db.Text
-  price     Float
-  projectId String
-  project   Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  status    QuotationStatus
-  items     QuotationItem[]
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
-  creatorId String?
-  updaterId String?
-  creator   User?           @relation("creator", fields: [creatorId], references: [id])
-  updater   User?           @relation("updater", fields: [updaterId], references: [id])
+  id                 String             @id @default(uuid())
+  name               String             @db.Text
+  desc               String?            @db.Text
+  price              Float
+  projectId          String
+  project            Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  status             QuotationStatus
+  items              QuotationItem[]
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  creatorId          String?
+  updaterId          String?
+  creator            User?              @relation("creator", fields: [creatorId], references: [id])
+  updater            User?              @relation("updater", fields: [updaterId], references: [id])
+  quotationHistories QuotationHistory[]
 }
 
 model QuotationHistory {
-  id               String   @id @default(uuid())
+  id               String     @id @default(uuid())
   quotationCapture Json
-  createdAt        DateTime @default(now())
+  createdAt        DateTime   @default(now())
+  quotationId      String
+  quotation        Quotation? @relation(fields: [quotationId], references: [id], onDelete: Cascade)
 }
 
 model Ticket {
@@ -265,26 +267,43 @@ model TicketComment {
 }
 
 model QuotationItem {
-  id             String    @id @default(uuid())
-  quotationId    String
-  productId      String?
-  unit           String    @db.Text
-  productCapture Json
-  attachedFiles  Media[]
-  quantity       Int
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  quotation      Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
-  product        Product?  @relation(fields: [productId], references: [id])
+  id                 String            @id @default(uuid())
+  quotationId        String
+  unit               String            @db.Text
+  productQuotationId String?
+  productQuotation   ProductQuotation? @relation(fields: [productQuotationId], references: [id], onDelete: Cascade)
+  attachedFiles      Media[]
+  quantity           Int
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  quotation          Quotation         @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+}
+
+model ProductQuotation {
+  id                String                      @id @default(uuid())
+  name              String                      @db.Text
+  thumb             String?                     @db.Text
+  desc              String?                     @db.Text
+  quotationItems    QuotationItem[]
+  productAttributes ProductQuotationAttribute[] @relation("productQuatationAttribute")
+}
+
+model ProductQuotationAttribute {
+  key                String
+  value              String            @db.Text
+  productQuotationId String
+  productQuotation   ProductQuotation? @relation("productQuatationAttribute", fields: [productQuotationId], references: [id], onDelete: Cascade)
+  createdAt          DateTime          @default(now())
+
+  @@id([key, productQuotationId])
 }
 
 model Media {
-  id              String         @id @default(uuid())
-  name            String
-  path            String
-  createdAt       DateTime       @default(now())
-  quotationItem   QuotationItem? @relation(fields: [quotationItemId], references: [id])
-  quotationItemId String?
+  id             String          @id @default(uuid())
+  name           String
+  path           String
+  createdAt      DateTime        @default(now())
+  quotationItems QuotationItem[]
 }
 
 model Trash {
@@ -303,8 +322,7 @@ model UserSession {
   userId       String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id])
+  user         User     @relation(fields: [userId], references: [id])
 }
 
 enum QuotationStatus {
@@ -320,6 +338,7 @@ enum ProjectStatus {
   QUOTED
   CANCELED
   COMPLETED
+  REQUESTED_EDIT
 }
 
 enum UserStatus {

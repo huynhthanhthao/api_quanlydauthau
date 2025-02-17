@@ -13,7 +13,7 @@ import { Prisma, PrismaClient, ProjectStatus } from '.prisma/client'
 import { generateCodeUUID, paginate } from 'utils/helper'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import {
-  productCaptureSelect,
+  productQuotationSelect,
   publicProjectSelect,
   projectSelect,
   quotationDetailSelect,
@@ -56,7 +56,7 @@ export class ProjectService {
       projectItems.map(async item => {
         const product = await this.prisma.product.findUnique({
           where: { id: item.productId },
-          select: productCaptureSelect
+          select: productQuotationSelect
         })
 
         if (!product)
@@ -83,9 +83,9 @@ export class ProjectService {
       select: { status: true, creatorId: true }
     })
 
-    if (currentProject.status !== ProjectStatus.PENDING)
+    if (currentProject.status !== ProjectStatus.REQUESTED_EDIT)
       throw new HttpException(
-        'Không thể cập nhật dự án này vì đã được duyệt!',
+        'Không thể cập nhật dự án ở trạng thái này!',
         HttpStatus.CONFLICT
       )
 
@@ -219,6 +219,15 @@ export class ProjectService {
         }
       }
 
+      const projects = await prisma.project.findMany({
+        where: {
+          id: { in: data.ids },
+          creatorId: userId
+        }
+      })
+
+      projects.forEach(project => this.checkProjectIsEditable(project.status))
+
       await this.trashService.createMany(dataProject, prisma)
 
       return prisma.project.deleteMany({
@@ -234,6 +243,14 @@ export class ProjectService {
 
   async deleteMyProject(id: string, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
+      const project = await prisma.project.findUniqueOrThrow({ where: { id } })
+
+      if (project.status !== ProjectStatus.REQUESTED_EDIT)
+        throw new HttpException(
+          'Không thể xóa dự án ở trạng thái này!',
+          HttpStatus.CONFLICT
+        )
+
       const dataTrash: CreateTrashDto = {
         id,
         userId,
@@ -252,6 +269,15 @@ export class ProjectService {
         }
       })
     })
+  }
+
+  checkProjectIsEditable(status: ProjectStatus) {
+    if (status !== ProjectStatus.REQUESTED_EDIT) {
+      throw new HttpException(
+        'Không thể xóa dự án ở trạng thái này!',
+        HttpStatus.CONFLICT
+      )
+    }
   }
 
   async findManyMyQuotations(
@@ -297,41 +323,44 @@ export class ProjectService {
     return this.prisma.project.update({
       where: { id, creatorId: userId },
       data: {
-        status: 'CANCELED',
+        status: ProjectStatus.CANCELED,
         updaterId: userId
       }
     })
   }
 
   async approve(id: string) {
-    await this.checkStatusProject(id)
-
     return this.prisma.project.update({
       where: { id },
       data: {
-        status: 'APPROVED'
+        status: ProjectStatus.APPROVED
       }
     })
   }
 
   async cancel(id: string) {
-    await this.checkStatusProject(id)
-
     return this.prisma.project.update({
       where: { id },
       data: {
-        status: 'CANCELED'
+        status: ProjectStatus.CANCELED
       }
     })
   }
 
   async complete(id: string) {
-    await this.checkStatusProject(id)
-
     return this.prisma.project.update({
       where: { id },
       data: {
-        status: 'COMPLETED'
+        status: ProjectStatus.COMPLETED
+      }
+    })
+  }
+
+  async requestEdit(id: string) {
+    return this.prisma.project.update({
+      where: { id },
+      data: {
+        status: ProjectStatus.REQUESTED_EDIT
       }
     })
   }
@@ -348,7 +377,7 @@ export class ProjectService {
     )
       throw new HttpException(
         'Không thể cập nhật trạng thái dự án.',
-        HttpStatus.BAD_REQUEST
+        HttpStatus.CONFLICT
       )
   }
 }

@@ -13,6 +13,7 @@ export const adminPermissions = {
   },
   project: {
     approve: 'ADMIN_APPROVE_PROJECT',
+    requestEdit: 'ADMIN_REQUEST_EDIT_PROJECT',
     cancel: 'ADMIN_CANCEL_PROJECT',
     complete: 'ADMIN_COMPLETE_PROJECT',
     view: 'ADMIN_VIEW_PROJECT'
@@ -22,6 +23,9 @@ export const adminPermissions = {
     delete: 'ADMIN_DELETE_ROLE',
     update: 'ADMIN_UPDATE_ROLE',
     view: 'ADMIN_VIEW_ROLE'
+  },
+  quotation: {
+    requestEdit: 'REQUEST_EDIT'
   }
 }
 
@@ -51,7 +55,6 @@ export const userPermissions = {
   },
   quotation: {
     approve: 'APPROVE_QUOTATION',
-    requestEdit: 'REQUEST_EDIT',
     create: 'CREATE_QUOTATION',
     delete: 'DELETE_QUOTATION',
     update: 'UPDATE_QUOTATION',

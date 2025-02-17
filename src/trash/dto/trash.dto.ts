@@ -13,12 +13,12 @@ export class CreateTrashDto {
   id: string
   modelName: Prisma.ModelName
   userId: string
-  include?: Record<string, boolean>
+  include?: Record<string, any>
 }
 
 export class CreateManyTrashDto {
   ids: string[]
   modelName: Prisma.ModelName
   userId: string
-  include?: Record<string, boolean>
+  include?: Record<string, any>
 }

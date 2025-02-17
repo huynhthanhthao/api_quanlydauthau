@@ -129,6 +129,13 @@ export class ProjectController {
     return this.projectService.approve(id)
   }
 
+  @Patch(':id/request-edit')
+  @HttpCode(HttpStatus.OK)
+  @Roles(adminPermissions.project.requestEdit)
+  requestEdit(@Param('id') id: string) {
+    return this.projectService.requestEdit(id)
+  }
+
   @Patch(':id/cancel')
   @HttpCode(HttpStatus.OK)
   @Roles(adminPermissions.project.cancel)

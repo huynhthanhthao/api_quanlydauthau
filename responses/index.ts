@@ -36,13 +36,12 @@ export const productDetailSelect: Prisma.ProductSelect = {
   }
 }
 
-export const productCaptureSelect: Prisma.ProductSelect = {
+export const productQuotationSelect: Prisma.ProductSelect = {
   id: true,
   name: true,
   thumb: true,
   desc: true,
-  productAttributes: true,
-  updatedAt: true
+  productAttributes: true
 }
 
 export const unitSelect: Prisma.UnitSelect = {
@@ -191,11 +190,15 @@ export const quotationDetailSelect: Prisma.QuotationSelect = {
   items: {
     select: {
       id: true,
-      productCapture: true,
       attachedFiles: true,
       quantity: true,
       updatedAt: true,
-      unit: true
+      unit: true,
+      productQuotation: {
+        include: {
+          productAttributes: true
+        }
+      }
     }
   },
   project: {

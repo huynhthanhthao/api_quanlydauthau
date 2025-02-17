@@ -2,6 +2,7 @@ import { QuotationStatus } from '.prisma/client'
 import { PartialType } from '@nestjs/mapped-types'
 import { Transform, TransformFnParams, Type } from 'class-transformer'
 import { IsEnum, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator'
+import { CreateProductAttributeDto } from 'src/product/dto/product.dto'
 import { DeleteManyDto, FindManyDto } from 'utils/Common.dto'
 
 export class CreateQuotationDto {
@@ -11,26 +12,42 @@ export class CreateQuotationDto {
   @IsNotEmpty()
   projectId: string
 
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateQuotationItemDto)
+  items: CreateQuotationItemDto[]
+
   desc?: string
 
   price?: number
+}
 
+export class CreateProductQuotationto {
+  @IsNotEmpty()
+  name: string
+
+  @IsOptional()
   @ValidateNested({ each: true })
-  @Type(() => CreateQuotationItemDto)
-  items?: CreateQuotationItemDto[]
+  @Type(() => CreateProductAttributeDto)
+  productAttributes: CreateProductAttributeDto[]
+
+  thumb?: string
+  desc?: string
 }
 
 export class CreateQuotationItemDto {
   @IsNotEmpty()
-  productId: string
+  unit: string
 
   @IsNotEmpty()
   quantity: number
 
-  attachedFileIds?: string[]
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateProductQuotationto)
+  productQuotation: CreateProductQuotationto
 
-  @IsNotEmpty()
-  unit: string
+  attachedFileIds?: string[]
 }
 
 export class UpdateQuotationDto extends PartialType(CreateQuotationDto) {}
@@ -41,7 +58,7 @@ export class FindManyQuotationDto extends FindManyDto {
     return value?.split(',').map((v: string) => v.trim())
   })
   @IsEnum(QuotationStatus, { each: true })
-  statuses?: QuotationStatus[]
+  statuses: QuotationStatus[]
 
   projectId?: string
 }

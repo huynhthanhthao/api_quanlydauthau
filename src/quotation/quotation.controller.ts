@@ -24,7 +24,7 @@ import {
 } from './dto/quotation.dto'
 import { RolesGuard } from 'guards/role.guard'
 import { Roles } from 'guards/roles.decorator'
-import { userPermissions } from 'enums'
+import { adminPermissions, userPermissions } from 'enums'
 import { extractPermissions } from 'utils/helper'
 
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -93,19 +93,19 @@ export class QuotationController {
     return this.quotationService.findManyMyQuotations(data, userId)
   }
 
-  @Patch(':id/request-edit')
-  @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.quotation.requestEdit)
-  requestEdit(@Param('id') id: string, @Req() request: RequestJWT) {
-    const { userId } = request
-    return this.quotationService.requestEdit(id, userId)
-  }
-
-  @Patch(':id/approve')
+  @Patch('me/:id/approve')
   @HttpCode(HttpStatus.OK)
   @Roles(userPermissions.quotation.approve)
   approveQuoteInMyProject(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.approveQuoteInMyProject(id, userId)
+  }
+
+  @Patch(':id/request-edit')
+  @HttpCode(HttpStatus.OK)
+  @Roles(adminPermissions.quotation.requestEdit)
+  requestEdit(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.quotationService.requestEdit(id, userId)
   }
 }

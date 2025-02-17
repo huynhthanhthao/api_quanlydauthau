@@ -89,7 +89,7 @@
             "name": "Duyệt báo giá"
           },
           {
-            "code": "REQUESTED_EDIT",
+            "code": "REQUESTED_EDIT_QUOTATION",
             "name": "Yêu cầu điều chỉnh báo giá"
           }
         ]
@@ -197,6 +197,10 @@
           {
             "code": "ADMIN_COMPLETE_PROJECT",
             "name": "Duyệt hoàn thành dự án"
+          },
+          {
+            "code": "ADMIN_REQUESTED_EDIT_PROJECT",
+            "name": "Yêu cầu điều chỉnh dự án"
           }
         ]
       }

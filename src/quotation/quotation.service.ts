@@ -6,17 +6,12 @@ import {
   ProjectStatus
 } from '.prisma/client'
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
-import {
-  productCaptureSelect,
-  quotationDetailSelect,
-  quotationSelect
-} from 'responses'
+import { quotationDetailSelect, quotationSelect } from 'responses'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import { TrashService } from 'src/trash/trash.service'
 import { paginate } from 'utils/helper'
 import {
   CreateQuotationDto,
-  CreateQuotationItemDto,
   DeleteManyQuotationDto,
   FindManyQuotationDto,
   UpdateQuotationDto
@@ -30,8 +25,6 @@ export class QuotationService {
   ) {}
 
   async createMyQuotation(data: CreateQuotationDto, userId: string) {
-    const items = await this.getQuotationItems(data.items)
-
     return this.prisma.quotation.create({
       data: {
         name: data.name,
@@ -40,43 +33,45 @@ export class QuotationService {
         price: data.price,
         status: QuotationStatus.PENDING,
         items: {
-          create: items
+          create: data.items?.map(item => ({
+            unit: item.unit,
+            quantity: item.quantity,
+            attachedFiles: {
+              connect: item.attachedFileIds?.map(id => ({ id }))
+            },
+            productQuotation: {
+              create: {
+                name: item.productQuotation.name,
+                thumb: item.productQuotation.thumb,
+                desc: item.productQuotation.desc,
+                productAttributes: {
+                  create: item.productQuotation?.productAttributes?.map(
+                    attr => ({
+                      key: attr.key,
+                      value: attr.value
+                    })
+                  )
+                }
+              }
+            }
+          }))
         },
         creatorId: userId
       },
-      include: { items: true }
-    })
-  }
-
-  async getQuotationItems(quotationItems: CreateQuotationItemDto[]) {
-    if (!quotationItems || quotationItems.length === 0) return []
-
-    const data = await Promise.all(
-      quotationItems.map(async item => {
-        const product = await this.prisma.product.findUnique({
-          where: { id: item.productId },
-          select: productCaptureSelect
-        })
-
-        if (!product)
-          throw new HttpException(
-            `Không tìm thấy sản phẩm với ID: ${item.productId}!`,
-            HttpStatus.NOT_FOUND
-          )
-
-        return {
-          productId: item.productId,
-          productCapture: product,
-          unit: item.unit,
-          quantity: item.quantity,
-          attachedFiles: {
-            connect: item.attachedFileIds.map(id => ({ id }))
+      include: {
+        items: {
+          include: {
+            attachedFiles: true,
+            productQuotation: {
+              include: {
+                productAttributes: true,
+                quotationItems: true
+              }
+            }
           }
         }
-      })
-    )
-
-    return data
+      }
+    })
   }
 
   async updateMyQuotations(
@@ -86,31 +81,78 @@ export class QuotationService {
   ) {
     const quotation = await this.prisma.quotation.findFirstOrThrow({
       where: { id },
-      select: { status: true }
+      include: {
+        items: {
+          include: {
+            attachedFiles: true,
+            productQuotation: {
+              include: {
+                productAttributes: true,
+                quotationItems: true
+              }
+            }
+          }
+        }
+      }
     })
 
     this.checkQuotationIsEditable(quotation)
 
-    const items = await this.getQuotationItems(data.items)
-
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
-      await prisma.quotationItem.deleteMany({ where: { quotationId: id } })
+      await prisma.quotationHistory.create({
+        data: {
+          quotationCapture: quotation,
+          quotationId: id
+        }
+      })
+
+      if (data.items)
+        await prisma.quotationItem.deleteMany({ where: { quotationId: id } })
 
       return prisma.quotation.update({
-        where: {
-          id,
-          creatorId: userId
-        },
+        where: { id },
         data: {
           name: data.name,
           desc: data.desc,
           price: data.price,
-          status: QuotationStatus.PENDING,
-          items: { create: items },
+          items: {
+            create: data.items?.map(item => ({
+              unit: item.unit,
+              quantity: item.quantity,
+              attachedFiles: {
+                connect: item.attachedFileIds?.map(id => ({ id }))
+              },
+              productQuotation: {
+                create: {
+                  name: item.productQuotation.name,
+                  thumb: item.productQuotation.thumb,
+                  desc: item.productQuotation.desc,
+                  productAttributes: {
+                    create: item.productQuotation?.productAttributes?.map(
+                      attr => ({
+                        key: attr.key,
+                        value: attr.value
+                      })
+                    )
+                  }
+                }
+              }
+            }))
+          },
           updaterId: userId
         },
         include: {
-          items: true
+          items: {
+            include: {
+              attachedFiles: true,
+              productQuotation: {
+                include: {
+                  productAttributes: true,
+                  quotationItems: true
+                }
+              }
+            }
+          }
         }
       })
     })
@@ -192,7 +234,18 @@ export class QuotationService {
         userId,
         modelName: 'Quotation',
         include: {
-          items: true
+          quotationHistories: true,
+          items: {
+            include: {
+              attachedFiles: true,
+              productQuotation: {
+                include: {
+                  productAttributes: true,
+                  quotationItems: true
+                }
+              }
+            }
+          }
         }
       }
 
@@ -222,7 +275,18 @@ export class QuotationService {
         userId,
         modelName: 'Quotation',
         include: {
-          items: true
+          quotationHistories: true,
+          items: {
+            include: {
+              attachedFiles: true,
+              productQuotation: {
+                include: {
+                  productAttributes: true,
+                  quotationItems: true
+                }
+              }
+            }
+          }
         }
       }
 
