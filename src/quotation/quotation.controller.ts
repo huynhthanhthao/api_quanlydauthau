@@ -81,6 +81,16 @@ export class QuotationController {
     const { userId } = request
     return this.quotationService.findOneMyQuotation(id, userId)
   }
+  @Get('me/project/:projectId')
+  @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(userPermissions.quotation))
+  findOneMyQuotationInProject(
+    @Param('projectId') projectId: string,
+    @Req() request: RequestJWT
+  ) {
+    const { userId } = request
+    return this.quotationService.findOneMyQuotationInProject(projectId, userId)
+  }
 
   @Get('me')
   @HttpCode(HttpStatus.OK)

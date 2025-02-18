@@ -384,4 +384,16 @@ export class QuotationService {
       }
     })
   }
+
+  async findOneMyQuotationInProject(projectId: string, userId: string) {
+    return this.prisma.quotation.findUniqueOrThrow({
+      where: {
+        creatorId_projectId: {
+          creatorId: userId,
+          projectId
+        }
+      },
+      select: quotationDetailSelect
+    })
+  }
 }
