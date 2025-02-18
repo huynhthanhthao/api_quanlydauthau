@@ -85,12 +85,20 @@ export class QuotationController {
   @Get('me')
   @HttpCode(HttpStatus.OK)
   @Roles(...extractPermissions(userPermissions.quotation))
-  findManyMyQuotations(
+  findManyQuotationInMyProjects(
     @Query() data: FindManyQuotationDto,
     @Req() request: RequestJWT
   ) {
     const { userId } = request
-    return this.quotationService.findManyMyQuotations(data, userId)
+    return this.quotationService.findManyQuotationInMyProjects(data, userId)
+  }
+
+  @Get('/:id/history')
+  @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(userPermissions.quotation))
+  getHistories(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.quotationService.getHistories(id, userId)
   }
 
   @Patch('me/:id/approve')

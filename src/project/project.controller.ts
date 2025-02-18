@@ -71,13 +71,33 @@ export class ProjectController {
   @Get('me/:projectId/quotation')
   @HttpCode(HttpStatus.OK)
   @Roles(userPermissions.project.view)
-  findManyQuotation(
+  findManyQuotationInMyProjects(
     @Param('projectId') projectId: string,
     @Query() data: FindManyQuotationDto,
     @Req() request: RequestJWT
   ) {
     const { userId } = request
-    return this.projectService.findManyMyQuotations(projectId, data, userId)
+    return this.projectService.findManyQuotationInMyProjects(
+      projectId,
+      data,
+      userId
+    )
+  }
+
+  @Get('me/:projectId/quotation/:quotationId')
+  @HttpCode(HttpStatus.OK)
+  @Roles(userPermissions.project.view)
+  findOneQuotationInMyProject(
+    @Param('projectId') projectId: string,
+    @Param('quotationId') quotationId: string,
+    @Req() request: RequestJWT
+  ) {
+    const { userId } = request
+    return this.projectService.findOneQuotationInMyProject(
+      quotationId,
+      projectId,
+      userId
+    )
   }
 
   @Get('me/:id')

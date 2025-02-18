@@ -17,7 +17,8 @@ import {
   publicProjectSelect,
   projectSelect,
   quotationDetailSelect,
-  publicProjectDetailSelect
+  publicProjectDetailSelect,
+  quotationSelect
 } from 'responses'
 
 @Injectable()
@@ -223,6 +224,21 @@ export class ProjectService {
         where: {
           id: { in: data.ids },
           creatorId: userId
+        },
+        include: {
+          projectItems: true,
+          quotations: {
+            include: {
+              quotationHistories: true,
+              items: true
+            }
+          },
+          tickets: {
+            include: {
+              comments: true,
+              assignees: true
+            }
+          }
         }
       })
 
@@ -265,7 +281,19 @@ export class ProjectService {
       return prisma.project.delete({
         where: { id, creatorId: userId },
         include: {
-          projectItems: true
+          projectItems: true,
+          quotations: {
+            include: {
+              quotationHistories: true,
+              items: true
+            }
+          },
+          tickets: {
+            include: {
+              comments: true,
+              assignees: true
+            }
+          }
         }
       })
     })
@@ -280,7 +308,7 @@ export class ProjectService {
     }
   }
 
-  async findManyMyQuotations(
+  async findManyQuotationInMyProjects(
     projectId: string,
     data: FindManyQuotationDto,
     userId: string
@@ -305,7 +333,7 @@ export class ProjectService {
       this.prisma.quotation,
       {
         where,
-        select: quotationDetailSelect,
+        select: quotationSelect,
         orderBy: {
           [orderKey]: orderValue
         }
@@ -315,6 +343,23 @@ export class ProjectService {
         perPage
       }
     )
+  }
+
+  async findOneQuotationInMyProject(
+    quotationId: string,
+    projectId: string,
+    userId: string
+  ) {
+    return this.prisma.quotation.findUniqueOrThrow({
+      where: {
+        id: quotationId,
+        project: {
+          creatorId: userId,
+          id: projectId
+        }
+      },
+      select: quotationDetailSelect
+    })
   }
 
   async cancelMyProject(id: string, userId: string) {

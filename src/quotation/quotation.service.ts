@@ -167,7 +167,10 @@ export class QuotationService {
     }
   }
 
-  async findManyMyQuotations(data: FindManyQuotationDto, userId: string) {
+  async findManyQuotationInMyProjects(
+    data: FindManyQuotationDto,
+    userId: string
+  ) {
     const {
       page,
       perPage,
@@ -367,6 +370,17 @@ export class QuotationService {
       data: {
         status: QuotationStatus.REQUESTED_EDIT,
         updaterId: userId
+      }
+    })
+  }
+
+  async getHistories(quotationId: string, userId: string) {
+    return this.prisma.quotationHistory.findMany({
+      where: {
+        quotation: {
+          id: quotationId,
+          creatorId: userId
+        }
       }
     })
   }
