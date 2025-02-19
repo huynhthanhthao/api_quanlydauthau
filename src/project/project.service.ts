@@ -9,7 +9,12 @@ import {
   FindManyQuotationDto,
   UpdateProjectDto
 } from './dto/project.dto'
-import { Prisma, PrismaClient, ProjectStatus } from '.prisma/client'
+import {
+  Prisma,
+  PrismaClient,
+  ProjectStatus,
+  QuotationStatus
+} from '.prisma/client'
 import { generateCodeUUID, paginate } from 'utils/helper'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import {
@@ -318,7 +323,16 @@ export class ProjectService {
   }
 
   async cancelMyProject(id: string, userId: string) {
-    await this.checkStatusProject(id)
+    const project = await this.prisma.project.findFirstOrThrow({
+      where: { id },
+      select: { status: true }
+    })
+
+    this.validateProjectStatus(
+      project.status,
+      ['PENDING', 'APPROVED', 'QUOTED', 'REQUESTED_EDIT'],
+      'hủy'
+    )
 
     return this.prisma.project.update({
       where: { id, creatorId: userId },
@@ -330,6 +344,13 @@ export class ProjectService {
   }
 
   async approve(id: string) {
+    const project = await this.prisma.project.findFirstOrThrow({
+      where: { id },
+      select: { status: true }
+    })
+
+    this.validateProjectStatus(project.status, ['PENDING'], 'duyệt')
+
     return this.prisma.project.update({
       where: { id },
       data: {
@@ -339,6 +360,17 @@ export class ProjectService {
   }
 
   async cancel(id: string) {
+    const project = await this.prisma.project.findFirstOrThrow({
+      where: { id },
+      select: { status: true }
+    })
+
+    this.validateProjectStatus(
+      project.status,
+      ['PENDING', 'APPROVED', 'QUOTED', 'REQUESTED_EDIT'],
+      'hủy'
+    )
+
     return this.prisma.project.update({
       where: { id },
       data: {
@@ -348,6 +380,13 @@ export class ProjectService {
   }
 
   async complete(id: string) {
+    const project = await this.prisma.project.findFirstOrThrow({
+      where: { id },
+      select: { status: true }
+    })
+
+    this.validateProjectStatus(project.status, ['QUOTED'], 'duyệt hoàn thành')
+
     return this.prisma.project.update({
       where: { id },
       data: {
@@ -357,6 +396,22 @@ export class ProjectService {
   }
 
   async requestEdit(id: string) {
+    const project = await this.prisma.project.findFirstOrThrow({
+      where: { id },
+      select: { status: true }
+    })
+
+    this.validateProjectStatus(
+      project.status,
+      ['PENDING', 'APPROVED', 'QUOTED'],
+      'yêu cầu chỉnh sửa'
+    )
+
+    await this.prisma.quotation.updateMany({
+      where: { projectId: id, status: QuotationStatus.APPROVED },
+      data: { status: QuotationStatus.PENDING }
+    })
+
     return this.prisma.project.update({
       where: { id },
       data: {
@@ -365,19 +420,16 @@ export class ProjectService {
     })
   }
 
-  async checkStatusProject(id: string) {
-    const project = await this.prisma.project.findFirstOrThrow({
-      where: { id },
-      select: { status: true }
-    })
-
-    if (
-      project.status === ProjectStatus.CANCELED ||
-      project.status === ProjectStatus.COMPLETED
-    )
+  async validateProjectStatus(
+    status: ProjectStatus,
+    validStatuses: ProjectStatus[],
+    action: string
+  ) {
+    if (!validStatuses.includes(status)) {
       throw new HttpException(
-        'Không thể cập nhật trạng thái dự án.',
+        `Không thể ${action} dự án ở trạng thái này.`,
         HttpStatus.CONFLICT
       )
+    }
   }
 }

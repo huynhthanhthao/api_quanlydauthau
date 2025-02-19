@@ -96,7 +96,11 @@ export class QuotationService {
       }
     })
 
-    this.checkQuotationIsEditable(quotation)
+    this.validateQuotationStatus(
+      quotation.status,
+      ['REQUESTED_EDIT'],
+      'chỉnh sửa'
+    )
 
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       await prisma.quotationHistory.create({
@@ -115,6 +119,7 @@ export class QuotationService {
           name: data.name,
           desc: data.desc,
           price: data.price,
+          status: QuotationStatus.PENDING,
           items: {
             create: data.items?.map(item => ({
               unit: item.unit,
@@ -156,15 +161,6 @@ export class QuotationService {
         }
       })
     })
-  }
-
-  checkQuotationIsEditable(quotation: { status: QuotationStatus }) {
-    if (quotation.status !== QuotationStatus.REQUESTED_EDIT) {
-      throw new HttpException(
-        'Báo giá không thể điều chỉnh hoặc xóa ở trạng thái hiện tại!',
-        HttpStatus.CONFLICT
-      )
-    }
   }
 
   async findManyMyQuotations(data: FindManyQuotationDto, userId: string) {
@@ -227,7 +223,13 @@ export class QuotationService {
         }
       })
 
-      quotations.forEach(this.checkQuotationIsEditable)
+      quotations.forEach(quotation =>
+        this.validateQuotationStatus(
+          quotation.status,
+          ['PENDING', 'REQUESTED_EDIT'],
+          'xóa'
+        )
+      )
 
       const dataProject: CreateManyTrashDto = {
         ids: data.ids,
@@ -268,7 +270,11 @@ export class QuotationService {
         where: { id, creatorId: userId }
       })
 
-      this.checkQuotationIsEditable(quotation)
+      this.validateQuotationStatus(
+        quotation.status,
+        ['PENDING', 'REQUESTED_EDIT'],
+        'xóa'
+      )
 
       const dataTrash: CreateTrashDto = {
         id,
@@ -313,12 +319,33 @@ export class QuotationService {
         }
       })
 
-      this.validateProjectIsApprove(quotation.project.status, 'duyệt')
+      this.validateProjectStatus(
+        quotation.project.status,
+        ['APPROVED', 'REQUESTED_EDIT'],
+        'duyệt'
+      )
+
+      this.validateQuotationStatus(
+        quotation.status,
+        ['PENDING', 'CANCELED'],
+        'duyệt'
+      )
 
       const updateProjectStatus = prisma.project.update({
         where: { id: quotation.project.id },
         data: {
           status: ProjectStatus.QUOTED,
+          updaterId: userId
+        }
+      })
+
+      const cancelQuotationApproved = prisma.quotation.updateMany({
+        where: {
+          projectId: quotation.project.id,
+          status: QuotationStatus.APPROVED
+        },
+        data: {
+          status: QuotationStatus.CANCELED,
           updaterId: userId
         }
       })
@@ -333,18 +360,40 @@ export class QuotationService {
         }
       })
 
-      await Promise.all([updateProjectStatus, approveQuotation])
+      await Promise.all([
+        updateProjectStatus,
+        approveQuotation,
+        cancelQuotationApproved
+      ])
 
       return approveQuotation
     })
   }
 
-  async validateProjectIsApprove(projectStatus: ProjectStatus, action: string) {
-    if (projectStatus !== ProjectStatus.APPROVED)
+  async validateProjectStatus(
+    status: ProjectStatus,
+    validStatuses: ProjectStatus[],
+    action: string
+  ) {
+    if (!validStatuses.includes(status)) {
       throw new HttpException(
-        `Không thể ${action} báo giá dự án này!`,
+        `Không thể ${action} báo giá ở trạng thái báo hiện tại.`,
         HttpStatus.CONFLICT
       )
+    }
+  }
+
+  async validateQuotationStatus(
+    status: QuotationStatus,
+    validStatuses: QuotationStatus[],
+    action: string
+  ) {
+    if (!validStatuses.includes(status)) {
+      throw new HttpException(
+        `Không thể ${action} báo giá ở trạng thái hiện tại.`,
+        HttpStatus.CONFLICT
+      )
+    }
   }
 
   async requestEdit(quotationId: string, userId: string) {
@@ -358,7 +407,17 @@ export class QuotationService {
       }
     })
 
-    this.validateProjectIsApprove(quotation.project.status, 'yêu cầu chỉnh sửa')
+    this.validateProjectStatus(
+      quotation.project.status,
+      ['PENDING', 'APPROVED', 'QUOTED'],
+      'yêu cầu chỉnh sửa'
+    )
+
+    this.validateQuotationStatus(
+      quotation.status,
+      ['PENDING', 'CANCELED'],
+      'yêu cầu chỉnh sửa'
+    )
 
     return this.prisma.quotation.update({
       where: {
