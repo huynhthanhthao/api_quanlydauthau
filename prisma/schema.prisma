@@ -228,6 +228,8 @@ model Quotation {
   creator            User?              @relation("creator", fields: [creatorId], references: [id])
   updater            User?              @relation("updater", fields: [updaterId], references: [id])
   quotationHistories QuotationHistory[]
+
+  @@unique([creatorId, projectId])
 }
 
 model QuotationHistory {

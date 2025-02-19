@@ -163,7 +163,19 @@ export class QuotationService {
     })
   }
 
-  async findManyMyQuotations(data: FindManyQuotationDto, userId: string) {
+  checkQuotationIsEditable(quotation: { status: QuotationStatus }) {
+    if (quotation.status !== QuotationStatus.REQUESTED_EDIT) {
+      throw new HttpException(
+        'Báo giá không thể điều chỉnh hoặc xóa ở trạng thái hiện tại!',
+        HttpStatus.CONFLICT
+      )
+    }
+  }
+
+  async findManyQuotationInMyProjects(
+    data: FindManyQuotationDto,
+    userId: string
+  ) {
     const {
       page,
       perPage,
@@ -427,6 +439,29 @@ export class QuotationService {
         status: QuotationStatus.REQUESTED_EDIT,
         updaterId: userId
       }
+    })
+  }
+
+  async getHistories(quotationId: string, userId: string) {
+    return this.prisma.quotationHistory.findMany({
+      where: {
+        quotation: {
+          id: quotationId,
+          creatorId: userId
+        }
+      }
+    })
+  }
+
+  async findOneMyQuotationInProject(projectId: string, userId: string) {
+    return this.prisma.quotation.findUniqueOrThrow({
+      where: {
+        creatorId_projectId: {
+          creatorId: userId,
+          projectId
+        }
+      },
+      select: quotationDetailSelect
     })
   }
 }
