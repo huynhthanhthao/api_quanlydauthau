@@ -247,7 +247,9 @@ export class ProjectService {
         }
       })
 
-      projects.forEach(project => this.checkProjectIsEditable(project.status))
+      projects.forEach(project =>
+        this.validateProjectStatus(project.status, ['REQUESTED_EDIT'], 'xóa')
+      )
 
       await this.trashService.createMany(dataProject, prisma)
 
@@ -266,11 +268,7 @@ export class ProjectService {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const project = await prisma.project.findUniqueOrThrow({ where: { id } })
 
-      if (project.status !== ProjectStatus.REQUESTED_EDIT)
-        throw new HttpException(
-          'Không thể xóa dự án ở trạng thái này!',
-          HttpStatus.CONFLICT
-        )
+      this.validateProjectStatus(project.status, ['REQUESTED_EDIT'], 'xóa')
 
       const dataTrash: CreateTrashDto = {
         id,
@@ -302,15 +300,6 @@ export class ProjectService {
         }
       })
     })
-  }
-
-  checkProjectIsEditable(status: ProjectStatus) {
-    if (status !== ProjectStatus.REQUESTED_EDIT) {
-      throw new HttpException(
-        'Không thể xóa dự án ở trạng thái này!',
-        HttpStatus.CONFLICT
-      )
-    }
   }
 
   async findManyQuotationInMyProjects(
