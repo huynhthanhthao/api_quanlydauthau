@@ -89,11 +89,11 @@ export class ProjectService {
       select: { status: true, creatorId: true }
     })
 
-    if (currentProject.status !== ProjectStatus.REQUESTED_EDIT)
-      throw new HttpException(
-        'Không thể cập nhật dự án ở trạng thái này!',
-        HttpStatus.CONFLICT
-      )
+    this.validateProjectStatus(
+      currentProject.status,
+      ['REQUESTED_EDIT'],
+      'chỉnh sửa'
+    )
 
     const projectItems = await this.getProjectItems(data.projectItems)
 
