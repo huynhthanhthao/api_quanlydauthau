@@ -104,6 +104,7 @@ export class ProjectService {
         where: { id },
         data: {
           name: data.name,
+          status: ProjectStatus.PENDING,
           price: data.price,
           address: data.address,
           desc: data.desc,
@@ -248,7 +249,11 @@ export class ProjectService {
       })
 
       projects.forEach(project =>
-        this.validateProjectStatus(project.status, ['REQUESTED_EDIT'], 'xóa')
+        this.validateProjectStatus(
+          project.status,
+          ['REQUESTED_EDIT', 'PENDING'],
+          'xóa'
+        )
       )
 
       await this.trashService.createMany(dataProject, prisma)
@@ -268,7 +273,11 @@ export class ProjectService {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const project = await prisma.project.findUniqueOrThrow({ where: { id } })
 
-      this.validateProjectStatus(project.status, ['REQUESTED_EDIT'], 'xóa')
+      this.validateProjectStatus(
+        project.status,
+        ['REQUESTED_EDIT', 'PENDING'],
+        'xóa'
+      )
 
       const dataTrash: CreateTrashDto = {
         id,
