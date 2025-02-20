@@ -143,7 +143,6 @@ model Project {
   updater      User?         @relation("updater", fields: [updaterId], references: [id])
   projectItems ProjectItem[]
   quotations   Quotation[]
-  tickets      Ticket[]
 }
 
 model ProjectItem {
@@ -248,14 +247,13 @@ model Ticket {
   title         String          @db.Text
   createdAt     DateTime        @default(now())
   lastCommentAt DateTime?
+  lastComment   String?
   creatorId     String?
   updaterId     String?
   creator       User?           @relation("creator", fields: [creatorId], references: [id])
   updater       User?           @relation("updater", fields: [updaterId], references: [id])
   assignees     User[]          @relation("assigneeTicket")
   comments      TicketComment[]
-  project       Project?        @relation(fields: [projectId], references: [id])
-  projectId     String?
 }
 
 model TicketComment {
@@ -349,7 +347,7 @@ enum UserStatus {
 }
 
 enum TicketType {
-  QUOTATION
+  PROJECT
   OTHER
 }
 

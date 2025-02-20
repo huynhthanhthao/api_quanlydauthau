@@ -222,7 +222,13 @@ export class ProjectService {
         userId,
         modelName: 'Project',
         include: {
-          projectItems: true
+          projectItems: true,
+          quotations: {
+            include: {
+              quotationHistories: true,
+              items: true
+            }
+          }
         }
       }
 
@@ -237,12 +243,6 @@ export class ProjectService {
             include: {
               quotationHistories: true,
               items: true
-            }
-          },
-          tickets: {
-            include: {
-              comments: true,
-              assignees: true
             }
           }
         }
@@ -284,7 +284,13 @@ export class ProjectService {
         userId,
         modelName: 'Project',
         include: {
-          projectItems: true
+          projectItems: true,
+          quotations: {
+            include: {
+              quotationHistories: true,
+              items: true
+            }
+          }
         }
       }
 
@@ -298,12 +304,6 @@ export class ProjectService {
             include: {
               quotationHistories: true,
               items: true
-            }
-          },
-          tickets: {
-            include: {
-              comments: true,
-              assignees: true
             }
           }
         }

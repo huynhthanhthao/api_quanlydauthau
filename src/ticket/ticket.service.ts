@@ -24,8 +24,9 @@ export class TicketService {
         title: data.title,
         status: TicketStatus.OPEN,
         type: data.type,
-        projectId: data.projectId,
         creatorId: userId,
+        lastCommentAt: new Date(),
+        lastComment: data.content,
         comments: {
           create: {
             content: data.content,
@@ -67,7 +68,7 @@ export class TicketService {
             }
           }
         },
-        data: { lastCommentAt: new Date() },
+        data: { lastCommentAt: new Date(), lastComment: data.content },
         include: {
           assignees: { select: { id: true } }
         }

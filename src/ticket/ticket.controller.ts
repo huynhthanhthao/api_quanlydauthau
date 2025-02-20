@@ -63,7 +63,7 @@ export class TicketController {
     return this.ticketService.updateMyTicket(id, data, userId)
   }
 
-  @Get('me/:ticket/comment')
+  @Get('me/:ticketId/comment')
   @HttpCode(HttpStatus.OK)
   @Roles(...extractPermissions(userPermissions.ticket))
   findManyMyTicketComments(

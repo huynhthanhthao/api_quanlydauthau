@@ -232,12 +232,14 @@ export const ticketSelect: Prisma.TicketSelect = {
   title: true,
   createdAt: true,
   lastCommentAt: true,
+  lastComment: true,
   creator: {
     select: {
       id: true,
       name: true,
       phone: true,
-      avatar: true
+      avatar: true,
+      email: true
     }
   },
   assignees: {
@@ -245,18 +247,8 @@ export const ticketSelect: Prisma.TicketSelect = {
       id: true,
       name: true,
       phone: true,
-      avatar: true
-    }
-  },
-  project: {
-    select: {
-      id: true,
-      name: true,
-      code: true,
-      desc: true,
-      address: true,
-      status: true,
-      updatedAt: true
+      avatar: true,
+      email: true
     }
   }
 }
@@ -265,6 +257,7 @@ export const ticketCommentSelect: Prisma.TicketCommentSelect = {
   id: true,
   content: true,
   createdAt: true,
+  ticketId: true,
   creator: {
     select: {
       id: true,
