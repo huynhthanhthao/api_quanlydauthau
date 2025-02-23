@@ -17,9 +17,6 @@ export class CreateTicketDto {
 
   @IsNotEmpty()
   assigneeId: string
-
-  @IsNotEmpty()
-  projectId: string
 }
 
 export class CreateTicketCommentDto {
@@ -36,7 +33,7 @@ export class FindManyTicketDto extends FindManyDto {}
 
 export class FindManyTicketCommentDto extends FindManyDto {
   orderKey?: string = 'createdAt'
-  orderValue?: string = 'asc'
+  orderValue?: string = 'desc'
 }
 
 export class DeleteManyTicketDto extends DeleteManyDto {}

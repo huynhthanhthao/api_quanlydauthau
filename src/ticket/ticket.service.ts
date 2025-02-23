@@ -82,6 +82,16 @@ export class TicketService {
           content: data.content,
           ticketId: ticketId,
           creatorId: userId
+        },
+        include: {
+          creator: {
+            select: {
+              id: true,
+              name: true,
+              phone: true,
+              avatar: true
+            }
+          }
         }
       })
     })
@@ -125,7 +135,7 @@ export class TicketService {
   async findManyMyTickets(data: FindManyTicketDto, userId: string) {
     const { page, perPage, keyword, orderKey, orderValue } = data
 
-    const keySearch = ['title']
+    const keySearch = ['title', 'code']
 
     const where: Prisma.TicketWhereInput = {
       ...(keyword && {
