@@ -191,6 +191,7 @@ export const quotationDetailSelect: Prisma.QuotationSelect = {
     select: {
       id: true,
       quantity: true,
+      projectItemId: true,
       updatedAt: true,
       unit: true,
       attachedFiles: true,

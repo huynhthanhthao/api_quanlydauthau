@@ -22,7 +22,7 @@ export class CreateQuotationDto {
   price?: number
 }
 
-export class CreateProductQuotationto {
+export class CreateProductQuotationDto {
   @IsNotEmpty()
   name: string
 
@@ -31,6 +31,7 @@ export class CreateProductQuotationto {
   @Type(() => CreateProductAttributeDto)
   productAttributes: CreateProductAttributeDto[]
 
+  projectItemId?: string
   thumb?: string
   desc?: string
 }
@@ -44,10 +45,11 @@ export class CreateQuotationItemDto {
 
   @IsOptional()
   @ValidateNested({ each: true })
-  @Type(() => CreateProductQuotationto)
-  productQuotation: CreateProductQuotationto
+  @Type(() => CreateProductQuotationDto)
+  productQuotation: CreateProductQuotationDto
 
   attachedFileIds?: string[]
+  projectItemId: any
 }
 
 export class UpdateQuotationDto extends PartialType(CreateQuotationDto) {}

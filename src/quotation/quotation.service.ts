@@ -36,6 +36,7 @@ export class QuotationService {
           create: data.items?.map(item => ({
             unit: item.unit,
             quantity: item.quantity,
+            projectItemId: item.projectItemId,
             attachedFiles: {
               connect: item.attachedFileIds?.map(id => ({ id }))
             },
@@ -124,6 +125,7 @@ export class QuotationService {
             create: data.items?.map(item => ({
               unit: item.unit,
               quantity: item.quantity,
+              projectItemId: item.projectItemId,
               attachedFiles: {
                 connect: item.attachedFileIds?.map(id => ({ id }))
               },

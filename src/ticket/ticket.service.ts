@@ -128,6 +128,17 @@ export class TicketService {
       },
       data: {
         status
+      },
+      include: {
+        assignees: {
+          select: {
+            id: true,
+            name: true,
+            phone: true,
+            avatar: true,
+            email: true
+          }
+        }
       }
     })
   }
