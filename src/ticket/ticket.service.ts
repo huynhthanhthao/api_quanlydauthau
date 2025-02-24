@@ -16,7 +16,23 @@ export class TicketService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createMyTicket(data: CreateTicketDto, userId: string) {
-    const assigneeIds = [userId, data.assigneeId]
+    const assignee = await this.prisma.user.findFirst({
+      where: {
+        OR: [
+          {
+            phone: data.assignee
+          },
+          {
+            email: data.assignee
+          }
+        ]
+      }
+    })
+
+    if (!assignee)
+      throw new HttpException('Người dùng không tồn tại!', HttpStatus.NOT_FOUND)
+
+    const assigneeIds = [userId, assignee.id]
 
     return this.prisma.ticket.create({
       data: {
@@ -35,6 +51,26 @@ export class TicketService {
         },
         assignees: {
           connect: assigneeIds.map(id => ({ id }))
+        }
+      },
+      include: {
+        assignees: {
+          select: {
+            id: true,
+            name: true,
+            phone: true,
+            avatar: true,
+            email: true
+          }
+        },
+        creator: {
+          select: {
+            id: true,
+            name: true,
+            phone: true,
+            avatar: true,
+            email: true
+          }
         }
       }
     })

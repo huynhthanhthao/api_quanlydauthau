@@ -16,7 +16,7 @@ export class CreateTicketDto {
   content: string
 
   @IsNotEmpty()
-  assigneeId: string
+  assignee: string
 }
 
 export class CreateTicketCommentDto {
