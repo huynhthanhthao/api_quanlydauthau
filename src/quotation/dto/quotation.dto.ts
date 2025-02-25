@@ -18,8 +18,6 @@ export class CreateQuotationDto {
   items: CreateQuotationItemDto[]
 
   desc?: string
-
-  price?: number
 }
 
 export class CreateProductQuotationDto {
@@ -49,7 +47,8 @@ export class CreateQuotationItemDto {
   productQuotation: CreateProductQuotationDto
 
   attachedFileIds?: string[]
-  projectItemId: any
+  projectItemId?: string
+  price?: number
 }
 
 export class UpdateQuotationDto extends PartialType(CreateQuotationDto) {}

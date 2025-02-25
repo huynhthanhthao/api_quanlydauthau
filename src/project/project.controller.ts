@@ -103,9 +103,9 @@ export class ProjectController {
   @Get('me/:id')
   @HttpCode(HttpStatus.OK)
   @Roles(...extractPermissions(userPermissions.project))
-  findOne(@Param('id') id: string, @Req() request: RequestJWT) {
+  findOneByMe(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.projectService.findOne(id, userId)
+    return this.projectService.findOneByMe(id, userId)
   }
 
   @Get('me')
@@ -168,6 +168,13 @@ export class ProjectController {
   @Roles(adminPermissions.project.complete)
   complete(@Param('id') id: string) {
     return this.projectService.complete(id)
+  }
+
+  @Get(':id')
+  @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(adminPermissions.project))
+  findOne(@Param('id') id: string) {
+    return this.projectService.findOne(id)
   }
 
   @Get('')

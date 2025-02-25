@@ -135,6 +135,7 @@ model Project {
   status       ProjectStatus
   address      String?       @db.Text
   desc         String?       @db.Text
+  isEditable   Boolean       @default(false)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   creatorId    String?
@@ -216,11 +217,11 @@ model Quotation {
   id                 String             @id @default(uuid())
   name               String             @db.Text
   desc               String?            @db.Text
-  price              Float
   projectId          String
   project            Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
   status             QuotationStatus
   items              QuotationItem[]
+  isEditable         Boolean            @default(false)
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
   creatorId          String?
@@ -273,6 +274,7 @@ model QuotationItem {
   projectItemId      String?
   projectItem        ProjectItem?      @relation(fields: [projectItemId], references: [id], onDelete: Cascade)
   unit               String            @db.Text
+  price              Float?
   productQuotationId String?
   productQuotation   ProductQuotation? @relation(fields: [productQuotationId], references: [id], onDelete: Cascade)
   attachedFiles      Media[]
@@ -332,7 +334,6 @@ enum QuotationStatus {
   PENDING
   APPROVED
   CANCELED
-  REQUESTED_EDIT
 }
 
 enum ProjectStatus {
@@ -341,7 +342,6 @@ enum ProjectStatus {
   QUOTED
   CANCELED
   COMPLETED
-  REQUESTED_EDIT
 }
 
 enum UserStatus {

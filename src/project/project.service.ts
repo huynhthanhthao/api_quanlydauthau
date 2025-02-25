@@ -9,12 +9,7 @@ import {
   FindManyQuotationDto,
   UpdateProjectDto
 } from './dto/project.dto'
-import {
-  Prisma,
-  PrismaClient,
-  ProjectStatus,
-  QuotationStatus
-} from '.prisma/client'
+import { Prisma, PrismaClient, ProjectStatus } from '.prisma/client'
 import { generateCodeUUID, paginate } from 'utils/helper'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import {
@@ -86,14 +81,11 @@ export class ProjectService {
   async updateMyProject(id: string, data: UpdateProjectDto, userId: string) {
     const currentProject = await this.prisma.project.findFirstOrThrow({
       where: { id },
-      select: { status: true, creatorId: true }
+      select: { status: true, creatorId: true, isEditable: true }
     })
 
-    this.validateProjectStatus(
-      currentProject.status,
-      ['REQUESTED_EDIT'],
-      'chỉnh sửa'
-    )
+    if (!currentProject.isEditable)
+      throw new HttpException(`Không thể cập nhật dự án.`, HttpStatus.CONFLICT)
 
     const projectItems = await this.getProjectItems(data.projectItems)
 
@@ -104,7 +96,7 @@ export class ProjectService {
         where: { id },
         data: {
           name: data.name,
-          status: ProjectStatus.PENDING,
+          isEditable: false,
           price: data.price,
           address: data.address,
           desc: data.desc,
@@ -208,9 +200,16 @@ export class ProjectService {
     )
   }
 
-  async findOne(id: string, userId: string) {
+  async findOneByMe(id: string, userId: string) {
     return this.prisma.project.findUniqueOrThrow({
       where: { id, creatorId: userId },
+      select: projectSelect
+    })
+  }
+
+  async findOne(id: string) {
+    return this.prisma.project.findUniqueOrThrow({
+      where: { id },
       select: projectSelect
     })
   }
@@ -249,11 +248,7 @@ export class ProjectService {
       })
 
       projects.forEach(project =>
-        this.validateProjectStatus(
-          project.status,
-          ['REQUESTED_EDIT', 'PENDING'],
-          'xóa'
-        )
+        this.validateProjectStatus(project.status, ['PENDING'], 'xóa')
       )
 
       await this.trashService.createMany(dataProject, prisma)
@@ -273,11 +268,7 @@ export class ProjectService {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const project = await prisma.project.findUniqueOrThrow({ where: { id } })
 
-      this.validateProjectStatus(
-        project.status,
-        ['REQUESTED_EDIT', 'PENDING'],
-        'xóa'
-      )
+      this.validateProjectStatus(project.status, ['PENDING'], 'xóa')
 
       const dataTrash: CreateTrashDto = {
         id,
@@ -373,7 +364,7 @@ export class ProjectService {
 
     this.validateProjectStatus(
       project.status,
-      ['PENDING', 'APPROVED', 'QUOTED', 'REQUESTED_EDIT'],
+      ['PENDING', 'APPROVED', 'QUOTED'],
       'hủy'
     )
 
@@ -410,7 +401,7 @@ export class ProjectService {
 
     this.validateProjectStatus(
       project.status,
-      ['PENDING', 'APPROVED', 'QUOTED', 'REQUESTED_EDIT'],
+      ['PENDING', 'APPROVED', 'QUOTED'],
       'hủy'
     )
 
@@ -450,15 +441,10 @@ export class ProjectService {
       'yêu cầu chỉnh sửa'
     )
 
-    await this.prisma.quotation.updateMany({
-      where: { projectId: id, status: QuotationStatus.APPROVED },
-      data: { status: QuotationStatus.PENDING }
-    })
-
     return this.prisma.project.update({
       where: { id },
       data: {
-        status: ProjectStatus.REQUESTED_EDIT
+        isEditable: true
       }
     })
   }

@@ -67,6 +67,7 @@ export const projectSelect: Prisma.ProjectSelect = {
   desc: true,
   address: true,
   status: true,
+  isEditable: true,
   price: true,
   updatedAt: true,
   createdAt: true,
@@ -104,6 +105,7 @@ export const publicProjectSelect: Prisma.ProjectSelect = {
   desc: true,
   address: true,
   status: true,
+  isEditable: true,
   updatedAt: true,
   createdAt: true,
   creator: {
@@ -130,6 +132,7 @@ export const publicProjectDetailSelect: Prisma.ProjectSelect = {
   code: true,
   desc: true,
   address: true,
+  isEditable: true,
   status: true,
   updatedAt: true,
   createdAt: true,
@@ -164,7 +167,7 @@ export const quotationSelect: Prisma.QuotationSelect = {
   id: true,
   name: true,
   desc: true,
-  price: true,
+  isEditable: true,
   status: true,
   project: {
     select: {
@@ -185,8 +188,8 @@ export const quotationDetailSelect: Prisma.QuotationSelect = {
   id: true,
   name: true,
   desc: true,
-  price: true,
   status: true,
+  isEditable: true,
   items: {
     select: {
       id: true,
@@ -194,6 +197,7 @@ export const quotationDetailSelect: Prisma.QuotationSelect = {
       projectItemId: true,
       updatedAt: true,
       unit: true,
+      price: true,
       attachedFiles: true,
       productQuotation: {
         include: {

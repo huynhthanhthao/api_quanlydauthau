@@ -30,13 +30,19 @@ export class QuotationService {
         name: data.name,
         desc: data.desc,
         projectId: data.projectId,
-        price: data.price,
         status: QuotationStatus.PENDING,
         items: {
           create: data.items?.map(item => ({
             unit: item.unit,
+            price: item.price,
             quantity: item.quantity,
-            projectItemId: item.projectItemId,
+            ...(item.projectItemId && {
+              projectItem: {
+                connect: {
+                  id: item.projectItemId
+                }
+              }
+            }),
             attachedFiles: {
               connect: item.attachedFileIds?.map(id => ({ id }))
             },
@@ -97,11 +103,11 @@ export class QuotationService {
       }
     })
 
-    this.validateQuotationStatus(
-      quotation.status,
-      ['REQUESTED_EDIT'],
-      'chỉnh sửa'
-    )
+    if (!quotation.isEditable)
+      throw new HttpException(
+        'Báo giá không thể điều chỉnh ở trạng thái hiện tại!',
+        HttpStatus.CONFLICT
+      )
 
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       await prisma.quotationHistory.create({
@@ -119,13 +125,19 @@ export class QuotationService {
         data: {
           name: data.name,
           desc: data.desc,
-          price: data.price,
-          status: QuotationStatus.PENDING,
+          isEditable: false,
           items: {
             create: data.items?.map(item => ({
               unit: item.unit,
               quantity: item.quantity,
-              projectItemId: item.projectItemId,
+              price: item.price,
+              ...(item.projectItemId && {
+                projectItem: {
+                  connect: {
+                    id: item.projectItemId
+                  }
+                }
+              }),
               attachedFiles: {
                 connect: item.attachedFileIds?.map(id => ({ id }))
               },
@@ -165,8 +177,8 @@ export class QuotationService {
     })
   }
 
-  checkQuotationIsEditable(quotation: { status: QuotationStatus }) {
-    if (quotation.status !== QuotationStatus.REQUESTED_EDIT) {
+  checkQuotationIsEditable(quotation: { isEditable: boolean }) {
+    if (!quotation.isEditable) {
       throw new HttpException(
         'Báo giá không thể điều chỉnh hoặc xóa ở trạng thái hiện tại!',
         HttpStatus.CONFLICT
@@ -238,11 +250,7 @@ export class QuotationService {
       })
 
       quotations.forEach(quotation =>
-        this.validateQuotationStatus(
-          quotation.status,
-          ['PENDING', 'REQUESTED_EDIT'],
-          'xóa'
-        )
+        this.validateQuotationStatus(quotation.status, ['PENDING'], 'xóa')
       )
 
       const dataProject: CreateManyTrashDto = {
@@ -284,11 +292,7 @@ export class QuotationService {
         where: { id, creatorId: userId }
       })
 
-      this.validateQuotationStatus(
-        quotation.status,
-        ['PENDING', 'REQUESTED_EDIT'],
-        'xóa'
-      )
+      this.validateQuotationStatus(quotation.status, ['PENDING'], 'xóa')
 
       const dataTrash: CreateTrashDto = {
         id,
@@ -335,7 +339,7 @@ export class QuotationService {
 
       this.validateProjectStatus(
         quotation.project.status,
-        ['APPROVED', 'REQUESTED_EDIT'],
+        ['APPROVED'],
         'duyệt'
       )
 
@@ -438,7 +442,7 @@ export class QuotationService {
         id: quotationId
       },
       data: {
-        status: QuotationStatus.REQUESTED_EDIT,
+        isEditable: true,
         updaterId: userId
       }
     })
