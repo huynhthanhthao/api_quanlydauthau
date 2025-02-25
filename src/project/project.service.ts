@@ -141,7 +141,7 @@ export class ProjectService {
       AND: [
         {
           status: {
-            notIn: ['PENDING', 'CANCELED', 'COMPLETED']
+            in: ['APPROVED', 'QUOTED']
           }
         },
         {
@@ -162,7 +162,7 @@ export class ProjectService {
       where: {
         id,
         status: {
-          notIn: ['PENDING', 'CANCELED', 'COMPLETED']
+          in: ['APPROVED', 'QUOTED']
         }
       },
       select: publicProjectDetailSelect
