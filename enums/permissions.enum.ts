@@ -13,7 +13,7 @@ export const adminPermissions = {
   },
   project: {
     approve: 'ADMIN_APPROVE_PROJECT',
-    requestEdit: 'ADMIN_REQUEST_EDIT_PROJECT',
+    requestEdit: 'ADMIN_REQUESTED_EDIT_PROJECT',
     cancel: 'ADMIN_CANCEL_PROJECT',
     complete: 'ADMIN_COMPLETE_PROJECT',
     view: 'ADMIN_VIEW_PROJECT'
