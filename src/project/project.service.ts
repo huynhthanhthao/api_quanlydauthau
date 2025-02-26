@@ -86,7 +86,7 @@ export class ProjectService {
       select: { status: true, creatorId: true, isEditable: true }
     })
 
-    if (currentProject.isEditable)
+    if (!currentProject.isEditable)
       throw new HttpException(`Không thể cập nhật dự án.`, HttpStatus.CONFLICT)
 
     const projectItems = await this.getProjectItems(data.projectItems)

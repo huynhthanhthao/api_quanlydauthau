@@ -348,11 +348,12 @@ export class QuotationService {
         }
       })
 
-      this.validateProjectStatus(
-        quotation.project.status,
-        ['APPROVED'],
-        'duyệt'
-      )
+      if (
+        !quotation.project.isEditable ||
+        ['APPROVED'].includes(quotation.project.status)
+      ) {
+        throw new HttpException(`Không thể duyệt báo giá.`, HttpStatus.CONFLICT)
+      }
 
       this.validateQuotationStatus(
         quotation.status,
