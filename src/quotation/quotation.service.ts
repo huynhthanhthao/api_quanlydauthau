@@ -99,6 +99,11 @@ export class QuotationService {
               }
             }
           }
+        },
+        project: {
+          select: {
+            status: true
+          }
         }
       }
     })
@@ -108,6 +113,12 @@ export class QuotationService {
         'Báo giá không thể điều chỉnh ở trạng thái hiện tại!',
         HttpStatus.CONFLICT
       )
+
+    this.validateProjectStatus(
+      quotation.project.status,
+      ['CANCELED', 'COMPLETED'],
+      'cập nhật'
+    )
 
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       await prisma.quotationHistory.create({
