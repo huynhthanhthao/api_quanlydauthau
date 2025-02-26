@@ -34,6 +34,11 @@ export class CreateProductQuotationDto {
   desc?: string
 }
 
+export class RequestEditDto {
+  @IsNotEmpty()
+  isEditable: boolean
+}
+
 export class CreateQuotationItemDto {
   @IsNotEmpty()
   unit: string

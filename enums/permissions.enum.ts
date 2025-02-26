@@ -23,9 +23,6 @@ export const adminPermissions = {
     delete: 'ADMIN_DELETE_ROLE',
     update: 'ADMIN_UPDATE_ROLE',
     view: 'ADMIN_VIEW_ROLE'
-  },
-  quotation: {
-    requestEdit: 'REQUEST_EDIT'
   }
 }
 
@@ -58,6 +55,7 @@ export const userPermissions = {
     create: 'CREATE_QUOTATION',
     delete: 'DELETE_QUOTATION',
     update: 'UPDATE_QUOTATION',
-    view: 'VIEW_QUOTATION'
+    view: 'VIEW_QUOTATION',
+    requestEdit: 'REQUESTED_EDIT_QUOTATION'
   }
 }
