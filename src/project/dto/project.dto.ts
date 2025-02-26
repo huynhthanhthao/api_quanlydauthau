@@ -44,6 +44,11 @@ export class CreateProjectItemDto {
 
 export class UpdateProjectDto extends PartialType(CreateProjectDto) {}
 
+export class UpdateIsEditableDto {
+  @IsNotEmpty()
+  isEditable: boolean
+}
+
 export class FindManyProjectDto extends FindManyDto {
   @IsOptional()
   @Transform(({ value }: TransformFnParams) => {

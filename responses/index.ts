@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client'
+import { Prisma, QuotationStatus } from '@prisma/client'
 
 export const categorySelect: Prisma.CategorySelect = {
   id: true,
@@ -98,6 +98,72 @@ export const projectSelect: Prisma.ProjectSelect = {
   }
 }
 
+export const projectSelectByAdmin: Prisma.ProjectSelect = {
+  id: true,
+  name: true,
+  code: true,
+  desc: true,
+  address: true,
+  status: true,
+  isEditable: true,
+  price: true,
+  updatedAt: true,
+  createdAt: true,
+  projectItems: {
+    select: {
+      id: true,
+      productCapture: true,
+      quantity: true,
+      updatedAt: true,
+      unit: true
+    }
+  },
+  creator: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      avatar: true,
+      company: {
+        select: {
+          id: true,
+          name: true,
+          phone: true,
+          logo: true
+        }
+      }
+    }
+  },
+  quotations: {
+    where: {
+      status: QuotationStatus.APPROVED
+    },
+    include: {
+      items: {
+        include: {
+          projectItem: true
+        }
+      },
+      creator: {
+        select: {
+          id: true,
+          name: true,
+          phone: true,
+          avatar: true,
+          company: {
+            select: {
+              id: true,
+              name: true,
+              phone: true,
+              logo: true
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 export const publicProjectSelect: Prisma.ProjectSelect = {
   id: true,
   name: true,
@@ -167,8 +233,18 @@ export const quotationSelect: Prisma.QuotationSelect = {
   id: true,
   name: true,
   desc: true,
-  isEditable: true,
   status: true,
+  isEditable: true,
+  items: {
+    select: {
+      id: true,
+      quantity: true,
+      projectItemId: true,
+      updatedAt: true,
+      unit: true,
+      price: true
+    }
+  },
   project: {
     select: {
       id: true,
@@ -181,7 +257,15 @@ export const quotationSelect: Prisma.QuotationSelect = {
     }
   },
   updatedAt: true,
-  createdAt: true
+  createdAt: true,
+  creator: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      avatar: true
+    }
+  }
 }
 
 export const quotationDetailSelect: Prisma.QuotationSelect = {

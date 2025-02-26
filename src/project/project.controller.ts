@@ -18,6 +18,7 @@ import {
   DeleteManyProjectDto,
   FindManyProjectDto,
   FindManyQuotationDto,
+  UpdateIsEditableDto,
   UpdateProjectDto
 } from './dto/project.dto'
 import { RequestJWT } from 'types'
@@ -152,8 +153,8 @@ export class ProjectController {
   @Patch(':id/request-edit')
   @HttpCode(HttpStatus.OK)
   @Roles(adminPermissions.project.requestEdit)
-  requestEdit(@Param('id') id: string) {
-    return this.projectService.requestEdit(id)
+  requestEdit(@Param('id') id: string, @Body() data: UpdateIsEditableDto) {
+    return this.projectService.toggleRequestEdit(id, data)
   }
 
   @Patch(':id/cancel')

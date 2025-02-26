@@ -7,6 +7,7 @@ import {
   DeleteManyProjectDto,
   FindManyProjectDto,
   FindManyQuotationDto,
+  UpdateIsEditableDto,
   UpdateProjectDto
 } from './dto/project.dto'
 import { Prisma, PrismaClient, ProjectStatus } from '.prisma/client'
@@ -18,7 +19,8 @@ import {
   projectSelect,
   quotationDetailSelect,
   publicProjectDetailSelect,
-  quotationSelect
+  quotationSelect,
+  projectSelectByAdmin
 } from 'responses'
 
 @Injectable()
@@ -84,7 +86,7 @@ export class ProjectService {
       select: { status: true, creatorId: true, isEditable: true }
     })
 
-    if (!currentProject.isEditable)
+    if (currentProject.isEditable)
       throw new HttpException(`Không thể cập nhật dự án.`, HttpStatus.CONFLICT)
 
     const projectItems = await this.getProjectItems(data.projectItems)
@@ -210,7 +212,7 @@ export class ProjectService {
   async findOne(id: string) {
     return this.prisma.project.findUniqueOrThrow({
       where: { id },
-      select: projectSelect
+      select: projectSelectByAdmin
     })
   }
 
@@ -416,8 +418,14 @@ export class ProjectService {
   async complete(id: string) {
     const project = await this.prisma.project.findFirstOrThrow({
       where: { id },
-      select: { status: true }
+      select: { status: true, isEditable: true }
     })
+
+    if (project.isEditable)
+      throw new HttpException(
+        `Không thể duyệt hoàn thành dự án này.`,
+        HttpStatus.CONFLICT
+      )
 
     this.validateProjectStatus(project.status, ['QUOTED'], 'duyệt hoàn thành')
 
@@ -429,7 +437,7 @@ export class ProjectService {
     })
   }
 
-  async requestEdit(id: string) {
+  async toggleRequestEdit(id: string, data: UpdateIsEditableDto) {
     const project = await this.prisma.project.findFirstOrThrow({
       where: { id },
       select: { status: true }
@@ -444,7 +452,7 @@ export class ProjectService {
     return this.prisma.project.update({
       where: { id },
       data: {
-        isEditable: true
+        isEditable: data.isEditable
       }
     })
   }
