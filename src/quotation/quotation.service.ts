@@ -116,7 +116,7 @@ export class QuotationService {
 
     this.validateProjectStatus(
       quotation.project.status,
-      ['CANCELED', 'COMPLETED'],
+      ['PENDING', 'APPROVED', 'QUOTED'],
       'cập nhật'
     )
 
@@ -400,7 +400,7 @@ export class QuotationService {
     })
   }
 
-  async validateProjectStatus(
+  validateProjectStatus(
     status: ProjectStatus,
     validStatuses: ProjectStatus[],
     action: string
@@ -413,7 +413,7 @@ export class QuotationService {
     }
   }
 
-  async validateQuotationStatus(
+  validateQuotationStatus(
     status: QuotationStatus,
     validStatuses: QuotationStatus[],
     action: string
@@ -445,7 +445,7 @@ export class QuotationService {
 
     this.validateQuotationStatus(
       quotation.status,
-      ['PENDING', 'CANCELED'],
+      ['PENDING'],
       'yêu cầu chỉnh sửa'
     )
 

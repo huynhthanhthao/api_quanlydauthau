@@ -457,7 +457,7 @@ export class ProjectService {
     })
   }
 
-  async validateProjectStatus(
+  validateProjectStatus(
     status: ProjectStatus,
     validStatuses: ProjectStatus[],
     action: string
