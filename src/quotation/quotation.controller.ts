@@ -44,6 +44,22 @@ export class QuotationController {
     return this.quotationService.createMyQuotation(data, userId)
   }
 
+  @Patch('me/:id/approve')
+  @HttpCode(HttpStatus.OK)
+  @Roles(userPermissions.quotation.approve)
+  approveQuoteInMyProject(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.quotationService.approveQuoteInMyProject(id, userId)
+  }
+
+  @Patch('me/:id/request-edit')
+  @HttpCode(HttpStatus.OK)
+  @Roles(userPermissions.quotation.requestEdit)
+  requestEdit(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.quotationService.requestEdit(id, userId)
+  }
+
   @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
   @Roles(userPermissions.quotation.update)
@@ -75,6 +91,17 @@ export class QuotationController {
     return this.quotationService.deleteManyMyQuotations(data, userId)
   }
 
+  @Get('me/project/:id')
+  @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(userPermissions.quotation))
+  findOneMyQuotationInProject(
+    @Param('id') id: string,
+    @Req() request: RequestJWT
+  ) {
+    const { userId } = request
+    return this.quotationService.findOneMyQuotationInProject(id, userId)
+  }
+
   @Get('me/in-my-projects')
   @HttpCode(HttpStatus.OK)
   @Roles(...extractPermissions(userPermissions.quotation))
@@ -86,7 +113,7 @@ export class QuotationController {
     return this.quotationService.findManyQuotationsInMyProjects(data, userId)
   }
 
-  @Get('me/my-project/:id')
+  @Get('me/in-my-projects/:id')
   @HttpCode(HttpStatus.OK)
   @Roles(...extractPermissions(userPermissions.quotation))
   findOneQuotationInMyProjects(
@@ -116,27 +143,11 @@ export class QuotationController {
     return this.quotationService.findManyQuotationInMyProjects(data, userId)
   }
 
-  @Get('/:id/history')
+  @Get(':id/history')
   @HttpCode(HttpStatus.OK)
   @Roles(...extractPermissions(userPermissions.quotation))
   getHistories(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.getHistories(id, userId)
-  }
-
-  @Patch('me/:id/approve')
-  @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.quotation.approve)
-  approveQuoteInMyProject(@Param('id') id: string, @Req() request: RequestJWT) {
-    const { userId } = request
-    return this.quotationService.approveQuoteInMyProject(id, userId)
-  }
-
-  @Patch('me/:id/request-edit')
-  @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.quotation.requestEdit)
-  requestEdit(@Param('id') id: string, @Req() request: RequestJWT) {
-    const { userId } = request
-    return this.quotationService.requestEdit(id, userId)
   }
 }
