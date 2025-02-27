@@ -36,25 +36,26 @@ model Permission {
 }
 
 model Company {
-  id                     String   @id @default(uuid())
-  name                   String   @db.Text
-  address                String?  @db.Text
+  id                     String    @id @default(uuid())
+  name                   String    @db.Text
+  address                String?   @db.Text
   email                  String?
   phone                  String?
   tax                    String?
-  website                String?  @db.Text
-  logo                   String?  @db.Text
-  representativeName     String?  @db.Text
-  representativePosition String?  @db.Text
+  website                String?   @db.Text
+  logo                   String?   @db.Text
+  representativeName     String?   @db.Text
+  representativePosition String?   @db.Text
   wardCode               Int?
-  ward                   Ward?    @relation(fields: [wardCode], references: [code])
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
+  ward                   Ward?     @relation(fields: [wardCode], references: [code])
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
   creatorId              String?
   updaterId              String?
-  creator                User?    @relation("creator", fields: [creatorId], references: [id])
-  updater                User?    @relation("updater", fields: [updaterId], references: [id])
+  creator                User?     @relation("creator", fields: [creatorId], references: [id])
+  updater                User?     @relation("updater", fields: [updaterId], references: [id])
   users                  User[]
+  project                Project[]
 }
 
 model City {
@@ -136,6 +137,8 @@ model Project {
   address      String?       @db.Text
   desc         String?       @db.Text
   isEditable   Boolean       @default(false)
+  companyId    String?
+  company      Company?      @relation(fields: [companyId], references: [id])
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   creatorId    String?

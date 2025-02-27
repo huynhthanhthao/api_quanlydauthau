@@ -20,7 +20,7 @@ import {
   quotationDetailSelect,
   publicProjectDetailSelect,
   quotationSelect,
-  projectSelectByAdmin
+  projectDetailSelectByAdmin
 } from 'responses'
 
 @Injectable()
@@ -39,6 +39,7 @@ export class ProjectService {
         code: generateCodeUUID(),
         status: ProjectStatus.PENDING,
         price: data.price,
+        companyId: data.companyId,
         address: data.address,
         desc: data.desc,
         creatorId: userId,
@@ -100,6 +101,7 @@ export class ProjectService {
           name: data.name,
           isEditable: false,
           price: data.price,
+          companyId: data.companyId,
           address: data.address,
           desc: data.desc,
           updaterId: userId,
@@ -212,7 +214,7 @@ export class ProjectService {
   async findOne(id: string) {
     return this.prisma.project.findUniqueOrThrow({
       where: { id },
-      select: projectSelectByAdmin
+      select: projectDetailSelectByAdmin
     })
   }
 

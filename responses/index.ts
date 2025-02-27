@@ -80,6 +80,14 @@ export const projectSelect: Prisma.ProjectSelect = {
       unit: true
     }
   },
+  company: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      logo: true
+    }
+  },
   creator: {
     select: {
       id: true,
@@ -98,7 +106,7 @@ export const projectSelect: Prisma.ProjectSelect = {
   }
 }
 
-export const projectSelectByAdmin: Prisma.ProjectSelect = {
+export const projectDetailSelectByAdmin: Prisma.ProjectSelect = {
   id: true,
   name: true,
   code: true,
@@ -116,6 +124,14 @@ export const projectSelectByAdmin: Prisma.ProjectSelect = {
       quantity: true,
       updatedAt: true,
       unit: true
+    }
+  },
+  company: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      logo: true
     }
   },
   creator: {
@@ -172,6 +188,14 @@ export const publicProjectSelect: Prisma.ProjectSelect = {
   address: true,
   status: true,
   isEditable: true,
+  company: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      logo: true
+    }
+  },
   updatedAt: true,
   createdAt: true,
   creator: {

@@ -10,12 +10,13 @@ export class CreateCompanyDto {
   @IsNotEmpty()
   name: string
 
-  @IsEmail()
-  email?: string
+  @IsNotEmpty()
+  @IsVietnamesePhoneNumber()
+  phone: string
 
   @IsOptional()
-  @IsVietnamesePhoneNumber()
-  phone?: string
+  @IsEmail()
+  email?: string
 
   address?: string
   wardCode?: number

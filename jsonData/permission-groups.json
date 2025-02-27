@@ -83,14 +83,6 @@
           {
             "code": "DELETE_QUOTATION",
             "name": "Xóa báo giá"
-          },
-          {
-            "code": "APPROVE_QUOTATION",
-            "name": "Duyệt báo giá"
-          },
-          {
-            "code": "REQUESTED_EDIT_QUOTATION",
-            "name": "Yêu cầu điều chỉnh báo giá"
           }
         ]
       },
@@ -201,6 +193,23 @@
           {
             "code": "ADMIN_REQUESTED_EDIT_PROJECT",
             "name": "Yêu cầu điều chỉnh dự án"
+          }
+        ]
+      },
+      {
+        "name": "Quản lý báo giá",
+        "permissions": [
+          {
+            "code": "ADMIN_APPROVE_QUOTATION",
+            "name": "Duyệt báo giá"
+          },
+          {
+            "code": "ADMIN_REQUESTED_EDIT_QUOTATION",
+            "name": "Yêu cầu điều chỉnh báo giá"
+          },
+          {
+            "code": "ADMIN_VIEW_QUOTATION",
+            "name": "Xem báo giá"
           }
         ]
       }

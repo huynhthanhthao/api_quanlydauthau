@@ -14,7 +14,6 @@ import {
   CreateQuotationDto,
   DeleteManyQuotationDto,
   FindManyQuotationDto,
-  FindManyQuotationsInMyProjectsDto,
   UpdateQuotationDto
 } from './dto/quotation.dto'
 
@@ -484,10 +483,7 @@ export class QuotationService {
     })
   }
 
-  async findManyQuotationsInMyProjects(
-    data: FindManyQuotationsInMyProjectsDto,
-    userId: string
-  ) {
+  async findMany(data: FindManyQuotationDto) {
     const {
       page,
       perPage,
@@ -512,7 +508,6 @@ export class QuotationService {
         }
       }),
       project: {
-        creatorId: userId,
         ...(projectId && { id: projectId })
       }
     }
@@ -533,13 +528,66 @@ export class QuotationService {
     )
   }
 
-  async findOneQuotationInMyProjects(id: string, userId: string) {
+  async findOne(id: string) {
+    return this.prisma.quotation.findUniqueOrThrow({
+      where: {
+        id
+      },
+      select: quotationDetailSelect
+    })
+  }
+
+  async findManyByMe(data: FindManyQuotationDto, userId: string) {
+    const {
+      page,
+      perPage,
+      keyword,
+      orderKey,
+      orderValue,
+      projectId,
+      statuses
+    } = data
+
+    const keySearch = ['name', 'desc']
+
+    const where: Prisma.QuotationWhereInput = {
+      ...(keyword && {
+        OR: keySearch.map(key => ({
+          [key]: { contains: keyword }
+        }))
+      }),
+      ...(statuses && {
+        status: {
+          in: statuses
+        }
+      }),
+      project: {
+        ...(projectId && { id: projectId })
+      },
+      creatorId: userId
+    }
+
+    return await paginate(
+      this.prisma.quotation,
+      {
+        where,
+        select: quotationSelect,
+        orderBy: {
+          [orderKey]: orderValue
+        }
+      },
+      {
+        page,
+        perPage
+      }
+    )
+  }
+
+  async findOneByMe(id: string, userId: string) {
     return this.prisma.quotation.findUniqueOrThrow({
       where: {
         id,
-        project: {
-          creatorId: userId
-        }
+        creatorId: userId
       },
       select: quotationDetailSelect
     })

@@ -27,6 +27,8 @@ export class CreateProjectDto {
 
   address?: string
 
+  companyId?: string
+
   desc?: string
 }
 
