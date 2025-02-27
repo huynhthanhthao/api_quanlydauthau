@@ -69,4 +69,15 @@ export class FindManyQuotationDto extends FindManyDto {
   projectId?: string
 }
 
+export class FindManyQuotationsInMyProjectsDto extends FindManyDto {
+  projectId?: string
+
+  @IsOptional()
+  @Transform(({ value }: TransformFnParams) => {
+    return value?.split(',').map((v: string) => v.trim())
+  })
+  @IsEnum(QuotationStatus, { each: true })
+  statuses: QuotationStatus[]
+}
+
 export class DeleteManyQuotationDto extends DeleteManyDto {}

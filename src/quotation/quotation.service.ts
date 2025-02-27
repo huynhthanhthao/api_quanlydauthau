@@ -14,6 +14,7 @@ import {
   CreateQuotationDto,
   DeleteManyQuotationDto,
   FindManyQuotationDto,
+  FindManyQuotationsInMyProjectsDto,
   UpdateQuotationDto
 } from './dto/quotation.dto'
 
@@ -477,6 +478,67 @@ export class QuotationService {
         creatorId_projectId: {
           creatorId: userId,
           projectId
+        }
+      },
+      select: quotationDetailSelect
+    })
+  }
+
+  async findManyQuotationsInMyProjects(
+    data: FindManyQuotationsInMyProjectsDto,
+    userId: string
+  ) {
+    const {
+      page,
+      perPage,
+      keyword,
+      orderKey,
+      orderValue,
+      projectId,
+      statuses
+    } = data
+
+    const keySearch = ['name', 'desc']
+
+    const where: Prisma.QuotationWhereInput = {
+      ...(keyword && {
+        OR: keySearch.map(key => ({
+          [key]: { contains: keyword }
+        }))
+      }),
+      ...(statuses && {
+        status: {
+          in: statuses
+        }
+      }),
+      project: {
+        creatorId: userId,
+        ...(projectId && { id: projectId })
+      }
+    }
+
+    return await paginate(
+      this.prisma.quotation,
+      {
+        where,
+        select: quotationSelect,
+        orderBy: {
+          [orderKey]: orderValue
+        }
+      },
+      {
+        page,
+        perPage
+      }
+    )
+  }
+
+  async findOneQuotationInMyProjects(id: string, userId: string) {
+    return this.prisma.quotation.findUniqueOrThrow({
+      where: {
+        id,
+        project: {
+          creatorId: userId
         }
       },
       select: quotationDetailSelect

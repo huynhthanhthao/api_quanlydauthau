@@ -20,7 +20,8 @@ import {
   CreateQuotationDto,
   UpdateQuotationDto,
   DeleteManyQuotationDto,
-  FindManyQuotationDto
+  FindManyQuotationDto,
+  FindManyQuotationsInMyProjectsDto
 } from './dto/quotation.dto'
 import { RolesGuard } from 'guards/role.guard'
 import { Roles } from 'guards/roles.decorator'
@@ -74,22 +75,34 @@ export class QuotationController {
     return this.quotationService.deleteManyMyQuotations(data, userId)
   }
 
+  @Get('me/in-my-projects')
+  @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(userPermissions.quotation))
+  findManyQuotationsInMyProjects(
+    @Query() data: FindManyQuotationsInMyProjectsDto,
+    @Req() request: RequestJWT
+  ) {
+    const { userId } = request
+    return this.quotationService.findManyQuotationsInMyProjects(data, userId)
+  }
+
+  @Get('me/my-project/:id')
+  @HttpCode(HttpStatus.OK)
+  @Roles(...extractPermissions(userPermissions.quotation))
+  findOneQuotationInMyProjects(
+    @Param('id') id: string,
+    @Req() request: RequestJWT
+  ) {
+    const { userId } = request
+    return this.quotationService.findOneQuotationInMyProjects(id, userId)
+  }
+
   @Get('me/:id')
   @HttpCode(HttpStatus.OK)
   @Roles(...extractPermissions(userPermissions.quotation))
   findOneMyQuotation(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.findOneMyQuotation(id, userId)
-  }
-  @Get('me/project/:projectId')
-  @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(userPermissions.quotation))
-  findOneMyQuotationInProject(
-    @Param('projectId') projectId: string,
-    @Req() request: RequestJWT
-  ) {
-    const { userId } = request
-    return this.quotationService.findOneMyQuotationInProject(projectId, userId)
   }
 
   @Get('me')
