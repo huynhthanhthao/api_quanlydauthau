@@ -48,7 +48,24 @@ export class ProjectService {
         }
       },
       include: {
-        projectItems: true
+        projectItems: true,
+        company: true,
+        creator: {
+          select: {
+            id: true,
+            name: true,
+            phone: true,
+            avatar: true,
+            company: {
+              select: {
+                id: true,
+                name: true,
+                phone: true,
+                logo: true
+              }
+            }
+          }
+        }
       }
     })
   }

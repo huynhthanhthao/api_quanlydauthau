@@ -55,7 +55,15 @@ export const unitSelect: Prisma.UnitSelect = {
       id: true,
       name: true,
       phone: true,
-      avatar: true
+      avatar: true,
+      company: {
+        select: {
+          id: true,
+          name: true,
+          phone: true,
+          logo: true
+        }
+      }
     }
   }
 }
@@ -287,7 +295,15 @@ export const quotationSelect: Prisma.QuotationSelect = {
       id: true,
       name: true,
       phone: true,
-      avatar: true
+      avatar: true,
+      company: {
+        select: {
+          id: true,
+          name: true,
+          phone: true,
+          logo: true
+        }
+      }
     }
   }
 }
@@ -333,7 +349,15 @@ export const quotationDetailSelect: Prisma.QuotationSelect = {
       id: true,
       name: true,
       phone: true,
-      avatar: true
+      avatar: true,
+      company: {
+        select: {
+          id: true,
+          name: true,
+          phone: true,
+          logo: true
+        }
+      }
     }
   }
 }
@@ -353,7 +377,14 @@ export const ticketSelect: Prisma.TicketSelect = {
       name: true,
       phone: true,
       avatar: true,
-      email: true
+      company: {
+        select: {
+          id: true,
+          name: true,
+          phone: true,
+          logo: true
+        }
+      }
     }
   },
   assignees: {
@@ -377,7 +408,15 @@ export const ticketCommentSelect: Prisma.TicketCommentSelect = {
       id: true,
       name: true,
       phone: true,
-      avatar: true
+      avatar: true,
+      company: {
+        select: {
+          id: true,
+          name: true,
+          phone: true,
+          logo: true
+        }
+      }
     }
   }
 }

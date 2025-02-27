@@ -46,9 +46,9 @@ export class QuotationController {
   @Patch(':id/approve')
   @HttpCode(HttpStatus.OK)
   @Roles(adminPermissions.quotation.approve)
-  approveQuoteInMyProject(@Param('id') id: string, @Req() request: RequestJWT) {
+  approveQuote(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.quotationService.approveQuoteInMyProject(id, userId)
+    return this.quotationService.approveQuote(id, userId)
   }
 
   @Patch(':id/request-edit')

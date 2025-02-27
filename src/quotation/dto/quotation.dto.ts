@@ -46,13 +46,16 @@ export class CreateQuotationItemDto {
   @IsNotEmpty()
   quantity: number
 
+  @IsNotEmpty()
+  projectItemId: string
+
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => CreateProductQuotationDto)
   productQuotation: CreateProductQuotationDto
 
   attachedFileIds?: string[]
-  projectItemId?: string
+
   price?: number
 }
 

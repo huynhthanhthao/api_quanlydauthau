@@ -336,12 +336,11 @@ export class QuotationService {
     })
   }
 
-  async approveQuoteInMyProject(quotationId: string, userId: string) {
+  async approveQuote(quotationId: string, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const quotation = await this.prisma.quotation.findUniqueOrThrow({
         where: {
-          id: quotationId,
-          creatorId: userId
+          id: quotationId
         },
         include: {
           project: true
@@ -350,21 +349,22 @@ export class QuotationService {
 
       if (
         !quotation.project.isEditable ||
-        ['APPROVED'].includes(quotation.project.status)
+        !['APPROVED', 'QUOTED'].includes(quotation.project.status)
       ) {
         throw new HttpException(`Không thể duyệt báo giá.`, HttpStatus.CONFLICT)
       }
 
-      this.validateQuotationStatus(
-        quotation.status,
-        ['PENDING', 'CANCELED'],
-        'duyệt'
-      )
+      // this.validateQuotationStatus(
+      //   quotation.status,
+      //   ['PENDING', 'CANCELED'],
+      //   'duyệt'
+      // )
 
       const updateProjectStatus = prisma.project.update({
         where: { id: quotation.project.id },
         data: {
           status: ProjectStatus.QUOTED,
+          isEditable: false,
           updaterId: userId
         }
       })
@@ -380,7 +380,9 @@ export class QuotationService {
         }
       })
 
-      const approveQuotation = prisma.quotation.update({
+      await Promise.all([updateProjectStatus, cancelQuotationApproved])
+
+      return await prisma.quotation.update({
         where: {
           id: quotationId
         },
@@ -389,14 +391,6 @@ export class QuotationService {
           updaterId: userId
         }
       })
-
-      await Promise.all([
-        updateProjectStatus,
-        approveQuotation,
-        cancelQuotationApproved
-      ])
-
-      return approveQuotation
     })
   }
 
@@ -429,8 +423,7 @@ export class QuotationService {
   async requestEdit(quotationId: string, userId: string) {
     const quotation = await this.prisma.quotation.findUniqueOrThrow({
       where: {
-        id: quotationId,
-        creatorId: userId
+        id: quotationId
       },
       include: {
         project: true
@@ -443,11 +436,11 @@ export class QuotationService {
       'yêu cầu chỉnh sửa'
     )
 
-    this.validateQuotationStatus(
-      quotation.status,
-      ['PENDING'],
-      'yêu cầu chỉnh sửa'
-    )
+    // this.validateQuotationStatus(
+    //   quotation.status,
+    //   ['PENDING'],
+    //   'yêu cầu chỉnh sửa'
+    // )
 
     return this.prisma.quotation.update({
       where: {
