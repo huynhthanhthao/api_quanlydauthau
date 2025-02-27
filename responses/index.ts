@@ -117,15 +117,6 @@ export const projectDetailSelectByAdmin: Prisma.ProjectSelect = {
   price: true,
   updatedAt: true,
   createdAt: true,
-  projectItems: {
-    select: {
-      id: true,
-      productCapture: true,
-      quantity: true,
-      updatedAt: true,
-      unit: true
-    }
-  },
   company: {
     select: {
       id: true,
@@ -157,7 +148,7 @@ export const projectDetailSelectByAdmin: Prisma.ProjectSelect = {
     include: {
       items: {
         include: {
-          projectItem: true
+          productQuotation: true
         }
       },
       creator: {
@@ -177,7 +168,8 @@ export const projectDetailSelectByAdmin: Prisma.ProjectSelect = {
         }
       }
     }
-  }
+  },
+  projectItems: true
 }
 
 export const publicProjectSelect: Prisma.ProjectSelect = {
@@ -226,6 +218,14 @@ export const publicProjectDetailSelect: Prisma.ProjectSelect = {
   status: true,
   updatedAt: true,
   createdAt: true,
+  company: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      logo: true
+    }
+  },
   projectItems: {
     select: {
       id: true,
@@ -322,7 +322,8 @@ export const quotationDetailSelect: Prisma.QuotationSelect = {
       desc: true,
       address: true,
       status: true,
-      updatedAt: true
+      updatedAt: true,
+      projectItems: true
     }
   },
   updatedAt: true,
