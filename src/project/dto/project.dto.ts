@@ -8,7 +8,7 @@ import {
   Min,
   ValidateNested
 } from 'class-validator'
-import { DeleteManyDto, FindManyDto } from 'utils/Common.dto'
+import { DeleteManyDto, FindManyDto } from 'utils/common.dto'
 
 export class CreateProjectDto {
   @IsNotEmpty()

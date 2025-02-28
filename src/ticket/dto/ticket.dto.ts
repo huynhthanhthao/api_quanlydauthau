@@ -2,7 +2,7 @@ import { TicketStatus, TicketType } from '.prisma/client'
 
 import { PartialType } from '@nestjs/mapped-types'
 import { IsEnum, IsNotEmpty } from 'class-validator'
-import { DeleteManyDto, FindManyDto } from 'utils/Common.dto'
+import { DeleteManyDto, FindManyDto } from 'utils/common.dto'
 
 export class CreateTicketDto {
   @IsNotEmpty()

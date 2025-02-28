@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types'
-import { DeleteManyDto, FindManyDto } from 'utils/Common.dto'
+import { DeleteManyDto, FindManyDto } from 'utils/common.dto'
 
 export class CreatePermissionGroupDto {}
 

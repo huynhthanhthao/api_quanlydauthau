@@ -4,7 +4,7 @@ import {
   DeleteManyDto,
   FindManyDto,
   IsVietnamesePhoneNumber
-} from 'utils/Common.dto'
+} from 'utils/common.dto'
 
 export class CreateCompanyDto {
   @IsNotEmpty()

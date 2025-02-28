@@ -1,7 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types'
 import { Transform, TransformFnParams } from 'class-transformer'
 import { IsOptional } from 'class-validator'
-import { DeleteManyDto, FindManyDto } from 'utils/Common.dto'
+import { DeleteManyDto, FindManyDto } from 'utils/common.dto'
 
 export class CreatePermissionDto {}
 

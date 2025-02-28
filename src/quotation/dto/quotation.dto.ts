@@ -3,7 +3,7 @@ import { PartialType } from '@nestjs/mapped-types'
 import { Transform, TransformFnParams, Type } from 'class-transformer'
 import { IsEnum, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator'
 import { CreateProductAttributeDto } from 'src/product/dto/product.dto'
-import { DeleteManyDto, FindManyDto } from 'utils/Common.dto'
+import { DeleteManyDto, FindManyDto } from 'utils/common.dto'
 
 export class CreateQuotationDto {
   @IsNotEmpty()
