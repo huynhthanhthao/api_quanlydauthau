@@ -347,10 +347,7 @@ export class QuotationService {
         }
       })
 
-      if (
-        !quotation.project.isEditable ||
-        !['APPROVED', 'QUOTED'].includes(quotation.project.status)
-      ) {
+      if (!['APPROVED', 'QUOTED'].includes(quotation.project.status)) {
         throw new HttpException(`Không thể duyệt báo giá.`, HttpStatus.CONFLICT)
       }
 

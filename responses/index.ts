@@ -339,7 +339,15 @@ export const quotationDetailSelect: Prisma.QuotationSelect = {
       address: true,
       status: true,
       updatedAt: true,
-      projectItems: true
+      projectItems: true,
+      company: {
+        select: {
+          id: true,
+          name: true,
+          phone: true,
+          logo: true
+        }
+      }
     }
   },
   updatedAt: true,
