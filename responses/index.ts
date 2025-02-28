@@ -177,7 +177,23 @@ export const projectDetailSelectByAdmin: Prisma.ProjectSelect = {
       }
     }
   },
-  projectItems: true
+  projectItems: true,
+  suppliers: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      avatar: true,
+      company: {
+        select: {
+          id: true,
+          name: true,
+          phone: true,
+          logo: true
+        }
+      }
+    }
+  }
 }
 
 export const publicProjectSelect: Prisma.ProjectSelect = {

@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common'
 import { ProjectService } from './project.service'
 import {
+  ApproveProjectDto,
   CreateProjectDto,
   DeleteManyProjectDto,
   FindManyProjectDto,
@@ -123,15 +124,25 @@ export class ProjectController {
   @Get('public/:projectId')
   @HttpCode(HttpStatus.OK)
   @Roles(userPermissions.project.viewPublic)
-  findOnePublicProject(@Param('projectId') projectId: string) {
-    return this.projectService.findOnePublicProject(projectId)
+  findOnePublicProject(
+    @Param('projectId') projectId: string,
+    @Req() request: RequestJWT
+  ) {
+    const { userId } = request
+
+    return this.projectService.findOnePublicProject(projectId, userId)
   }
 
   @Get('public')
   @HttpCode(HttpStatus.OK)
   @Roles(userPermissions.project.viewPublic)
-  findPublicProjects(@Query() data: FindManyProjectDto) {
-    return this.projectService.findPublicProjects(data)
+  findPublicProjects(
+    @Query() data: FindManyProjectDto,
+    @Req() request: RequestJWT
+  ) {
+    const { userId } = request
+
+    return this.projectService.findPublicProjects(data, userId)
   }
 
   @Patch('me/:id/cancel')
@@ -146,8 +157,15 @@ export class ProjectController {
   @Patch(':id/approve')
   @HttpCode(HttpStatus.OK)
   @Roles(adminPermissions.project.approve)
-  approve(@Param('id') id: string) {
-    return this.projectService.approve(id)
+  approve(@Param('id') id: string, @Body() data: ApproveProjectDto) {
+    return this.projectService.approve(id, data)
+  }
+
+  @Patch(':id/update-supplier')
+  @HttpCode(HttpStatus.OK)
+  @Roles(adminPermissions.project.approve)
+  updateSuppliers(@Param('id') id: string, @Body() data: ApproveProjectDto) {
+    return this.projectService.updateSuppliers(id, data)
   }
 
   @Patch(':id/request-edit')

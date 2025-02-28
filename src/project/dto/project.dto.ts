@@ -44,6 +44,11 @@ export class CreateProjectItemDto {
   unit: string
 }
 
+export class ApproveProjectDto {
+  @IsOptional()
+  userIds: string[]
+}
+
 export class UpdateProjectDto extends PartialType(CreateProjectDto) {}
 
 export class UpdateIsEditableDto {

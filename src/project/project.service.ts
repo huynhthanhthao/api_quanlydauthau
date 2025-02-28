@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { PrismaService } from 'nestjs-prisma'
 import { TrashService } from 'src/trash/trash.service'
 import {
+  ApproveProjectDto,
   CreateProjectDto,
   CreateProjectItemDto,
   DeleteManyProjectDto,
@@ -147,7 +148,7 @@ export class ProjectService {
     return this.findManyBase(conditions, data, projectSelect)
   }
 
-  async findPublicProjects(data: FindManyProjectDto) {
+  async findPublicProjects(data: FindManyProjectDto, userId: string) {
     const { statuses } = data
 
     const conditions: Prisma.ProjectWhereInput = {
@@ -163,6 +164,12 @@ export class ProjectService {
               in: statuses
             }
           })
+        },
+        {
+          OR: [
+            { suppliers: { some: { id: userId } } },
+            { suppliers: { none: {} } }
+          ]
         }
       ]
     }
@@ -170,13 +177,17 @@ export class ProjectService {
     return this.findManyBase(conditions, data, publicProjectSelect)
   }
 
-  async findOnePublicProject(id: string) {
+  async findOnePublicProject(id: string, userId: string) {
     return this.prisma.project.findUniqueOrThrow({
       where: {
         id,
         status: {
           in: ['APPROVED', 'QUOTED']
-        }
+        },
+        OR: [
+          { suppliers: { some: { id: userId } } },
+          { suppliers: { none: {} } }
+        ]
       },
       select: publicProjectDetailSelect
     })
@@ -398,10 +409,14 @@ export class ProjectService {
     })
   }
 
-  async approve(id: string) {
+  async approve(id: string, data: ApproveProjectDto) {
     const project = await this.prisma.project.findFirstOrThrow({
-      where: { id },
-      select: { status: true }
+      where: {
+        id
+      },
+      select: {
+        status: true
+      }
     })
 
     this.validateProjectStatus(project.status, ['PENDING'], 'duyệt')
@@ -409,7 +424,30 @@ export class ProjectService {
     return this.prisma.project.update({
       where: { id },
       data: {
-        status: ProjectStatus.APPROVED
+        status: ProjectStatus.APPROVED,
+        ...(data.userIds && {
+          suppliers: {
+            set: data.userIds.map(userId => ({ id: userId }))
+          }
+        })
+      },
+      include: {
+        suppliers: {
+          select: {
+            id: true,
+            name: true,
+            phone: true,
+            avatar: true,
+            company: {
+              select: {
+                id: true,
+                name: true,
+                phone: true,
+                logo: true
+              }
+            }
+          }
+        }
       }
     })
   }
@@ -487,5 +525,36 @@ export class ProjectService {
         HttpStatus.CONFLICT
       )
     }
+  }
+
+  async updateSuppliers(id: string, data: ApproveProjectDto) {
+    return this.prisma.project.update({
+      where: { id },
+      data: {
+        ...(data.userIds && {
+          suppliers: {
+            set: data.userIds.map(userId => ({ id: userId }))
+          }
+        })
+      },
+      include: {
+        suppliers: {
+          select: {
+            id: true,
+            name: true,
+            phone: true,
+            avatar: true,
+            company: {
+              select: {
+                id: true,
+                name: true,
+                phone: true,
+                logo: true
+              }
+            }
+          }
+        }
+      }
+    })
   }
 }

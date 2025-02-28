@@ -126,6 +126,7 @@ model User {
   createTrash      Trash[]         @relation("creator")
   ticketComments   TicketComment[]
   userSessions     UserSession[]
+  projects         Project[]       @relation("suppliers")
 }
 
 model Project {
@@ -143,6 +144,7 @@ model Project {
   updatedAt    DateTime      @updatedAt
   creatorId    String?
   updaterId    String?
+  suppliers    User[]        @relation("suppliers")
   creator      User?         @relation("creator", fields: [creatorId], references: [id])
   updater      User?         @relation("updater", fields: [updaterId], references: [id])
   projectItems ProjectItem[]
