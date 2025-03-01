@@ -25,7 +25,7 @@ export const adminPermissions = {
     view: 'ADMIN_VIEW_ROLE'
   },
   quotation: {
-    view: 'ADMIN_VIEW_APPROVE_QUOTATION',
+    view: 'ADMIN_VIEW_QUOTATION',
     approve: 'ADMIN_APPROVE_QUOTATION',
     requestEdit: 'ADMIN_REQUESTED_EDIT_QUOTATION'
   }
