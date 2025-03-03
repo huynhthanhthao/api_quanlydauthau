@@ -108,6 +108,8 @@ export class ProjectService {
     if (!currentProject.isEditable)
       throw new HttpException(`Không thể cập nhật dự án.`, HttpStatus.CONFLICT)
 
+    this.validateProjectStatus(currentProject.status, ['PENDING'], 'cập nhật')
+
     const projectItems = await this.getProjectItems(data.projectItems)
 
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
