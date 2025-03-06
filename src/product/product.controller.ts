@@ -22,7 +22,7 @@ import {
 import { JwtAuthGuard } from 'guards/jwt-auth.guard'
 import { RequestJWT } from 'types'
 import { RolesGuard } from 'guards/role.guard'
-import { userPermissions } from 'enums'
+import { permissions } from 'enums'
 import { Roles } from 'guards/roles.decorator'
 import { extractPermissions } from 'utils/helper'
 
@@ -31,61 +31,55 @@ import { extractPermissions } from 'utils/helper'
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Post('me')
+  @Post('')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.product.create)
-  createMyProduct(@Body() data: CreateProductDto, @Req() request: RequestJWT) {
+  @Roles(permissions.product.create)
+  create(@Body() data: CreateProductDto, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.productService.createMyProduct(data, userId)
+    return this.productService.create(data, userId)
   }
 
-  @Patch('me/:id')
+  @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.product.update)
-  updateMyProduct(
+  @Roles(permissions.product.update)
+  update(
     @Body() data: UpdateProductDto,
     @Param('id') id: string,
     @Req() request: RequestJWT
   ) {
     const { userId } = request
-    return this.productService.updateMyProduct(id, data, userId)
+    return this.productService.update(id, data, userId)
   }
 
-  @Delete('me/:id')
+  @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.product.delete)
-  deleteMyProduct(@Param('id') id: string, @Req() request: RequestJWT) {
+  @Roles(permissions.product.delete)
+  delete(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.productService.deleteMyProduct(id, userId)
+    return this.productService.delete(id, userId)
   }
 
-  @Delete('me')
+  @Delete('')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.product.delete)
-  deleteManyMyProducts(
-    @Body() data: DeleteManyProductDto,
-    @Req() request: RequestJWT
-  ) {
+  @Roles(permissions.product.delete)
+  deleteMany(@Body() data: DeleteManyProductDto, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.productService.deleteManyMyProducts(data, userId)
+    return this.productService.deleteMany(data, userId)
   }
 
-  @Get('me/:id')
+  @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(userPermissions.product))
-  findOneMyProduct(@Param('id') id: string, @Req() request: RequestJWT) {
+  @Roles(...extractPermissions(permissions.product))
+  findOne(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.productService.findOneMyProduct(id, userId)
+    return this.productService.findOne(id, userId)
   }
 
-  @Get('me')
+  @Get('')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(userPermissions.product))
-  findManyMyProducts(
-    @Query() data: FindManyProductDto,
-    @Req() request: RequestJWT
-  ) {
+  @Roles(...extractPermissions(permissions.product))
+  findMany(@Query() data: FindManyProductDto, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.productService.findManyMyProducts(data, userId)
+    return this.productService.findMany(data, userId)
   }
 }
