@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Công ty ABC",
+    "address": "123 Đường Chính, Thành phố, Quốc gia",
+    "email": "contact@abccorp.com",
+    "phone": "0988777978",
+    "tax": "123456789",
+    "website": "https://www.abccorp.com",
+    "representativeName": "Nguyễn Văn A",
+    "representativePosition": "Giám đốc điều hành"
+  },
+  {
+    "name": "Công ty XYZ",
+    "address": "456 Đường Khác, Thành phố, Quốc gia",
+    "email": "info@xyzltd.com",
+    "phone": "0986888797",
+    "tax": "987654321",
+    "website": "https://www.xyzltd.com",
+    "representativeName": "Trần Thị B",
+    "representativePosition": "Giám đốc điều hành"
+  },
+  {
+    "name": "Công ty Công Nghệ Việt",
+    "address": "789 Khu Công Nghệ, Thành phố, Quốc gia",
+    "email": "contact@congngheviet.com",
+    "phone": "0912345678",
+    "tax": "567890123",
+    "website": "https://www.congngheviet.com",
+    "representativeName": "Lê Văn C",
+    "representativePosition": "Giám đốc kỹ thuật"
+  },
+  {
+    "name": "Công ty Phát Triển Bền Vững",
+    "address": "567 Đường Xanh, Thành phố, Quốc gia",
+    "email": "info@phattrienbenvung.com",
+    "phone": "0933221100",
+    "tax": "1122334455",
+    "website": "https://www.phattrienbenvung.com",
+    "representativeName": "Phạm Thị D",
+    "representativePosition": "Giám đốc chiến lược"
+  },
+  {
+    "name": "Công ty Xây Dựng An Phát",
+    "address": "333 Đường Kiến Trúc, Thành phố, Quốc gia",
+    "email": "contact@xaydunganphat.com",
+    "phone": "0977665544",
+    "tax": "9988776655",
+    "website": "https://www.xaydunganphat.com",
+    "representativeName": "Đỗ Văn E",
+    "representativePosition": "Tổng giám đốc"
+  },
+  {
+    "name": "Công ty Đầu Tư Hoàng Gia",
+    "address": "999 Khu Đầu Tư, Thành phố, Quốc gia",
+    "email": "info@dautuhoanggia.com",
+    "phone": "0966554433",
+    "tax": "5544332211",
+    "website": "https://www.dautuhoanggia.com",
+    "representativeName": "Hoàng Minh F",
+    "representativePosition": "Chủ tịch hội đồng quản trị"
+  },
+  {
+    "name": "Công ty Phần Mềm Sáng Tạo",
+    "address": "888 Công Viên Phần Mềm, Thành phố, Quốc gia",
+    "email": "support@phanmemsangtao.com",
+    "phone": "0955443322",
+    "tax": "6677889900",
+    "website": "https://www.phanmemsangtao.com",
+    "representativeName": "Vũ Thanh G",
+    "representativePosition": "Giám đốc công nghệ"
+  }
+]

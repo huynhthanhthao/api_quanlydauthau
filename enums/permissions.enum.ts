@@ -1,37 +1,4 @@
-export const adminPermissions = {
-  user: {
-    create: 'ADMIN_CREATE_USER',
-    delete: 'ADMIN_DELETE_USER',
-    update: 'ADMIN_UPDATE_USER',
-    view: 'ADMIN_VIEW_USER'
-  },
-  company: {
-    create: 'ADMIN_CREATE_COMPANY',
-    delete: 'ADMIN_DELETE_COMPANY',
-    update: 'ADMIN_UPDATE_COMPANY',
-    view: 'ADMIN_VIEW_COMPANY'
-  },
-  project: {
-    approve: 'ADMIN_APPROVE_PROJECT',
-    requestEdit: 'ADMIN_REQUESTED_EDIT_PROJECT',
-    cancel: 'ADMIN_CANCEL_PROJECT',
-    complete: 'ADMIN_COMPLETE_PROJECT',
-    view: 'ADMIN_VIEW_PROJECT'
-  },
-  role: {
-    create: 'ADMIN_CREATE_ROLE',
-    delete: 'ADMIN_DELETE_ROLE',
-    update: 'ADMIN_UPDATE_ROLE',
-    view: 'ADMIN_VIEW_ROLE'
-  },
-  quotation: {
-    view: 'ADMIN_VIEW_QUOTATION',
-    approve: 'ADMIN_APPROVE_QUOTATION',
-    requestEdit: 'ADMIN_REQUESTED_EDIT_QUOTATION'
-  }
-}
-
-export const userPermissions = {
+export const permissions = {
   project: {
     cancel: 'CANCEL_PROJECT',
     create: 'CREATE_PROJECT',
@@ -53,12 +20,28 @@ export const userPermissions = {
   },
   user: {
     changePassword: 'CHANGE_MY_PASSWORD',
-    updateProfile: 'UPDATE_MY_PROFILE'
+    updateProfile: 'UPDATE_MY_PROFILE',
+    create: 'CREATE_USER',
+    delete: 'DELETE_USER',
+    update: 'UPDATE_USER',
+    view: 'VIEW_USER'
   },
   quotation: {
     create: 'CREATE_QUOTATION',
     delete: 'DELETE_QUOTATION',
     update: 'UPDATE_QUOTATION',
     view: 'VIEW_QUOTATION'
+  },
+  role: {
+    create: 'CREATE_ROLE',
+    delete: 'DELETE_ROLE',
+    update: 'UPDATE_ROLE',
+    view: 'VIEW_ROLE'
+  },
+  company: {
+    create: 'CREATE_COMPANY',
+    delete: 'DELETE_COMPANY',
+    update: 'UPDATE_COMPANY',
+    view: 'VIEW_COMPANY'
   }
 }

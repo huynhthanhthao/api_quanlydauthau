@@ -23,7 +23,7 @@ import {
 } from './dto/company.dto'
 import { Roles } from 'guards/roles.decorator'
 import { RolesGuard } from 'guards/role.guard'
-import { adminPermissions } from 'enums'
+import { permissions } from 'enums'
 import { extractPermissions } from 'utils/helper'
 
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -33,7 +33,7 @@ export class CompanyController {
 
   @Post('')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.company.create)
+  @Roles(permissions.company.create)
   create(@Body() data: CreateCompanyDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.companyService.create(data, userId)
@@ -41,7 +41,7 @@ export class CompanyController {
 
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.company.update)
+  @Roles(permissions.company.update)
   update(
     @Body() data: UpdateCompanyDto,
     @Param('id') id: string,
@@ -53,7 +53,7 @@ export class CompanyController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.company.delete)
+  @Roles(permissions.company.delete)
   delete(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.companyService.delete(id, userId)
@@ -61,7 +61,7 @@ export class CompanyController {
 
   @Delete('')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.company.delete)
+  @Roles(permissions.company.delete)
   deleteMany(@Body() data: DeleteManyCompanyDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.companyService.deleteMany(data, userId)
@@ -69,14 +69,14 @@ export class CompanyController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(adminPermissions.company))
+  @Roles(...extractPermissions(permissions.company))
   findOne(@Param('id') id: string) {
     return this.companyService.findOne(id)
   }
 
   @Get('')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(adminPermissions.company))
+  @Roles(...extractPermissions(permissions.company))
   findMany(@Query() data: FindManyCompanyDto) {
     return this.companyService.findMany(data)
   }

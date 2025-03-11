@@ -24,10 +24,7 @@ import {
 } from './dto/project.dto'
 import { RequestJWT } from 'types'
 import { JwtAuthGuard } from 'guards/jwt-auth.guard'
-import { adminPermissions, userPermissions } from 'enums'
 import { RolesGuard } from 'guards/role.guard'
-import { Roles } from 'guards/roles.decorator'
-import { extractPermissions } from 'utils/helper'
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('project')
@@ -36,7 +33,6 @@ export class ProjectController {
 
   @Post('me')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.project.create)
   create(@Body() data: CreateProjectDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.projectService.createMyProject(data, userId)
@@ -44,7 +40,6 @@ export class ProjectController {
 
   @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.project.update)
   updateMyProject(
     @Body() data: UpdateProjectDto,
     @Param('id') id: string,
@@ -56,7 +51,6 @@ export class ProjectController {
 
   @Delete('me/:id')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.project.delete)
   delete(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.projectService.deleteMyProject(id, userId)
@@ -64,7 +58,6 @@ export class ProjectController {
 
   @Delete('me')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.project.delete)
   deleteMany(@Body() data: DeleteManyProjectDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.projectService.deleteManyMyProjects(data, userId)
@@ -72,7 +65,6 @@ export class ProjectController {
 
   @Get('me/:projectId/quotation')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.project.view)
   findManyQuotationInMyProjects(
     @Param('projectId') projectId: string,
     @Query() data: FindManyQuotationDto,
@@ -88,7 +80,6 @@ export class ProjectController {
 
   @Get('me/:projectId/quotation/:quotationId')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.project.view)
   findOneQuotationInMyProject(
     @Param('projectId') projectId: string,
     @Param('quotationId') quotationId: string,
@@ -104,7 +95,6 @@ export class ProjectController {
 
   @Get('me/:id')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(userPermissions.project))
   findOneByMe(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.projectService.findOneByMe(id, userId)
@@ -112,7 +102,6 @@ export class ProjectController {
 
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(userPermissions.project))
   findMyProjects(
     @Query() data: FindManyProjectDto,
     @Req() request: RequestJWT
@@ -123,7 +112,6 @@ export class ProjectController {
 
   @Get('public/:projectId')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.project.viewPublic)
   findOnePublicProject(
     @Param('projectId') projectId: string,
     @Req() request: RequestJWT
@@ -135,7 +123,6 @@ export class ProjectController {
 
   @Get('public')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.project.viewPublic)
   findPublicProjects(
     @Query() data: FindManyProjectDto,
     @Req() request: RequestJWT
@@ -147,7 +134,6 @@ export class ProjectController {
 
   @Patch('me/:id/cancel')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.project.cancel)
   cancelMyProject(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
 
@@ -156,49 +142,42 @@ export class ProjectController {
 
   @Patch(':id/approve')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.project.approve)
   approve(@Param('id') id: string, @Body() data: ApproveProjectDto) {
     return this.projectService.approve(id, data)
   }
 
   @Patch(':id/update-supplier')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.project.approve)
   updateSuppliers(@Param('id') id: string, @Body() data: ApproveProjectDto) {
     return this.projectService.updateSuppliers(id, data)
   }
 
   @Patch(':id/request-edit')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.project.requestEdit)
   requestEdit(@Param('id') id: string, @Body() data: UpdateIsEditableDto) {
     return this.projectService.toggleRequestEdit(id, data)
   }
 
   @Patch(':id/cancel')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.project.cancel)
   cancel(@Param('id') id: string) {
     return this.projectService.cancel(id)
   }
 
   @Patch(':id/complete')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.project.complete)
   complete(@Param('id') id: string) {
     return this.projectService.complete(id)
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(adminPermissions.project))
   findOne(@Param('id') id: string) {
     return this.projectService.findOne(id)
   }
 
   @Get('')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(adminPermissions.project))
   findMany(@Query() data: FindManyProjectDto) {
     return this.projectService.findMany(data)
   }

@@ -50,15 +50,7 @@ export class QuotationService {
               create: {
                 name: item.productQuotation.name,
                 thumb: item.productQuotation.thumb,
-                desc: item.productQuotation.desc,
-                productAttributes: {
-                  create: item.productQuotation?.productAttributes?.map(
-                    attr => ({
-                      key: attr.key,
-                      value: attr.value
-                    })
-                  )
-                }
+                desc: item.productQuotation.desc
               }
             }
           }))
@@ -71,7 +63,6 @@ export class QuotationService {
             attachedFiles: true,
             productQuotation: {
               include: {
-                productAttributes: true,
                 quotationItems: true
               }
             }
@@ -86,106 +77,100 @@ export class QuotationService {
     data: UpdateQuotationDto,
     userId: string
   ) {
-    const quotation = await this.prisma.quotation.findFirstOrThrow({
-      where: { id },
-      include: {
-        items: {
-          include: {
-            attachedFiles: true,
-            productQuotation: {
-              include: {
-                productAttributes: true,
-                quotationItems: true
-              }
-            }
-          }
-        },
-        project: {
-          select: {
-            status: true
-          }
-        }
-      }
-    })
-
-    if (!quotation.isEditable)
-      throw new HttpException(
-        'Báo giá không thể điều chỉnh ở trạng thái hiện tại!',
-        HttpStatus.CONFLICT
-      )
-
-    this.validateProjectStatus(
-      quotation.project.status,
-      ['PENDING', 'APPROVED', 'QUOTED'],
-      'cập nhật'
-    )
-
-    return await this.prisma.$transaction(async (prisma: PrismaClient) => {
-      await prisma.quotationHistory.create({
-        data: {
-          quotationCapture: quotation,
-          quotationId: id
-        }
-      })
-
-      if (data.items)
-        await prisma.quotationItem.deleteMany({ where: { quotationId: id } })
-
-      return prisma.quotation.update({
-        where: { id },
-        data: {
-          name: data.name,
-          desc: data.desc,
-          isEditable: false,
-          items: {
-            create: data.items?.map(item => ({
-              unit: item.unit,
-              quantity: item.quantity,
-              price: item.price,
-              ...(item.projectItemId && {
-                projectItem: {
-                  connect: {
-                    id: item.projectItemId
-                  }
-                }
-              }),
-              attachedFiles: {
-                connect: item.attachedFileIds?.map(id => ({ id }))
-              },
-              productQuotation: {
-                create: {
-                  name: item.productQuotation.name,
-                  thumb: item.productQuotation.thumb,
-                  desc: item.productQuotation.desc,
-                  productAttributes: {
-                    create: item.productQuotation?.productAttributes?.map(
-                      attr => ({
-                        key: attr.key,
-                        value: attr.value
-                      })
-                    )
-                  }
-                }
-              }
-            }))
-          },
-          updaterId: userId
-        },
-        include: {
-          items: {
-            include: {
-              attachedFiles: true,
-              productQuotation: {
-                include: {
-                  productAttributes: true,
-                  quotationItems: true
-                }
-              }
-            }
-          }
-        }
-      })
-    })
+    // const quotation = await this.prisma.quotation.findFirstOrThrow({
+    //   where: { id },
+    //   include: {
+    //     items: {
+    //       include: {
+    //         attachedFiles: true,
+    //         productQuotation: {
+    //           include: {
+    //             productAttributes: true,
+    //             quotationItems: true
+    //           }
+    //         }
+    //       }
+    //     },
+    //     project: {
+    //       select: {
+    //         status: true
+    //       }
+    //     }
+    //   }
+    // })
+    // if (!quotation.isEditable)
+    //   throw new HttpException(
+    //     'Báo giá không thể điều chỉnh ở trạng thái hiện tại!',
+    //     HttpStatus.CONFLICT
+    //   )
+    // this.validateProjectStatus(
+    //   quotation.project.status,
+    //   ['PENDING', 'APPROVED', 'QUOTED'],
+    //   'cập nhật'
+    // )
+    // return await this.prisma.$transaction(async (prisma: PrismaClient) => {
+    //   await prisma.quotationHistory.create({
+    //     data: {
+    //       quotationCapture: quotation,
+    //       quotationId: id
+    //     }
+    //   })
+    //   if (data.items)
+    //     await prisma.quotationItem.deleteMany({ where: { quotationId: id } })
+    //   return prisma.quotation.update({
+    //     where: { id },
+    //     data: {
+    //       name: data.name,
+    //       desc: data.desc,
+    //       isEditable: false,
+    //       items: {
+    //         create: data.items?.map(item => ({
+    //           unit: item.unit,
+    //           quantity: item.quantity,
+    //           price: item.price,
+    //           ...(item.projectItemId && {
+    //             projectItem: {
+    //               connect: {
+    //                 id: item.projectItemId
+    //               }
+    //             }
+    //           }),
+    //           attachedFiles: {
+    //             connect: item.attachedFileIds?.map(id => ({ id }))
+    //           },
+    //           productQuotation: {
+    //             create: {
+    //               name: item.productQuotation.name,
+    //               thumb: item.productQuotation.thumb,
+    //               desc: item.productQuotation.desc,
+    //               productAttributes: {
+    //                 create: item.productQuotation?.productAttributes?.map(
+    //                   attr => ({
+    //                     key: attr.key,
+    //                     value: attr.value
+    //                   })
+    //                 )
+    //               }
+    //             }
+    //           }
+    //         }))
+    //       },
+    //       updaterId: userId
+    //     },
+    //     include: {
+    //       items: {
+    //         include: {
+    //           attachedFiles: true,
+    //           productQuotation: {
+    //             include: {
+    //               quotationItems: true
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //   })
+    // })
   }
 
   checkQuotationIsEditable(quotation: { isEditable: boolean }) {
@@ -361,7 +346,7 @@ export class QuotationService {
         where: { id: quotation.project.id },
         data: {
           status: ProjectStatus.QUOTED,
-          isEditable: false,
+          // isEditable: false,
           updaterId: userId
         }
       })

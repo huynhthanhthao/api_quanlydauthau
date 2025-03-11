@@ -22,7 +22,7 @@ import {
   UpdateTicketDto
 } from './dto/ticket.dto'
 import { RolesGuard } from 'guards/role.guard'
-import { userPermissions } from 'enums'
+import { permissions } from 'enums'
 import { Roles } from 'guards/roles.decorator'
 import { extractPermissions } from 'utils/helper'
 
@@ -33,7 +33,7 @@ export class TicketController {
 
   @Post('me')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.ticket.send)
+  @Roles(permissions.ticket.send)
   createMyTicket(@Body() data: CreateTicketDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.ticketService.createMyTicket(data, userId)
@@ -41,7 +41,7 @@ export class TicketController {
 
   @Post('me/:ticketId/comment')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.ticket.send)
+  @Roles(permissions.ticket.send)
   createMyTicketComment(
     @Body() data: CreateTicketCommentDto,
     @Req() request: RequestJWT,
@@ -53,7 +53,7 @@ export class TicketController {
 
   @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.ticket.updateStatus)
+  @Roles(permissions.ticket.updateStatus)
   updateMyTicket(
     @Body() data: UpdateTicketDto,
     @Param('id') id: string,
@@ -65,7 +65,7 @@ export class TicketController {
 
   @Get('me/:ticketId/comment')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(userPermissions.ticket))
+  @Roles(...extractPermissions(permissions.ticket))
   findManyMyTicketComments(
     @Param('ticketId') ticketId: string,
     @Query() data: FindManyTicketCommentDto,
@@ -77,7 +77,7 @@ export class TicketController {
 
   @Get('me/:id')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(userPermissions.ticket))
+  @Roles(...extractPermissions(permissions.ticket))
   findOneMyTicket(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.ticketService.findOneMyTicket(id, userId)
@@ -85,7 +85,7 @@ export class TicketController {
 
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(userPermissions.ticket))
+  @Roles(...extractPermissions(permissions.ticket))
   findManyMyTickets(
     @Query() data: FindManyTicketDto,
     @Req() request: RequestJWT

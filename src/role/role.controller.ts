@@ -21,33 +21,32 @@ import {
   DeleteManyRoleDto,
   FindManyRoleDto
 } from './dto/role.dto'
-import { RolesGuard } from 'guards/role.guard'
-import { adminPermissions } from 'enums'
+import { permissions } from 'enums'
 import { Roles } from 'guards/roles.decorator'
 import { extractPermissions } from 'utils/helper'
 
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('role')
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @Post('')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.role.create)
+  @Roles(permissions.role.create)
   create(@Body() data: CreateRoleDto) {
     return this.roleService.create(data)
   }
 
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.role.update)
+  @Roles(permissions.role.update)
   update(@Body() data: UpdateRoleDto, @Param('id') id: string) {
     return this.roleService.update(id, data)
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.role.delete)
+  @Roles(permissions.role.delete)
   delete(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.roleService.delete(id, userId)
@@ -55,7 +54,7 @@ export class RoleController {
 
   @Delete('')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.role.delete)
+  @Roles(permissions.role.delete)
   deleteMany(@Body() data: DeleteManyRoleDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.roleService.deleteMany(data, userId)
@@ -63,14 +62,14 @@ export class RoleController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(adminPermissions.role))
+  @Roles(...extractPermissions(permissions.role))
   findOne(@Param('id') id: string) {
     return this.roleService.findOne(id)
   }
 
   @Get('')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(adminPermissions.role))
+  @Roles(...extractPermissions(permissions.role))
   findMany(@Query() data: FindManyRoleDto) {
     return this.roleService.findMany(data)
   }

@@ -1,7 +1,14 @@
 import { PartialType } from '@nestjs/mapped-types'
+import { IsNotEmpty } from 'class-validator'
 import { DeleteManyDto, FindManyDto } from 'utils/common.dto'
 
-export class CreatePermissionGroupDto {}
+export class CreatePermissionGroupDto {
+  @IsNotEmpty()
+  name: string
+
+  @IsNotEmpty()
+  permissionCodes: string[]
+}
 
 export class UpdatePermissionGroupDto extends PartialType(
   CreatePermissionGroupDto

@@ -25,7 +25,7 @@ import {
 } from './dto/user.dto'
 import { RolesGuard } from 'guards/role.guard'
 import { Roles } from 'guards/roles.decorator'
-import { adminPermissions, userPermissions } from 'enums'
+import { permissions } from 'enums'
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('user')
@@ -34,14 +34,14 @@ export class UserController {
 
   @Post('')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.user.create)
+  @Roles(permissions.user.create)
   create(@Body() data: CreateUserDto) {
     return this.userService.create(data)
   }
 
   @Patch('change-my-password')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.user.changePassword)
+  @Roles(permissions.user.changePassword)
   changeMyPassword(
     @Body() data: ChangeMyPasswordDto,
     @Req() request: RequestJWT
@@ -52,14 +52,14 @@ export class UserController {
 
   @Patch('change-password/:id')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.user.update)
+  @Roles(permissions.user.update)
   changePassword(@Body() data: ChangePasswordDto, @Param('id') id: string) {
     return this.userService.changePassword(id, data)
   }
 
   @Patch('me')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.user.updateProfile)
+  @Roles(permissions.user.updateProfile)
   updateMyProfile(@Body() data: UpdateUserDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.userService.updateMyProfile(userId, data)
@@ -67,7 +67,7 @@ export class UserController {
 
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.user.update)
+  @Roles(permissions.user.update)
   update(@Body() data: UpdateUserDto, @Param('id') id: string) {
     return this.userService.update(id, data)
   }
@@ -75,10 +75,10 @@ export class UserController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @Roles(
-    adminPermissions.user.create,
-    adminPermissions.user.update,
-    adminPermissions.user.view,
-    adminPermissions.user.delete
+    permissions.user.create,
+    permissions.user.update,
+    permissions.user.view,
+    permissions.user.delete
   )
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id)
@@ -87,10 +87,10 @@ export class UserController {
   @Get('')
   @HttpCode(HttpStatus.OK)
   @Roles(
-    adminPermissions.user.create,
-    adminPermissions.user.update,
-    adminPermissions.user.view,
-    adminPermissions.user.delete
+    permissions.user.create,
+    permissions.user.update,
+    permissions.user.view,
+    permissions.user.delete
   )
   findMany(@Query() data: FindManyUserDto) {
     return this.userService.findMany(data)
@@ -99,10 +99,10 @@ export class UserController {
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   @Roles(
-    adminPermissions.user.create,
-    adminPermissions.user.update,
-    adminPermissions.user.view,
-    adminPermissions.user.delete
+    permissions.user.create,
+    permissions.user.update,
+    permissions.user.view,
+    permissions.user.delete
   )
   delete(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
@@ -112,10 +112,10 @@ export class UserController {
   @Delete('')
   @HttpCode(HttpStatus.OK)
   @Roles(
-    adminPermissions.user.create,
-    adminPermissions.user.update,
-    adminPermissions.user.view,
-    adminPermissions.user.delete
+    permissions.user.create,
+    permissions.user.update,
+    permissions.user.view,
+    permissions.user.delete
   )
   deleteMany(@Body() data: DeleteManyUserDto, @Req() request: RequestJWT) {
     const { userId } = request

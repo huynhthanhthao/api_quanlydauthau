@@ -2,7 +2,6 @@ import { QuotationStatus } from '.prisma/client'
 import { PartialType } from '@nestjs/mapped-types'
 import { Transform, TransformFnParams, Type } from 'class-transformer'
 import { IsEnum, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator'
-import { CreateProductAttributeDto } from 'src/product/dto/product.dto'
 import { DeleteManyDto, FindManyDto } from 'utils/common.dto'
 
 export class CreateQuotationDto {
@@ -23,11 +22,6 @@ export class CreateQuotationDto {
 export class CreateProductQuotationDto {
   @IsNotEmpty()
   name: string
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => CreateProductAttributeDto)
-  productAttributes: CreateProductAttributeDto[]
 
   projectItemId?: string
   thumb?: string

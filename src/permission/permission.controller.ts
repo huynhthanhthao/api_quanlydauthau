@@ -1,6 +1,17 @@
-import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Query
+} from '@nestjs/common'
 import { PermissionService } from './permission.service'
-import { FindManyPermissionDto } from './dto/permission.dto'
+import {
+  CreatePermissionDto,
+  FindManyPermissionDto
+} from './dto/permission.dto'
 
 @Controller('permission')
 export class PermissionController {
@@ -10,5 +21,11 @@ export class PermissionController {
   @HttpCode(HttpStatus.OK)
   findMany(@Query() data: FindManyPermissionDto) {
     return this.permissionService.findMany(data)
+  }
+
+  @Post('')
+  @HttpCode(HttpStatus.OK)
+  create(@Body() data: CreatePermissionDto) {
+    return this.permissionService.create(data)
   }
 }

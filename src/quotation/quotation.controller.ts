@@ -23,9 +23,6 @@ import {
   FindManyQuotationDto
 } from './dto/quotation.dto'
 import { RolesGuard } from 'guards/role.guard'
-import { Roles } from 'guards/roles.decorator'
-import { adminPermissions, userPermissions } from 'enums'
-import { extractPermissions } from 'utils/helper'
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('quotation')
@@ -34,7 +31,6 @@ export class QuotationController {
 
   @Post('me')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.quotation.create)
   createMyQuotation(
     @Body() data: CreateQuotationDto,
     @Req() request: RequestJWT
@@ -45,7 +41,6 @@ export class QuotationController {
 
   @Patch(':id/approve')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.quotation.approve)
   approveQuote(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.approveQuote(id, userId)
@@ -53,7 +48,6 @@ export class QuotationController {
 
   @Patch(':id/request-edit')
   @HttpCode(HttpStatus.OK)
-  @Roles(adminPermissions.quotation.requestEdit)
   requestEdit(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.requestEdit(id, userId)
@@ -61,7 +55,6 @@ export class QuotationController {
 
   @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.quotation.update)
   updateMyQuotations(
     @Body() data: UpdateQuotationDto,
     @Param('id') id: string,
@@ -73,7 +66,6 @@ export class QuotationController {
 
   @Delete('me/:id')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.quotation.delete)
   deleteMyQuotation(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.deleteMyQuotation(id, userId)
@@ -81,7 +73,6 @@ export class QuotationController {
 
   @Delete('me')
   @HttpCode(HttpStatus.OK)
-  @Roles(userPermissions.quotation.delete)
   deleteManyMyQuotations(
     @Body() data: DeleteManyQuotationDto,
     @Req() request: RequestJWT
@@ -92,7 +83,6 @@ export class QuotationController {
 
   @Get('me/project/:id')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(userPermissions.quotation))
   findOneMyQuotationInProject(
     @Param('id') id: string,
     @Req() request: RequestJWT
@@ -103,7 +93,6 @@ export class QuotationController {
 
   @Get('me/:id')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(userPermissions.quotation))
   findOneMyQuotation(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.findOneMyQuotation(id, userId)
@@ -111,7 +100,6 @@ export class QuotationController {
 
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(userPermissions.quotation))
   findManyQuotationInMyProjects(
     @Query() data: FindManyQuotationDto,
     @Req() request: RequestJWT
@@ -122,10 +110,6 @@ export class QuotationController {
 
   @Get(':id/history')
   @HttpCode(HttpStatus.OK)
-  @Roles(
-    ...extractPermissions(userPermissions.quotation),
-    ...extractPermissions(adminPermissions.quotation)
-  )
   getHistories(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.getHistories(id, userId)
@@ -133,7 +117,6 @@ export class QuotationController {
 
   @Get('me/:id')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(adminPermissions.quotation))
   findOneByMe(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.quotationService.findOneByMe(id, userId)
@@ -141,7 +124,6 @@ export class QuotationController {
 
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(adminPermissions.quotation))
   findManyByMe(
     @Query() data: FindManyQuotationDto,
     @Req() request: RequestJWT
@@ -152,14 +134,12 @@ export class QuotationController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(adminPermissions.quotation))
   findOne(@Param('id') id: string) {
     return this.quotationService.findOne(id)
   }
 
   @Get('')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(adminPermissions.quotation))
   findMany(@Query() data: FindManyQuotationDto) {
     return this.quotationService.findMany(data)
   }

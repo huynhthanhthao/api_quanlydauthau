@@ -32,43 +32,42 @@ export class ProjectService {
   ) {}
 
   async createMyProject(data: CreateProjectDto, userId: string) {
-    const projectItems = await this.getProjectItems(data.projectItems)
-
-    return this.prisma.project.create({
-      data: {
-        name: data.name,
-        code: generateCodeUUID(),
-        status: ProjectStatus.PENDING,
-        price: data.price,
-        companyId: data.companyId,
-        address: data.address,
-        desc: data.desc,
-        creatorId: userId,
-        projectItems: {
-          create: projectItems
-        }
-      },
-      include: {
-        projectItems: true,
-        company: true,
-        creator: {
-          select: {
-            id: true,
-            name: true,
-            phone: true,
-            avatar: true,
-            company: {
-              select: {
-                id: true,
-                name: true,
-                phone: true,
-                logo: true
-              }
-            }
-          }
-        }
-      }
-    })
+    // const projectItems = await this.getProjectItems(data.projectItems)
+    // return this.prisma.project.create({
+    //   data: {
+    //     name: data.name,
+    //     code: generateCodeUUID(),
+    //     status: ProjectStatus.PENDING,
+    //     price: data.price,
+    //     companyId: data.companyId,
+    //     address: data.address,
+    //     desc: data.desc,
+    //     creatorId: userId,
+    //     projectItems: {
+    //       create: projectItems
+    //     }
+    //   },
+    //   include: {
+    //     projectItems: true,
+    //     company: true,
+    //     creator: {
+    //       select: {
+    //         id: true,
+    //         name: true,
+    //         phone: true,
+    //         avatar: true,
+    //         company: {
+    //           select: {
+    //             id: true,
+    //             name: true,
+    //             phone: true,
+    //             logo: true
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // })
   }
 
   async getProjectItems(projectItems: CreateProjectItemDto[]) {
@@ -100,40 +99,35 @@ export class ProjectService {
   }
 
   async updateMyProject(id: string, data: UpdateProjectDto, userId: string) {
-    const currentProject = await this.prisma.project.findFirstOrThrow({
-      where: { id },
-      select: { status: true, creatorId: true, isEditable: true }
-    })
-
-    if (!currentProject.isEditable)
-      throw new HttpException(`Không thể cập nhật dự án.`, HttpStatus.CONFLICT)
-
-    this.validateProjectStatus(currentProject.status, ['PENDING'], 'cập nhật')
-
-    const projectItems = await this.getProjectItems(data.projectItems)
-
-    return await this.prisma.$transaction(async (prisma: PrismaClient) => {
-      await prisma.projectItem.deleteMany({ where: { projectId: id } })
-
-      return prisma.project.update({
-        where: { id },
-        data: {
-          name: data.name,
-          isEditable: false,
-          price: data.price,
-          companyId: data.companyId,
-          address: data.address,
-          desc: data.desc,
-          updaterId: userId,
-          projectItems: {
-            create: projectItems
-          }
-        },
-        include: {
-          projectItems: true
-        }
-      })
-    })
+    // const currentProject = await this.prisma.project.findFirstOrThrow({
+    //   where: { id },
+    //   select: { status: true, creatorId: true, isEditable: true }
+    // })
+    // if (!currentProject.isEditable)
+    //   throw new HttpException(`Không thể cập nhật dự án.`, HttpStatus.CONFLICT)
+    // this.validateProjectStatus(currentProject.status, ['PENDING'], 'cập nhật')
+    // const projectItems = await this.getProjectItems(data.projectItems)
+    // return await this.prisma.$transaction(async (prisma: PrismaClient) => {
+    //   await prisma.projectItem.deleteMany({ where: { projectId: id } })
+    //   return prisma.project.update({
+    //     where: { id },
+    //     data: {
+    //       name: data.name,
+    //       isEditable: false,
+    //       price: data.price,
+    //       companyId: data.companyId,
+    //       address: data.address,
+    //       desc: data.desc,
+    //       updaterId: userId,
+    //       projectItems: {
+    //         create: projectItems
+    //       }
+    //     },
+    //     include: {
+    //       projectItems: true
+    //     }
+    //   })
+    // })
   }
 
   async findMyProjects(data: FindManyProjectDto, userId: string) {
@@ -475,25 +469,22 @@ export class ProjectService {
   }
 
   async complete(id: string) {
-    const project = await this.prisma.project.findFirstOrThrow({
-      where: { id },
-      select: { status: true, isEditable: true }
-    })
-
-    if (project.isEditable)
-      throw new HttpException(
-        `Không thể duyệt hoàn thành dự án này.`,
-        HttpStatus.CONFLICT
-      )
-
-    this.validateProjectStatus(project.status, ['QUOTED'], 'duyệt hoàn thành')
-
-    return this.prisma.project.update({
-      where: { id },
-      data: {
-        status: ProjectStatus.COMPLETED
-      }
-    })
+    // const project = await this.prisma.project.findFirstOrThrow({
+    //   where: { id },
+    //   select: { status: true, isEditable: true }
+    // })
+    // if (project.isEditable)
+    //   throw new HttpException(
+    //     `Không thể duyệt hoàn thành dự án này.`,
+    //     HttpStatus.CONFLICT
+    //   )
+    // this.validateProjectStatus(project.status, ['QUOTED'], 'duyệt hoàn thành')
+    // return this.prisma.project.update({
+    //   where: { id },
+    //   data: {
+    //     status: ProjectStatus.COMPLETED
+    //   }
+    // })
   }
 
   async toggleRequestEdit(id: string, data: UpdateIsEditableDto) {
@@ -508,12 +499,12 @@ export class ProjectService {
       'yêu cầu chỉnh sửa'
     )
 
-    return this.prisma.project.update({
-      where: { id },
-      data: {
-        isEditable: data.isEditable
-      }
-    })
+    // return this.prisma.project.update({
+    //   where: { id },
+    //   data: {
+    //     isEditable: data.isEditable
+    //   }
+    // })
   }
 
   validateProjectStatus(

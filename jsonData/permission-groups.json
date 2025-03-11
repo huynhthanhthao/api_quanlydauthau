@@ -1,217 +1,115 @@
 [
   {
-    "name": "Chức năng mặc định",
-    "subGroups": [
+    "name": "Quản lý thông tin cá nhân",
+    "permissions": [
       {
-        "name": "Quản lý thông tin cá nhân",
-        "permissions": [
-          {
-            "code": "UPDATE_MY_PROFILE",
-            "name": "Cập nhật thông tin cá nhân"
-          },
-          {
-            "code": "CHANGE_MY_PASSWORD",
-            "name": "Đổi mật khẩu"
-          }
-        ]
+        "code": "UPDATE_MY_PROFILE",
+        "name": "Cập nhật thông tin cá nhân"
       },
       {
-        "name": "Quản lý sản phẩm",
-        "permissions": [
-          {
-            "code": "VIEW_PRODUCT",
-            "name": "Xem danh sách sản phẩm"
-          },
-          {
-            "code": "CREATE_PRODUCT",
-            "name": "Thêm mới sản phẩm"
-          },
-          {
-            "code": "UPDATE_PRODUCT",
-            "name": "Cập nhật sản phẩm"
-          },
-            {
-            "code": "DELETE_PRODUCT",
-            "name": "Xóa sản phẩm"
-          }
-        ]
-      },
-      {
-        "name": "Quản lý dự án",
-        "permissions": [
-          {
-            "code": "VIEW_PROJECT",
-            "name": "Xem danh sách dự án"
-          },
-          {
-            "code": "VIEW_PUBLIC_PROJECT",
-            "name": "Xem danh sách dự án đã được duyệt"
-          },
-          {
-            "code": "CREATE_PROJECT",
-            "name": "Thêm mới dự án"
-          },
-          {
-            "code": "UPDATE_PROJECT",
-            "name": "Cập nhật thông tin dự án"
-          },
-          {
-            "code": "DELETE_PROJECT",
-            "name": "Xóa dự án"
-          },
-          {
-            "code": "CANCEL_PROJECT",
-            "name": "Hủy dự án"
-          }
-        ]
-      },
-      {
-        "name": "Quản lý báo giá",
-        "permissions": [
-          {
-            "code": "VIEW_QUOTATION",
-            "name": "Xem danh sách báo giá"
-          },
-          {
-            "code": "CREATE_QUOTATION",
-            "name": "Tạo báo giá"
-          },
-          {
-            "code": "UPDATE_QUOTATION",
-            "name": "Cập nhật thông tin báo giá"
-          },
-          {
-            "code": "DELETE_QUOTATION",
-            "name": "Xóa báo giá"
-          }
-        ]
-      },
-      {
-        "name": "Quản lý ticket",
-        "permissions": [
-          {
-            "code": "VIEW_TICKET",
-            "name": "Xem danh sách ticket"
-          },
-          {
-            "code": "SEND_TICKET",
-            "name": "Gửi ticket"
-          },
-          {
-            "code": "UPDATE_STATUS_TICKET",
-            "name": "Cập nhật trạng thái ticket"
-          }
-        ]
+        "code": "CHANGE_MY_PASSWORD",
+        "name": "Đổi mật khẩu"
       }
     ]
   },
   {
-    "name": "Chức năng mặc định dành cho quản trị",
-    "subGroups": [
+    "name": "Quản lý sản phẩm",
+    "permissions": [
       {
-        "name": "Quản lý người dùng",
-        "permissions": [
-          {
-            "code": "ADMIN_VIEW_USER",
-            "name": "Xem danh sách người dùng"
-          },
-          {
-            "code": "ADMIN_CREATE_USER",
-            "name": "Tạo mới người dùng"
-          },
-          {
-            "code": "ADMIN_UPDATE_USER",
-            "name": "Cập nhật thông tin người dùng"
-          },
-          {
-            "code": "ADMIN_DELETE_USER",
-            "name": "Xóa người dùng"
-          }
-        ]
-      },
-       {
-        "name": "Quản lý nhóm quyền",
-        "permissions": [
-          {
-            "code": "ADMIN_VIEW_ROLE",
-            "name": "Xem danh sách nhóm quyền"
-          },
-          {
-            "code": "ADMIN_CREATE_ROLE",
-            "name": "Tạo mới nhóm quyền"
-          },
-          {
-            "code": "ADMIN_UPDATE_ROLE",
-            "name": "Cập nhật thông tin nhóm quyền"
-          },
-          {
-            "code": "ADMIN_DELETE_ROLE",
-            "name": "Xóa nhóm quyền"
-          }
-        ]
+        "code": "VIEW_PRODUCT",
+        "name": "Xem danh sách sản phẩm"
       },
       {
-        "name": "Quản lý thông tin công ty",
-        "permissions": [
-          {
-            "code": "ADMIN_VIEW_COMPANY",
-            "name": "Xem danh sách công ty"
-          },
-          {
-            "code": "ADMIN_CREATE_COMPANY",
-            "name": "Tạo mới công ty"
-          },
-          {
-            "code": "ADMIN_UPDATE_COMPANY",
-            "name": "Cập nhật thông tin công ty"
-          },
-          {
-            "code": "ADMIN_DELETE_COMPANY",
-            "name": "Xóa công ty"
-          }
-        ]
+        "code": "CREATE_PRODUCT",
+        "name": "Thêm mới sản phẩm"
       },
       {
-        "name": "Quản lý dự án",
-        "permissions": [
-          {
-            "code": "ADMIN_VIEW_PROJECT",
-            "name": "Xem danh sách dự án"
-          },
-          {
-            "code": "ADMIN_APPROVE_PROJECT",
-            "name": "Duyệt dự án"
-          },
-          {
-            "code": "ADMIN_CANCEL_PROJECT",
-            "name": "Hủy dự án"
-          },
-          {
-            "code": "ADMIN_COMPLETE_PROJECT",
-            "name": "Duyệt hoàn thành dự án"
-          },
-          {
-            "code": "ADMIN_REQUESTED_EDIT_PROJECT",
-            "name": "Yêu cầu điều chỉnh dự án"
-          }
-        ]
+        "code": "UPDATE_PRODUCT",
+        "name": "Cập nhật sản phẩm"
       },
       {
-        "name": "Quản lý báo giá",
-        "permissions": [
-          {
-            "code": "ADMIN_APPROVE_QUOTATION",
-            "name": "Duyệt báo giá"
-          },
-          {
-            "code": "ADMIN_REQUESTED_EDIT_QUOTATION",
-            "name": "Yêu cầu điều chỉnh báo giá"
-          },
-          {
-            "code": "ADMIN_VIEW_QUOTATION",
-            "name": "Xem báo giá"
-          }
-        ]
+        "code": "DELETE_PRODUCT",
+        "name": "Xóa sản phẩm"
+      }
+    ]
+  },
+  {
+    "name": "Quản lý ticket",
+    "permissions": [
+      {
+        "code": "VIEW_TICKET",
+        "name": "Xem danh sách ticket"
+      },
+      {
+        "code": "SEND_TICKET",
+        "name": "Gửi ticket"
+      },
+      {
+        "code": "UPDATE_STATUS_TICKET",
+        "name": "Cập nhật trạng thái ticket"
+      }
+    ]
+  },
+  {
+    "name": "Quản lý thông tin đơn vị",
+    "permissions": [
+      {
+        "code": "VIEW_COMPANY",
+        "name": "Xem danh sách thông tin đơn vị"
+      },
+      {
+        "code": "CREATE_COMPANY",
+        "name": "Thêm mới thông tin đơn vị"
+      },
+      {
+        "code": "UPDATE_COMPANY",
+        "name": "Cập nhật thông tin đơn vị"
+      },
+      {
+        "code": "DELETE_COMPANY",
+        "name": "Xóa thông tin đơn vị"
+      }
+    ]
+  },
+  {
+    "name": "Quản lý người dùng",
+    "permissions": [
+      {
+        "code": "VIEW_USER",
+        "name": "Xem danh sách người dùng"
+      },
+      {
+        "code": "CREATE_USER",
+        "name": "Thêm mới người dùng"
+      },
+      {
+        "code": "UPDATE_USER",
+        "name": "Cập nhật người dùng"
+      },
+      {
+        "code": "DELETE_USER",
+        "name": "Xóa người dùng"
+      }
+    ]
+  },
+  {
+    "name": "Quản lý nhóm quyền",
+    "permissions": [
+      {
+        "code": "VIEW_ROLE",
+        "name": "Xem danh sách nhóm quyền"
+      },
+      {
+        "code": "CREATE_ROLE",
+        "name": "Thêm mới nhóm quyền"
+      },
+      {
+        "code": "UPDATE_ROLE",
+        "name": "Cập nhật nhóm quyền"
+      },
+      {
+        "code": "DELETE_ROLE",
+        "name": "Xóa nhóm quyền"
       }
     ]
   }

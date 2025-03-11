@@ -1,47 +1,23 @@
 import { Prisma, QuotationStatus } from '@prisma/client'
 
-export const categorySelect: Prisma.CategorySelect = {
-  id: true,
-  name: true,
-  thumb: true,
-  desc: true,
-  updatedAt: true
-}
-
 export const productSelect: Prisma.ProductSelect = {
   id: true,
   name: true,
-  thumb: true,
   desc: true,
-  updatedAt: true,
-  productAttributes: {
-    select: {
-      key: true,
-      value: true
-    }
-  }
+  updatedAt: true
 }
 
 export const productDetailSelect: Prisma.ProductSelect = {
   id: true,
   name: true,
-  thumb: true,
   desc: true,
-  updatedAt: true,
-  productAttributes: {
-    select: {
-      key: true,
-      value: true
-    }
-  }
+  updatedAt: true
 }
 
 export const productQuotationSelect: Prisma.ProductSelect = {
   id: true,
   name: true,
-  thumb: true,
-  desc: true,
-  productAttributes: true
+  desc: true
 }
 
 export const unitSelect: Prisma.UnitSelect = {
@@ -72,10 +48,8 @@ export const projectSelect: Prisma.ProjectSelect = {
   id: true,
   name: true,
   code: true,
-  desc: true,
   address: true,
   status: true,
-  isEditable: true,
   price: true,
   updatedAt: true,
   createdAt: true,
@@ -86,14 +60,6 @@ export const projectSelect: Prisma.ProjectSelect = {
       quantity: true,
       updatedAt: true,
       unit: true
-    }
-  },
-  company: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      logo: true
     }
   },
   creator: {
@@ -118,21 +84,11 @@ export const projectDetailSelectByAdmin: Prisma.ProjectSelect = {
   id: true,
   name: true,
   code: true,
-  desc: true,
   address: true,
   status: true,
-  isEditable: true,
   price: true,
   updatedAt: true,
   createdAt: true,
-  company: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      logo: true
-    }
-  },
   creator: {
     select: {
       id: true,
@@ -200,18 +156,8 @@ export const publicProjectSelect: Prisma.ProjectSelect = {
   id: true,
   name: true,
   code: true,
-  desc: true,
   address: true,
   status: true,
-  isEditable: true,
-  company: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      logo: true
-    }
-  },
   updatedAt: true,
   createdAt: true,
   creator: {
@@ -236,20 +182,10 @@ export const publicProjectDetailSelect: Prisma.ProjectSelect = {
   id: true,
   name: true,
   code: true,
-  desc: true,
   address: true,
-  isEditable: true,
   status: true,
   updatedAt: true,
   createdAt: true,
-  company: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      logo: true
-    }
-  },
   projectItems: {
     select: {
       id: true,
@@ -298,7 +234,6 @@ export const quotationSelect: Prisma.QuotationSelect = {
       id: true,
       name: true,
       code: true,
-      desc: true,
       address: true,
       status: true,
       updatedAt: true
@@ -339,11 +274,7 @@ export const quotationDetailSelect: Prisma.QuotationSelect = {
       unit: true,
       price: true,
       attachedFiles: true,
-      productQuotation: {
-        include: {
-          productAttributes: true
-        }
-      }
+      productQuotation: true
     }
   },
   project: {
@@ -351,19 +282,10 @@ export const quotationDetailSelect: Prisma.QuotationSelect = {
       id: true,
       name: true,
       code: true,
-      desc: true,
       address: true,
       status: true,
       updatedAt: true,
-      projectItems: true,
-      company: {
-        select: {
-          id: true,
-          name: true,
-          phone: true,
-          logo: true
-        }
-      }
+      projectItems: true
     }
   },
   updatedAt: true,
@@ -634,13 +556,7 @@ export const userLoginSelect: Prisma.UserSelect = {
 export const permissionGroupSelect: Prisma.PermissionGroupSelect = {
   id: true,
   name: true,
-  subGroups: {
-    select: {
-      id: true,
-      name: true,
-      permissions: true
-    }
-  }
+  permissions: true
 }
 
 export const roleSelect: Prisma.RoleSelect = {

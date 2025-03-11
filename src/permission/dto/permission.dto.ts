@@ -1,9 +1,18 @@
 import { PartialType } from '@nestjs/mapped-types'
 import { Transform, TransformFnParams } from 'class-transformer'
-import { IsOptional } from 'class-validator'
+import { IsNotEmpty, IsOptional } from 'class-validator'
 import { DeleteManyDto, FindManyDto } from 'utils/common.dto'
 
-export class CreatePermissionDto {}
+export class CreatePermissionDto {
+  @IsNotEmpty()
+  name: string
+
+  @IsNotEmpty()
+  code: string
+
+  @IsNotEmpty()
+  permissionGroupId: string
+}
 
 export class UpdatePermissionDto extends PartialType(CreatePermissionDto) {}
 

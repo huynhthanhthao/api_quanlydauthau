@@ -55,7 +55,8 @@ model Company {
   creator                User?     @relation("creator", fields: [creatorId], references: [id])
   updater                User?     @relation("updater", fields: [updaterId], references: [id])
   users                  User[]
-  project                Project[]
+  projectInvestors       Project[] @relation("investor")
+  projectInvites         Project[] @relation("inviter")
 }
 
 model City {
@@ -90,43 +91,46 @@ model Ward {
 }
 
 model User {
-  id               String          @id @default(uuid())
-  name             String          @db.Text
-  username         String          @unique
-  password         String
-  status           UserStatus      @default(ACTIVE)
-  email            String?         @unique
-  phone            String?         @unique
-  avatar           String?         @db.Text
-  wardCode         Int?
-  ward             Ward?           @relation(fields: [wardCode], references: [code])
-  address          String?         @db.Text
-  birthDate        DateTime?
-  roleId           String?
-  role             Role?           @relation(fields: [roleId], references: [id])
-  companyId        String?
-  company          Company?        @relation(fields: [companyId], references: [id])
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-  createProjects   Project[]       @relation("creator")
-  updateProjects   Project[]       @relation("updater")
-  createProducts   Product[]       @relation("creator")
-  updateProducts   Product[]       @relation("updater")
-  createUnits      Unit[]          @relation("creator")
-  updateUnits      Unit[]          @relation("updater")
-  createQuotations Quotation[]     @relation("creator")
-  updateQuotations Quotation[]     @relation("updater")
-  createCompanies  Company[]       @relation("creator")
-  updateCompanies  Company[]       @relation("updater")
-  createTickets    Ticket[]        @relation("creator")
-  updateTickets    Ticket[]        @relation("updater")
-  assigneeTickets  Ticket[]        @relation("assigneeTicket")
-  createCategories Category[]      @relation("creator")
-  updateCategories Category[]      @relation("updater")
-  createTrash      Trash[]         @relation("creator")
-  ticketComments   TicketComment[]
-  userSessions     UserSession[]
-  projects         Project[]       @relation("suppliers")
+  id                String          @id @default(uuid())
+  name              String          @db.Text
+  username          String          @unique
+  password          String
+  status            UserStatus      @default(ACTIVE)
+  email             String?         @unique
+  phone             String?         @unique
+  avatar            String?         @db.Text
+  wardCode          Int?
+  ward              Ward?           @relation(fields: [wardCode], references: [code])
+  address           String?         @db.Text
+  birthDate         DateTime?
+  roleId            String?
+  role              Role?           @relation(fields: [roleId], references: [id])
+  companyId         String?
+  company           Company?        @relation(fields: [companyId], references: [id])
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  createProjects    Project[]       @relation("creator")
+  updateProjects    Project[]       @relation("updater")
+  createProducts    Product[]       @relation("creator")
+  updateProducts    Product[]       @relation("updater")
+  createUnits       Unit[]          @relation("creator")
+  updateUnits       Unit[]          @relation("updater")
+  createQuotations  Quotation[]     @relation("creator")
+  updateQuotations  Quotation[]     @relation("updater")
+  createCompanies   Company[]       @relation("creator")
+  updateCompanies   Company[]       @relation("updater")
+  createTickets     Ticket[]        @relation("creator")
+  updateTickets     Ticket[]        @relation("updater")
+  assigneeTickets   Ticket[]        @relation("assigneeTicket")
+  createTrash       Trash[]         @relation("creator")
+  ticketComments    TicketComment[]
+  userSessions      UserSession[]
+  createPriority    Priority[]      @relation("creator")
+  updatePriority    Priority[]      @relation("updater")
+  createEstimate    Estimate[]      @relation("creator")
+  updateEstimate    Estimate[]      @relation("updater")
+  projectSuppliers  Project[]       @relation("suppliers")
+  projectEstimators Project[]       @relation("estimators")
 }
 
 model Project {
@@ -136,19 +140,61 @@ model Project {
   price        Float
   status       ProjectStatus
   address      String?       @db.Text
-  desc         String?       @db.Text
-  isEditable   Boolean       @default(false)
-  companyId    String?
-  company      Company?      @relation(fields: [companyId], references: [id])
+  investorId   String?
+  investor     Company?      @relation("investor", fields: [investorId], references: [id])
+  inviterId    String?
+  inviter      Company?      @relation("inviter", fields: [inviterId], references: [id])
+  priorityId   String?
+  priority     Priority?     @relation(fields: [priorityId], references: [id])
+  estDeadline  DateTime
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   creatorId    String?
   updaterId    String?
   suppliers    User[]        @relation("suppliers")
+  estimators   User[]        @relation("estimators")
   creator      User?         @relation("creator", fields: [creatorId], references: [id])
   updater      User?         @relation("updater", fields: [updaterId], references: [id])
   projectItems ProjectItem[]
   quotations   Quotation[]
+  estimates    Estimate[]
+}
+
+model Estimate {
+  id               String            @id @default(uuid())
+  status           EstimateStatus
+  projectId        String?
+  project          Project?          @relation(fields: [projectId], references: [id])
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  creatorId        String?
+  updaterId        String?
+  creator          User?             @relation("creator", fields: [creatorId], references: [id])
+  updater          User?             @relation("updater", fields: [updaterId], references: [id])
+  productEstimates ProductEstimate[]
+}
+
+model ProductEstimate {
+  id         String    @id @default(uuid())
+  name       String    @db.Text
+  desc       String?   @db.Text
+  estimateId String?
+  estimate   Estimate? @relation(fields: [estimateId], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Priority {
+  id        String    @id @default(uuid())
+  name      String
+  color     String?
+  creatorId String?
+  updaterId String?
+  creator   User?     @relation("creator", fields: [creatorId], references: [id])
+  updater   User?     @relation("updater", fields: [updaterId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  projects  Project[]
 }
 
 model ProjectItem {
@@ -165,42 +211,17 @@ model ProjectItem {
   quotationItems QuotationItem[]
 }
 
-model Category {
-  id        String   @id @default(uuid())
-  name      String   @db.Text
-  thumb     String?  @db.Text
-  desc      String?  @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  creatorId String?
-  updaterId String?
-  creator   User?    @relation("creator", fields: [creatorId], references: [id])
-  updater   User?    @relation("updater", fields: [updaterId], references: [id])
-}
-
 model Product {
-  id                String             @id @default(uuid())
-  name              String             @db.Text
-  thumb             String?            @db.Text
-  desc              String?            @db.Text
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  creatorId         String?
-  updaterId         String?
-  creator           User?              @relation("creator", fields: [creatorId], references: [id])
-  updater           User?              @relation("updater", fields: [updaterId], references: [id])
-  projectItems      ProjectItem[]
-  productAttributes ProductAttribute[] @relation("productAttribute")
-}
-
-model ProductAttribute {
-  key       String
-  value     String   @db.Text
-  productId String
-  product   Product? @relation("productAttribute", fields: [productId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-
-  @@id([key, productId])
+  id           String        @id @default(uuid())
+  name         String        @db.Text
+  desc         String?       @db.Text
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  creatorId    String?
+  updaterId    String?
+  creator      User?         @relation("creator", fields: [creatorId], references: [id])
+  updater      User?         @relation("updater", fields: [updaterId], references: [id])
+  projectItems ProjectItem[]
 }
 
 model Unit {
@@ -223,7 +244,7 @@ model Quotation {
   name               String             @db.Text
   desc               String?            @db.Text
   projectId          String
-  project            Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project            Project?           @relation(fields: [projectId], references: [id], onDelete: Cascade)
   status             QuotationStatus
   items              QuotationItem[]
   isEditable         Boolean            @default(false)
@@ -290,22 +311,10 @@ model QuotationItem {
 }
 
 model ProductQuotation {
-  id                String                      @id @default(uuid())
-  name              String                      @db.Text
-  thumb             String?                     @db.Text
-  desc              String?                     @db.Text
-  quotationItems    QuotationItem[]
-  productAttributes ProductQuotationAttribute[] @relation("productQuatationAttribute")
-}
-
-model ProductQuotationAttribute {
-  key                String
-  value              String            @db.Text
-  productQuotationId String
-  productQuotation   ProductQuotation? @relation("productQuatationAttribute", fields: [productQuotationId], references: [id], onDelete: Cascade)
-  createdAt          DateTime          @default(now())
-
-  @@id([key, productQuotationId])
+  id             String          @id @default(uuid())
+  name           String          @db.Text
+  desc           String?         @db.Text
+  quotationItems QuotationItem[]
 }
 
 model Media {
@@ -335,6 +344,12 @@ model UserSession {
   user         User     @relation(fields: [userId], references: [id])
 }
 
+enum EstimateStatus {
+  PENDING
+  APPROVED
+  CANCELED
+}
+
 enum QuotationStatus {
   PENDING
   APPROVED
@@ -344,6 +359,7 @@ enum QuotationStatus {
 enum ProjectStatus {
   PENDING
   APPROVED
+  BUDGET_APPROVED
   QUOTED
   CANCELED
   COMPLETED
@@ -366,12 +382,7 @@ enum TicketStatus {
   CLOSED
 }
 
-enum ApprovalStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
 enum RequestType {
   QUOTATION
+  PROJECT
 }
