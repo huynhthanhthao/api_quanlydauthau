@@ -17,6 +17,9 @@ export class CreateTicketDto {
 
   @IsNotEmpty()
   assignee: string
+
+  @IsNotEmpty()
+  projectId: string
 }
 
 export class CreateTicketCommentDto {

@@ -34,33 +34,33 @@ export class TicketController {
   @Post('me')
   @HttpCode(HttpStatus.OK)
   @Roles(permissions.ticket.send)
-  createMyTicket(@Body() data: CreateTicketDto, @Req() request: RequestJWT) {
+  create(@Body() data: CreateTicketDto, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.ticketService.createMyTicket(data, userId)
+    return this.ticketService.create(data, userId)
   }
 
   @Post('me/:ticketId/comment')
   @HttpCode(HttpStatus.OK)
   @Roles(permissions.ticket.send)
-  createMyTicketComment(
+  createComment(
     @Body() data: CreateTicketCommentDto,
     @Req() request: RequestJWT,
     @Param('ticketId') ticketId: string
   ) {
     const { userId } = request
-    return this.ticketService.createMyTicketComment(ticketId, data, userId)
+    return this.ticketService.createComment(ticketId, data, userId)
   }
 
   @Patch('me/:id')
   @HttpCode(HttpStatus.OK)
   @Roles(permissions.ticket.updateStatus)
-  updateMyTicket(
+  update(
     @Body() data: UpdateTicketDto,
     @Param('id') id: string,
     @Req() request: RequestJWT
   ) {
     const { userId } = request
-    return this.ticketService.updateMyTicket(id, data, userId)
+    return this.ticketService.update(id, data, userId)
   }
 
   @Get('me/:ticketId/comment')
@@ -78,19 +78,16 @@ export class TicketController {
   @Get('me/:id')
   @HttpCode(HttpStatus.OK)
   @Roles(...extractPermissions(permissions.ticket))
-  findOneMyTicket(@Param('id') id: string, @Req() request: RequestJWT) {
+  findOne(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.ticketService.findOneMyTicket(id, userId)
+    return this.ticketService.findOne(id, userId)
   }
 
   @Get('me')
   @HttpCode(HttpStatus.OK)
   @Roles(...extractPermissions(permissions.ticket))
-  findManyMyTickets(
-    @Query() data: FindManyTicketDto,
-    @Req() request: RequestJWT
-  ) {
+  findMany(@Query() data: FindManyTicketDto, @Req() request: RequestJWT) {
     const { userId } = request
-    return this.ticketService.findManyMyTickets(data, userId)
+    return this.ticketService.findMany(data, userId)
   }
 }
