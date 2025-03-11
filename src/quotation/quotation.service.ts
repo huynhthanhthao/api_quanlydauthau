@@ -6,7 +6,6 @@ import {
   ProjectStatus
 } from '.prisma/client'
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
-import { quotationDetailSelect, quotationSelect } from 'responses'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import { TrashService } from 'src/trash/trash.service'
 import { paginate } from 'utils/helper'
@@ -217,7 +216,6 @@ export class QuotationService {
       this.prisma.quotation,
       {
         where,
-        select: quotationSelect,
         orderBy: {
           [orderKey]: orderValue
         }
@@ -231,8 +229,7 @@ export class QuotationService {
 
   async findOneMyQuotation(id: string, userId: string) {
     return this.prisma.quotation.findUniqueOrThrow({
-      where: { id, creatorId: userId },
-      select: quotationDetailSelect
+      where: { id, creatorId: userId }
     })
   }
 
@@ -453,8 +450,7 @@ export class QuotationService {
           creatorId: userId,
           projectId
         }
-      },
-      select: quotationDetailSelect
+      }
     })
   }
 
@@ -491,7 +487,6 @@ export class QuotationService {
       this.prisma.quotation,
       {
         where,
-        select: quotationSelect,
         orderBy: {
           [orderKey]: orderValue
         }
@@ -507,8 +502,7 @@ export class QuotationService {
     return this.prisma.quotation.findUniqueOrThrow({
       where: {
         id
-      },
-      select: quotationDetailSelect
+      }
     })
   }
 
@@ -546,7 +540,6 @@ export class QuotationService {
       this.prisma.quotation,
       {
         where,
-        select: quotationSelect,
         orderBy: {
           [orderKey]: orderValue
         }
@@ -563,8 +556,7 @@ export class QuotationService {
       where: {
         id,
         creatorId: userId
-      },
-      select: quotationDetailSelect
+      }
     })
   }
 }

@@ -5,7 +5,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { PrismaService } from 'nestjs-prisma'
 import { LoginDto } from './dto/auth.dto'
 import { TokenSign } from 'types'
-import { userLoginSelect } from 'responses'
+import { userLoginSelect } from 'responses/user.response'
 
 @Injectable()
 export class AuthService {

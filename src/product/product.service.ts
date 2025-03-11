@@ -8,9 +8,9 @@ import {
 } from './dto/product.dto'
 import { Prisma, PrismaClient } from '.prisma/client'
 import { paginate } from 'utils/helper'
-import { productSelect } from 'responses'
 import { TrashService } from 'src/trash/trash.service'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
+import { productSelect } from 'responses/product.response'
 
 @Injectable()
 export class ProductService {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { CreatedMediaDto } from './dto/media.dto'
 import { PrismaService } from 'nestjs-prisma'
-import { mediaSelect } from 'responses'
+import { mediaSelect } from 'responses/media.response'
 @Injectable()
 export class MediaService {
   constructor(private readonly prisma: PrismaService) {}

@@ -1,7 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from 'nestjs-prisma'
-import { roleSelect } from 'responses'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import { TrashService } from 'src/trash/trash.service'
 import { paginate } from 'utils/helper'
@@ -11,6 +10,7 @@ import {
   FindManyRoleDto,
   DeleteManyRoleDto
 } from './dto/role.dto'
+import { roleSelect } from 'responses/role.response'
 
 @Injectable()
 export class RoleService {

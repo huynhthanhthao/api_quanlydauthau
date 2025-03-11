@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common'
 import { Prisma } from '.prisma/client'
 import { paginate } from 'utils/helper'
 import { PrismaService } from 'nestjs-prisma'
-import { permissionGroupSelect } from 'responses'
 import {
   CreatePermissionGroupDto,
   FindManyPermissionGroupDto
 } from './dto/permission-group.dto'
+import { permissionGroupSelect } from 'responses/permission-group.response'
 
 @Injectable()
 export class PermissionGroupService {

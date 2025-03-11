@@ -9,7 +9,6 @@ import {
 import { PrismaService } from 'nestjs-prisma'
 import { TrashService } from 'src/trash/trash.service'
 import { paginate } from 'utils/helper'
-import { unitSelect } from 'responses'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import { checkExistenceDto } from 'utils/common.dto'
 
@@ -60,7 +59,6 @@ export class UnitService {
       this.prisma.unit,
       {
         where,
-        select: unitSelect,
         orderBy: {
           [orderKey]: orderValue
         }
@@ -74,8 +72,7 @@ export class UnitService {
 
   async findOneMyUnit(id: string) {
     return this.prisma.unit.findUniqueOrThrow({
-      where: { id },
-      select: unitSelect
+      where: { id }
     })
   }
 

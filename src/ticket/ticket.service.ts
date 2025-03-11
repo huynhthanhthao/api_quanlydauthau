@@ -1,7 +1,6 @@
 import { Prisma, PrismaClient, TicketStatus } from '.prisma/client'
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { PrismaService } from 'nestjs-prisma'
-import { ticketCommentSelect, ticketSelect } from 'responses'
 import { paginate } from 'utils/helper'
 import {
   CreateTicketCommentDto,
@@ -10,6 +9,7 @@ import {
   FindManyTicketDto,
   UpdateTicketDto
 } from './dto/ticket.dto'
+import { ticketSelect, ticketCommentSelect } from 'responses/ticket.response'
 
 @Injectable()
 export class TicketService {

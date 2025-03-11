@@ -2,7 +2,6 @@ import * as bcrypt from 'bcrypt'
 import { PrismaService } from 'nestjs-prisma'
 import { Prisma, PrismaClient, UserStatus } from '.prisma/client'
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
-import { userDetailSelect, userSelect } from 'responses'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import { TrashService } from 'src/trash/trash.service'
 import { paginate } from 'utils/helper'
@@ -14,6 +13,7 @@ import {
   FindManyUserDto,
   UpdateUserDto
 } from './dto/user.dto'
+import { userSelect, userDetailSelect } from 'responses/user.response'
 
 @Injectable()
 export class UserService {

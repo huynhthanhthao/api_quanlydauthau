@@ -1,7 +1,6 @@
 import { Prisma, PrismaClient } from '.prisma/client'
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from 'nestjs-prisma'
-import { companyDetailSelect, companySelect } from 'responses'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import { TrashService } from 'src/trash/trash.service'
 import {} from 'src/unit/dto/unit.dto'
@@ -12,6 +11,7 @@ import {
   FindManyCompanyDto,
   UpdateCompanyDto
 } from './dto/company.dto'
+import { companySelect, companyDetailSelect } from 'responses/company.response'
 
 @Injectable()
 export class CompanyService {
