@@ -1,5 +1,23 @@
 import { Prisma } from '.prisma/client'
 
+export const userSortSelect: Prisma.UserSelect = {
+  id: true,
+  name: true,
+  username: true,
+  email: true,
+  phone: true,
+  avatar: true,
+  address: true,
+  company: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      logo: true
+    }
+  }
+}
+
 export const userSelect: Prisma.UserSelect = {
   id: true,
   name: true,

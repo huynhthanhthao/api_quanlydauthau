@@ -6,8 +6,7 @@ export class CreatePermissionGroupDto {
   @IsNotEmpty()
   name: string
 
-  @IsNotEmpty()
-  permissionCodes: string[]
+  permissionCodes?: string[]
 }
 
 export class UpdatePermissionGroupDto extends PartialType(

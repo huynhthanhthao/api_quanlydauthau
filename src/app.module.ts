@@ -23,6 +23,7 @@ import { CompanyModule } from './company/company.module'
 import { WardModule } from './ward/ward.module'
 import { PermissionModule } from './permission/permission.module'
 import { PermissionGroupModule } from './permission-group/permission-group.module'
+import { PriorityModule } from './priority/priority.module';
 
 @Module({
   imports: [
@@ -58,7 +59,8 @@ import { PermissionGroupModule } from './permission-group/permission-group.modul
     CompanyModule,
     WardModule,
     PermissionModule,
-    PermissionGroupModule
+    PermissionGroupModule,
+    PriorityModule
   ],
   controllers: [AppController],
   providers: [AppService]

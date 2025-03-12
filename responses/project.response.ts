@@ -1,110 +1,29 @@
-import { Prisma, QuotationStatus } from '@prisma/client'
+import { Prisma } from '@prisma/client'
+import { companySelect } from './company.response'
+import { userSortSelect } from './user.response'
+import { prioritySelect } from './priority.response'
+
 export const projectSelect: Prisma.ProjectSelect = {
   id: true,
   name: true,
   code: true,
   address: true,
   status: true,
-  price: true,
+  estDeadline: true,
   updatedAt: true,
   createdAt: true,
-  creator: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      avatar: true,
-      company: {
-        select: {
-          id: true,
-          name: true,
-          phone: true,
-          logo: true
-        }
-      }
-    }
-  }
-}
-
-export const projectDetailSelectByAdmin: Prisma.ProjectSelect = {
-  id: true,
-  name: true,
-  code: true,
-  address: true,
-  status: true,
-  price: true,
-  updatedAt: true,
-  createdAt: true,
-  creator: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      avatar: true,
-      company: {
-        select: {
-          id: true,
-          name: true,
-          phone: true,
-          logo: true
-        }
-      }
-    }
+  inviter: {
+    select: companySelect
   },
-  quotations: {
-    where: {
-      status: QuotationStatus.APPROVED
-    },
-    include: {
-      items: {
-        include: {
-          productQuotation: true
-        }
-      },
-      creator: {
-        select: {
-          id: true,
-          name: true,
-          phone: true,
-          avatar: true,
-          company: {
-            select: {
-              id: true,
-              name: true,
-              phone: true,
-              logo: true
-            }
-          }
-        }
-      }
-    }
+  investor: {
+    select: companySelect
   },
-  suppliers: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      avatar: true,
-      company: {
-        select: {
-          id: true,
-          name: true,
-          phone: true,
-          logo: true
-        }
-      }
-    }
-  }
-}
-
-export const publicProjectSelect: Prisma.ProjectSelect = {
-  id: true,
-  name: true,
-  code: true,
-  address: true,
-  status: true,
-  updatedAt: true,
-  createdAt: true,
+  estimators: {
+    select: userSortSelect
+  },
+  priority: {
+    select: prioritySelect
+  },
   creator: {
     select: {
       id: true,
@@ -112,38 +31,7 @@ export const publicProjectSelect: Prisma.ProjectSelect = {
       phone: true,
       avatar: true,
       company: {
-        select: {
-          id: true,
-          name: true,
-          phone: true,
-          logo: true
-        }
-      }
-    }
-  }
-}
-
-export const publicProjectDetailSelect: Prisma.ProjectSelect = {
-  id: true,
-  name: true,
-  code: true,
-  address: true,
-  status: true,
-  updatedAt: true,
-  createdAt: true,
-  creator: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      avatar: true,
-      company: {
-        select: {
-          id: true,
-          name: true,
-          phone: true,
-          logo: true
-        }
+        select: companySelect
       }
     }
   }

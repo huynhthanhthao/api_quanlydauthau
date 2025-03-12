@@ -17,4 +17,5 @@ export interface TokenSign {
 
 export interface RequestJWT extends Request {
   userId: string
+  role: AnyObject
 }

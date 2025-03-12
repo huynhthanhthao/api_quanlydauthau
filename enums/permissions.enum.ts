@@ -1,11 +1,11 @@
 export const permissions = {
   project: {
-    cancel: 'CANCEL_PROJECT',
     create: 'CREATE_PROJECT',
     delete: 'DELETE_PROJECT',
     update: 'UPDATE_PROJECT',
     view: 'VIEW_PROJECT',
-    viewPublic: 'VIEW_PUBLIC_PROJECT'
+    approve: 'APPROVE_PROJECT',
+    requestEdit: 'REQUEST_EDIT_PROJECT'
   },
   ticket: {
     send: 'SEND_TICKET',
@@ -43,5 +43,11 @@ export const permissions = {
     delete: 'DELETE_COMPANY',
     update: 'UPDATE_COMPANY',
     view: 'VIEW_COMPANY'
+  },
+  priority: {
+    create: 'CREATE_PRIORITY',
+    delete: 'DELETE_PRIORITY',
+    update: 'UPDATE_PRIORITY',
+    view: 'VIEW_PRIORITY'
   }
 }

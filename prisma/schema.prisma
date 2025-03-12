@@ -134,31 +134,29 @@ model User {
 }
 
 model Project {
-  id           String        @id @default(uuid())
-  name         String
-  code         String        @unique
-  price        Float
-  status       ProjectStatus
-  address      String?       @db.Text
-  investorId   String?
-  investor     Company?      @relation("investor", fields: [investorId], references: [id])
-  inviterId    String?
-  inviter      Company?      @relation("inviter", fields: [inviterId], references: [id])
-  priorityId   String?
-  priority     Priority?     @relation(fields: [priorityId], references: [id])
-  estDeadline  DateTime
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  creatorId    String?
-  updaterId    String?
-  suppliers    User[]        @relation("suppliers")
-  estimators   User[]        @relation("estimators")
-  creator      User?         @relation("creator", fields: [creatorId], references: [id])
-  updater      User?         @relation("updater", fields: [updaterId], references: [id])
-  projectItems ProjectItem[]
-  quotations   Quotation[]
-  estimates    Estimate[]
-  tickets      Ticket[]
+  id          String        @id @default(uuid())
+  name        String
+  code        String        @unique
+  status      ProjectStatus
+  address     String?       @db.Text
+  investorId  String?
+  investor    Company?      @relation("investor", fields: [investorId], references: [id])
+  inviterId   String?
+  inviter     Company?      @relation("inviter", fields: [inviterId], references: [id])
+  priorityId  String?
+  priority    Priority?     @relation(fields: [priorityId], references: [id])
+  estDeadline DateTime
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  creatorId   String?
+  updaterId   String?
+  suppliers   User[]        @relation("suppliers")
+  estimators  User[]        @relation("estimators")
+  creator     User?         @relation("creator", fields: [creatorId], references: [id])
+  updater     User?         @relation("updater", fields: [updaterId], references: [id])
+  quotations  Quotation[]
+  estimates   Estimate[]
+  tickets     Ticket[]
 }
 
 model Estimate {
@@ -198,31 +196,16 @@ model Priority {
   projects  Project[]
 }
 
-model ProjectItem {
-  id             String          @id @default(uuid())
-  projectId      String
-  productId      String?
-  productCapture Json
-  unit           String          @db.Text
-  quantity       Int
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  project        Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  product        Product?        @relation(fields: [productId], references: [id])
-  quotationItems QuotationItem[]
-}
-
 model Product {
-  id           String        @id @default(uuid())
-  name         String        @db.Text
-  desc         String?       @db.Text
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  creatorId    String?
-  updaterId    String?
-  creator      User?         @relation("creator", fields: [creatorId], references: [id])
-  updater      User?         @relation("updater", fields: [updaterId], references: [id])
-  projectItems ProjectItem[]
+  id        String   @id @default(uuid())
+  name      String   @db.Text
+  desc      String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  creatorId String?
+  updaterId String?
+  creator   User?    @relation("creator", fields: [creatorId], references: [id])
+  updater   User?    @relation("updater", fields: [updaterId], references: [id])
 }
 
 model Unit {
@@ -301,7 +284,6 @@ model QuotationItem {
   id                 String            @id @default(uuid())
   quotationId        String
   projectItemId      String?
-  projectItem        ProjectItem?      @relation(fields: [projectItemId], references: [id], onDelete: Cascade)
   unit               String            @db.Text
   price              Float?
   productQuotationId String?
@@ -362,6 +344,7 @@ enum QuotationStatus {
 enum ProjectStatus {
   PENDING
   APPROVED
+  EDIT_REQUESTED
   BUDGET_APPROVED
   QUOTED
   CANCELED

@@ -112,5 +112,26 @@
         "name": "Xóa nhóm quyền"
       }
     ]
+  },
+  {
+    "name": "Quản lý độ ưu tiên",
+    "permissions": [
+      {
+        "code": "VIEW_PRIORITY",
+        "name": "Xem danh sách độ ưu tiên"
+      },
+      {
+        "code": "CREATE_PRIORITY",
+        "name": "Thêm mới độ ưu tiên"
+      },
+      {
+        "code": "UPDATE_PRIORITY",
+        "name": "Cập nhật độ ưu tiên"
+      },
+      {
+        "code": "DELETE_PRIORITY",
+        "name": "Xóa độ ưu tiên"
+      }
+    ]
   }
 ]

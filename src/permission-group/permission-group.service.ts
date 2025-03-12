@@ -35,10 +35,7 @@ export class PermissionGroupService {
   async create(data: CreatePermissionGroupDto) {
     return await this.prisma.permissionGroup.create({
       data: {
-        name: data.name,
-        permissions: {
-          connect: data.permissionCodes.map(code => ({ code }))
-        }
+        name: data.name
       }
     })
   }

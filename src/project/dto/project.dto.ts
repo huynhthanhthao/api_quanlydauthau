@@ -1,13 +1,7 @@
 import { ProjectStatus } from '.prisma/client'
 import { PartialType } from '@nestjs/mapped-types'
-import { Transform, TransformFnParams, Type } from 'class-transformer'
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  Min,
-  ValidateNested
-} from 'class-validator'
+import { Transform, TransformFnParams } from 'class-transformer'
+import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator'
 import { DeleteManyDto, FindManyDto } from 'utils/common.dto'
 
 export class CreateProjectDto {
@@ -15,33 +9,20 @@ export class CreateProjectDto {
   name: string
 
   @IsNotEmpty()
-  price: number
+  investorId: string
 
-  @ValidateNested({ each: true })
-  @Type(() => CreateProjectItemDto)
-  projectItems?: CreateProjectItemDto[]
+  @IsNotEmpty()
+  inviterId: string
+
+  estDeadline?: Date
 
   @IsOptional()
   @IsEnum(ProjectStatus)
   status?: ProjectStatus
 
+  priorityId?: string
   address?: string
-
-  companyId?: string
-
-  desc?: string
-}
-
-export class CreateProjectItemDto {
-  @IsNotEmpty()
-  productId: string
-
-  @IsNotEmpty()
-  @Min(0)
-  quantity: number
-
-  @IsNotEmpty()
-  unit: string
+  estimatorIds?: string[]
 }
 
 export class ApproveProjectDto {
