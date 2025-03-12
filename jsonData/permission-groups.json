@@ -133,5 +133,34 @@
         "name": "Xóa độ ưu tiên"
       }
     ]
+  },
+  {
+    "name": "Quản lý dự án",
+    "permissions": [
+      {
+        "code": "VIEW_PRIORITY",
+        "name": "Xem danh sách dự án"
+      },
+      {
+        "code": "CREATE_PRIORITY",
+        "name": "Thêm mới dự án"
+      },
+      {
+        "code": "UPDATE_PRIORITY",
+        "name": "Cập nhật dự án"
+      },
+      {
+        "code": "DELETE_PRIORITY",
+        "name": "Xóa dự án"
+      },
+      {
+        "code": "APPROVE_PROJECT",
+        "name": "Duyệt dự án"
+      },
+      {
+        "code": "REQUEST_EDIT_PROJECT",
+        "name": "Yêu cầu chỉnh sửa"
+      }
+    ]
   }
 ]
