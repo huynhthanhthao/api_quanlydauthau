@@ -4,6 +4,7 @@ import { projectSortSelect } from './project.response'
 export const estimateSelect: Prisma.EstimateSelect = {
   id: true,
   name: true,
+  status: true,
   project: {
     select: projectSortSelect
   },
@@ -17,6 +18,7 @@ export const estimateSelect: Prisma.EstimateSelect = {
 export const estimateDetailSelect: Prisma.EstimateSelect = {
   id: true,
   name: true,
+  status: true,
   project: {
     select: projectSortSelect
   },

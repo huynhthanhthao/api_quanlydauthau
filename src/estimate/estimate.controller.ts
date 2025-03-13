@@ -33,7 +33,7 @@ export class EstimateController {
 
   @Post('')
   @HttpCode(HttpStatus.OK)
-  @Roles(permissions.company.create)
+  @Roles(permissions.estimate.create)
   create(@Body() data: CreateEstimateDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.estimateService.create(data, userId)
@@ -41,7 +41,7 @@ export class EstimateController {
 
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(permissions.company.update)
+  @Roles(permissions.estimate.update)
   update(
     @Body() data: UpdateEstimateDto,
     @Param('id') id: string,
@@ -53,7 +53,7 @@ export class EstimateController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(permissions.company.delete)
+  @Roles(permissions.estimate.delete)
   delete(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
     return this.estimateService.delete(id, userId)
@@ -61,7 +61,7 @@ export class EstimateController {
 
   @Delete('')
   @HttpCode(HttpStatus.OK)
-  @Roles(permissions.company.delete)
+  @Roles(permissions.estimate.delete)
   deleteMany(@Body() data: DeleteManyEstimateDto, @Req() request: RequestJWT) {
     const { userId } = request
     return this.estimateService.deleteMany(data, userId)
@@ -69,7 +69,7 @@ export class EstimateController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(permissions.company))
+  @Roles(...extractPermissions(permissions.estimate))
   findOne(@Param('id') id: string, @Req() request: RequestJWT) {
     const { userId } = request
 
@@ -78,8 +78,39 @@ export class EstimateController {
 
   @Get('')
   @HttpCode(HttpStatus.OK)
-  @Roles(...extractPermissions(permissions.company))
-  findMany(@Query() data: FindManyEstimateDto) {
-    return this.estimateService.findMany(data)
+  @Roles(...extractPermissions(permissions.estimate))
+  findMany(@Query() data: FindManyEstimateDto, @Req() request: RequestJWT) {
+    const { userId, role } = request
+
+    const permissionCodes =
+      role.permissions.map(permission => permission.code) || []
+
+    return this.estimateService.findMany(data, permissionCodes, userId)
+  }
+
+  /*  Dành cho admin */
+
+  @Patch(':id/approve')
+  @HttpCode(HttpStatus.OK)
+  @Roles(permissions.estimate.approve)
+  approve(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.estimateService.approve(id, userId)
+  }
+
+  @Patch(':id/cancel')
+  @HttpCode(HttpStatus.OK)
+  @Roles(permissions.estimate.cancel)
+  cancel(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.estimateService.cancel(id, userId)
+  }
+
+  @Patch(':id/request-edit')
+  @HttpCode(HttpStatus.OK)
+  @Roles(permissions.estimate.requestEdit)
+  requestEdit(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.estimateService.requestEdit(id, userId)
   }
 }

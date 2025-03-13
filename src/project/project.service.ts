@@ -8,7 +8,7 @@ import {
   UpdateProjectDto
 } from './dto/project.dto'
 import { Prisma, PrismaClient, ProjectStatus } from '.prisma/client'
-import { generateCodeUUID, paginate } from 'utils/helper'
+import { generateCodeUUID, hasPermission, paginate } from 'utils/helper'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import { projectSelect } from 'responses/project.response'
 import { permissions } from 'enums'
@@ -142,7 +142,7 @@ export class ProjectService {
   ) {
     let conditions: Prisma.ProjectWhereInput = {}
 
-    const isAdmin = this.hasPermission(
+    const isAdmin = hasPermission(
       [permissions.project.approve],
       permissionCodes
     )
@@ -211,7 +211,7 @@ export class ProjectService {
   async findOne(id: string, permissionCodes: string[], userId: string) {
     let conditions: Prisma.ProjectWhereInput = {}
 
-    const isAdmin = this.hasPermission(
+    const isAdmin = hasPermission(
       [permissions.project.approve],
       permissionCodes
     )
@@ -246,10 +246,6 @@ export class ProjectService {
       },
       select: projectSelect
     })
-  }
-
-  hasPermission(codes: string[], permissionCodes: string[]) {
-    return codes.some(code => permissionCodes.includes(code))
   }
 
   async approve(id: string, userId: string) {

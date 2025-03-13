@@ -76,3 +76,7 @@ export function generateCodeUUID() {
 export function extractPermissions(data: AnyObject) {
   return Object.values(data)
 }
+
+export function hasPermission(codes: string[], permissionCodes: string[]) {
+  return codes.some(code => permissionCodes.includes(code))
+}

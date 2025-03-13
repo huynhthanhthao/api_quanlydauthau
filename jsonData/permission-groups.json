@@ -159,7 +159,40 @@
       },
       {
         "code": "REQUEST_EDIT_PROJECT",
-        "name": "Yêu cầu chỉnh sửa"
+        "name": "Yêu cầu điều chỉnh"
+      }
+    ]
+  },
+   {
+    "name": "Quản lý dự toán",
+    "permissions": [
+      {
+        "code": "VIEW_ESTIMATE",
+        "name": "Xem danh sách dự toán"
+      },
+      {
+        "code": "CREATE_ESTIMATE",
+        "name": "Thêm mới dự toán"
+      },
+      {
+        "code": "UPDATE_ESTIMATE",
+        "name": "Cập nhật dự toán"
+      },
+      {
+        "code": "DELETE_ESTIMATE",
+        "name": "Xóa dự toán"
+      },
+      {
+        "code": "APPROVE_ESTIMATE",
+        "name": "Duyệt dự toán"
+      },
+      {
+        "code": "CANCEL_ESTIMATE",
+        "name": "Hủy dự toán"
+      },
+       {
+        "code": "REQUEST_EDIT_ESTIMATE",
+        "name": "Yêu cầu điều chỉnh"
       }
     ]
   }

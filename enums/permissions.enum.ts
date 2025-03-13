@@ -49,5 +49,14 @@ export const permissions = {
     delete: 'DELETE_PRIORITY',
     update: 'UPDATE_PRIORITY',
     view: 'VIEW_PRIORITY'
+  },
+  estimate: {
+    create: 'CREATE_ESTIMATE',
+    delete: 'DELETE_ESTIMATE',
+    update: 'UPDATE_ESTIMATE',
+    view: 'VIEW_ESTIMATE',
+    approve: 'APPROVE_ESTIMATE',
+    cancel: 'CANCEL_ESTIMATE',
+    requestEdit: 'REQUEST_EDIT_ESTIMATE'
   }
 }

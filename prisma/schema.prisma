@@ -332,6 +332,7 @@ model UserSession {
 
 enum EstimateStatus {
   PENDING
+  EDIT_REQUESTED
   APPROVED
   CANCELED
 }

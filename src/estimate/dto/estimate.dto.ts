@@ -25,6 +25,8 @@ export class CreateProductEstimateDto {
 
 export class UpdateEstimateDto extends PartialType(CreateEstimateDto) {}
 
-export class FindManyEstimateDto extends FindManyDto {}
+export class FindManyEstimateDto extends FindManyDto {
+  projectId?: string
+}
 
 export class DeleteManyEstimateDto extends DeleteManyDto {}
