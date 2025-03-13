@@ -25,7 +25,8 @@ export class ProductService {
         name: data.name,
         desc: data.desc,
         creatorId: userId
-      }
+      },
+      select: productSelect
     })
   }
 
@@ -37,7 +38,8 @@ export class ProductService {
           name: data.name,
           desc: data.desc,
           updaterId: userId
-        }
+        },
+        select: productSelect
       })
     })
   }
@@ -110,7 +112,10 @@ export class ProductService {
 
       await this.trashService.create(dataTrash, prisma)
 
-      return prisma.product.delete({ where: { id, creatorId: userId } })
+      return prisma.product.delete({
+        where: { id, creatorId: userId },
+        select: productSelect
+      })
     })
   }
 }

@@ -35,7 +35,8 @@ export class ProjectService {
           connect: data.estimatorIds?.map(id => ({ id }))
         },
         creatorId: userId
-      }
+      },
+      select: projectSelect
     })
   }
 
@@ -62,7 +63,8 @@ export class ProjectService {
             set: data.estimatorIds?.map(id => ({ id }))
           },
           updaterId: userId
-        }
+        },
+        select: projectSelect
       })
     })
   }
@@ -82,7 +84,8 @@ export class ProjectService {
       await this.trashService.create(dataTrash, prisma)
 
       return prisma.project.delete({
-        where: { id, creatorId: userId }
+        where: { id, creatorId: userId },
+        select: projectSelect
       })
     })
   }
@@ -266,7 +269,8 @@ export class ProjectService {
       data: {
         status: ProjectStatus.APPROVED,
         updaterId: userId
-      }
+      },
+      select: projectSelect
     })
   }
 
@@ -287,7 +291,8 @@ export class ProjectService {
       data: {
         status: ProjectStatus.EDIT_REQUESTED,
         updaterId: userId
-      }
+      },
+      select: projectSelect
     })
   }
 }

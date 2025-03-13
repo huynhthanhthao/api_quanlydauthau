@@ -27,9 +27,7 @@ export class RoleService {
           connect: data.permissionCodes?.map(code => ({ code }))
         }
       },
-      include: {
-        permissions: true
-      }
+      select: roleSelect
     })
   }
 
@@ -42,9 +40,7 @@ export class RoleService {
           set: data.permissionCodes?.map(code => ({ code }))
         }
       },
-      include: {
-        permissions: true
-      }
+      select: roleSelect
     })
   }
 
@@ -120,7 +116,7 @@ export class RoleService {
 
       await this.trashService.create(dataTrash, prisma)
 
-      return prisma.role.delete({ where: { id } })
+      return prisma.role.delete({ where: { id }, select: roleSelect })
     })
   }
 }

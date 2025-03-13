@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client'
+import { userSortSelect } from './user.response'
 export const ticketSelect: Prisma.TicketSelect = {
   id: true,
   type: true,
@@ -9,29 +10,10 @@ export const ticketSelect: Prisma.TicketSelect = {
   lastCommentAt: true,
   lastComment: true,
   creator: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      avatar: true,
-      company: {
-        select: {
-          id: true,
-          name: true,
-          phone: true,
-          logo: true
-        }
-      }
-    }
+    select: userSortSelect
   },
   assignees: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      avatar: true,
-      email: true
-    }
+    select: userSortSelect
   }
 }
 
@@ -41,19 +23,6 @@ export const ticketCommentSelect: Prisma.TicketCommentSelect = {
   createdAt: true,
   ticketId: true,
   creator: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      avatar: true,
-      company: {
-        select: {
-          id: true,
-          name: true,
-          phone: true,
-          logo: true
-        }
-      }
-    }
+    select: userSortSelect
   }
 }

@@ -28,7 +28,8 @@ export class PriorityService {
         name: data.name,
         color: data.color,
         creatorId: userId
-      }
+      },
+      select: prioritySelect
     })
   }
 
@@ -39,7 +40,8 @@ export class PriorityService {
         name: data.name,
         color: data.color,
         updaterId: userId
-      }
+      },
+      select: prioritySelect
     })
   }
 
@@ -109,7 +111,7 @@ export class PriorityService {
 
       await this.trashService.create(dataTrash, prisma)
 
-      return prisma.priority.delete({ where: { id } })
+      return prisma.priority.delete({ where: { id }, select: prioritySelect })
     })
   }
 }

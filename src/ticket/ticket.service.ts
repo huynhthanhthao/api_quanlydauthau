@@ -54,26 +54,7 @@ export class TicketService {
           connect: assigneeIds.map(id => ({ id }))
         }
       },
-      include: {
-        assignees: {
-          select: {
-            id: true,
-            name: true,
-            phone: true,
-            avatar: true,
-            email: true
-          }
-        },
-        creator: {
-          select: {
-            id: true,
-            name: true,
-            phone: true,
-            avatar: true,
-            email: true
-          }
-        }
-      }
+      select: ticketSelect
     })
   }
 
@@ -162,17 +143,7 @@ export class TicketService {
       data: {
         status
       },
-      include: {
-        assignees: {
-          select: {
-            id: true,
-            name: true,
-            phone: true,
-            avatar: true,
-            email: true
-          }
-        }
-      }
+      select: ticketSelect
     })
   }
 

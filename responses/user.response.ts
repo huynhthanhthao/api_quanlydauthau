@@ -1,4 +1,5 @@
 import { Prisma } from '.prisma/client'
+import { companySelect } from './company.response'
 
 export const userSortSelect: Prisma.UserSelect = {
   id: true,
@@ -35,12 +36,7 @@ export const userSelect: Prisma.UserSelect = {
     }
   },
   company: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      logo: true
-    }
+    select: companySelect
   }
 }
 
@@ -55,12 +51,7 @@ export const userDetailSelect: Prisma.UserSelect = {
   address: true,
   birthDate: true,
   company: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      logo: true
-    }
+    select: companySelect
   },
   updatedAt: true,
   ward: {

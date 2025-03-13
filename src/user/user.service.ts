@@ -38,9 +38,7 @@ export class UserService {
         companyId: data.companyId,
         roleId: data.roleId
       },
-      include: {
-        role: true
-      }
+      select: userSelect
     })
   }
 
@@ -56,9 +54,7 @@ export class UserService {
         address: data.address,
         birthDate: data.birthDate
       },
-      include: {
-        role: true
-      }
+      select: userSelect
     })
   }
 
@@ -79,9 +75,7 @@ export class UserService {
         ...(data.password && { password: bcrypt.hashSync(data.password, 10) }),
         roleId: data.roleId
       },
-      include: {
-        role: true
-      }
+      select: userSelect
     })
   }
 
@@ -153,7 +147,7 @@ export class UserService {
 
       await this.trashService.create(dataTrash, prisma)
 
-      return prisma.user.delete({ where: { id } })
+      return prisma.user.delete({ where: { id }, select: userSelect })
     })
   }
 
@@ -181,7 +175,8 @@ export class UserService {
       where: { id: userId },
       data: {
         password: bcrypt.hashSync(data.newPassword, 10)
-      }
+      },
+      select: userSelect
     })
   }
 }

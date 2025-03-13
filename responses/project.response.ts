@@ -25,15 +25,7 @@ export const projectSelect: Prisma.ProjectSelect = {
     select: prioritySelect
   },
   creator: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      avatar: true,
-      company: {
-        select: companySelect
-      }
-    }
+    select: userSortSelect
   }
 }
 
@@ -47,14 +39,6 @@ export const projectSortSelect: Prisma.ProjectSelect = {
   updatedAt: true,
   createdAt: true,
   creator: {
-    select: {
-      id: true,
-      name: true,
-      phone: true,
-      avatar: true,
-      company: {
-        select: companySelect
-      }
-    }
+    select: userSortSelect
   }
 }

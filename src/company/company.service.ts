@@ -34,7 +34,8 @@ export class CompanyService {
         representativePosition: data.representativePosition,
         wardCode: data.wardCode,
         creatorId: userId
-      }
+      },
+      select: companySelect
     })
   }
 
@@ -52,7 +53,8 @@ export class CompanyService {
         representativeName: data.representativeName,
         representativePosition: data.representativePosition,
         updaterId: userId
-      }
+      },
+      select: companySelect
     })
   }
 
@@ -131,7 +133,7 @@ export class CompanyService {
 
       await this.trashService.create(dataTrash, prisma)
 
-      return prisma.company.delete({ where: { id } })
+      return prisma.company.delete({ where: { id }, select: companySelect })
     })
   }
 }
