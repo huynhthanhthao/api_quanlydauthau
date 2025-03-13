@@ -1,4 +1,9 @@
-import { EstimateStatus, Prisma, PrismaClient } from '.prisma/client'
+import {
+  EstimateStatus,
+  Prisma,
+  PrismaClient,
+  ProjectStatus
+} from '.prisma/client'
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { PrismaService } from 'nestjs-prisma'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
@@ -210,6 +215,12 @@ export class EstimateService {
         data: {
           status: EstimateStatus.CANCELED
         }
+      })
+
+      // Cập nhật trạng thái dự án -> Đã duyệt dự toán
+      prisma.project.update({
+        where: { id: estimate.projectId },
+        data: { status: ProjectStatus.BUDGET_APPROVED }
       })
 
       return prisma.estimate.update({
