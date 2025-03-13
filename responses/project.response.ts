@@ -36,3 +36,25 @@ export const projectSelect: Prisma.ProjectSelect = {
     }
   }
 }
+
+export const projectSortSelect: Prisma.ProjectSelect = {
+  id: true,
+  name: true,
+  code: true,
+  address: true,
+  status: true,
+  estDeadline: true,
+  updatedAt: true,
+  createdAt: true,
+  creator: {
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      avatar: true,
+      company: {
+        select: companySelect
+      }
+    }
+  }
+}

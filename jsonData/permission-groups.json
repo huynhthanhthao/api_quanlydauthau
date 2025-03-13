@@ -138,19 +138,19 @@
     "name": "Quản lý dự án",
     "permissions": [
       {
-        "code": "VIEW_PRIORITY",
+        "code": "VIEW_PROJECT",
         "name": "Xem danh sách dự án"
       },
       {
-        "code": "CREATE_PRIORITY",
+        "code": "CREATE_PROJECT",
         "name": "Thêm mới dự án"
       },
       {
-        "code": "UPDATE_PRIORITY",
+        "code": "UPDATE_PROJECT",
         "name": "Cập nhật dự án"
       },
       {
-        "code": "DELETE_PRIORITY",
+        "code": "DELETE_PROJECT",
         "name": "Xóa dự án"
       },
       {

@@ -24,6 +24,7 @@ import { WardModule } from './ward/ward.module'
 import { PermissionModule } from './permission/permission.module'
 import { PermissionGroupModule } from './permission-group/permission-group.module'
 import { PriorityModule } from './priority/priority.module';
+import { EstimateModule } from './estimate/estimate.module';
 
 @Module({
   imports: [
@@ -60,7 +61,8 @@ import { PriorityModule } from './priority/priority.module';
     WardModule,
     PermissionModule,
     PermissionGroupModule,
-    PriorityModule
+    PriorityModule,
+    EstimateModule
   ],
   controllers: [AppController],
   providers: [AppService]

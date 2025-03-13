@@ -162,7 +162,8 @@ model Project {
 model Estimate {
   id               String            @id @default(uuid())
   status           EstimateStatus
-  projectId        String?
+  projectId        String
+  name             String
   project          Project?          @relation(fields: [projectId], references: [id])
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
@@ -178,7 +179,7 @@ model ProductEstimate {
   name       String    @db.Text
   desc       String?   @db.Text
   estimateId String?
-  estimate   Estimate? @relation(fields: [estimateId], references: [id])
+  estimate   Estimate? @relation(fields: [estimateId], references: [id], onDelete: Cascade)
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 }
