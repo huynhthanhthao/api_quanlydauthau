@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Thấp",
+    "color": "#4CAF50"
+  },
+  {
+    "name": "Trung bình",
+    "color": "#FFC107"
+  },
+  {
+    "name": "Cao",
+    "color": "#FF5722"
+  }
+]

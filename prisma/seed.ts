@@ -16,10 +16,11 @@ const readJsonFile = async (filePath: string) => {
 }
 
 async function main() {
-  const [permissionGroups, roles, companies] = await Promise.all([
+  const [permissionGroups, roles, companies, priorities] = await Promise.all([
     readJsonFile('jsonData/permission-groups.json'),
     readJsonFile('jsonData/roles.json'),
-    readJsonFile('jsonData/companies.json')
+    readJsonFile('jsonData/companies.json'),
+    readJsonFile('jsonData/priority.json')
   ])
 
   // const cityPromises = provinces.map(async province => {
@@ -84,7 +85,16 @@ async function main() {
     })
   )
 
-  await Promise.all([...groupPromises, ...companyPromises])
+  const priorityPromises = priorities.map(priority =>
+    prisma.priority.create({
+      data: {
+        name: priority.name,
+        color: priority.color
+      }
+    })
+  )
+
+  await Promise.all([...groupPromises, ...companyPromises, ...priorityPromises])
 
   const rolePromises = roles.map(role =>
     prisma.role.create({
