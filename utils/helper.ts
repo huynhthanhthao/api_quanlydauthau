@@ -80,3 +80,7 @@ export function extractPermissions(data: AnyObject) {
 export function hasPermission(codes: string[], permissionCodes: string[]) {
   return codes.some(code => permissionCodes.includes(code))
 }
+
+export function normalizeDate(date: Date) {
+  return new Date(date.setHours(0, 0, 0, 0))
+}

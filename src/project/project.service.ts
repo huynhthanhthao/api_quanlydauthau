@@ -53,6 +53,7 @@ export class ProjectService {
       return prisma.project.update({
         where: { id, creatorId: userId },
         data: {
+          status: ProjectStatus.PENDING,
           name: data.name,
           address: data.address,
           investorId: data.investorId,

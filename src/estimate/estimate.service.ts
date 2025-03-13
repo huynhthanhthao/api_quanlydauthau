@@ -8,7 +8,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { PrismaService } from 'nestjs-prisma'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
 import { TrashService } from 'src/trash/trash.service'
-import { hasPermission, paginate } from 'utils/helper'
+import { hasPermission, normalizeDate, paginate } from 'utils/helper'
 import {
   CreateEstimateDto,
   UpdateEstimateDto,
@@ -29,6 +29,13 @@ export class EstimateService {
   ) {}
 
   async create(data: CreateEstimateDto, userId: string) {
+    const project = await this.prisma.project.findFirstOrThrow({
+      where: { id: data.projectId }
+    })
+
+    if (normalizeDate(project.estDeadline) < normalizeDate(new Date()))
+      throw new HttpException(`Đã quá hạn gửi dự toán!`, HttpStatus.CONFLICT)
+
     return await this.prisma.estimate.create({
       data: {
         name: data.name,
