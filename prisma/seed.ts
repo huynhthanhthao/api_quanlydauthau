@@ -111,15 +111,26 @@ async function main() {
 
   const createdRoles = await Promise.all(rolePromises)
 
-  const adminRole = createdRoles.find(role => role.name === 'Quản trị viên')
+  const users = [
+    { name: 'Quản trị viên', username: 'admin' },
+    { name: 'Giám đốc', username: 'giamdoc' },
+    { name: 'Quản lý dự án', username: 'quanlyduan01' },
+    { name: 'Quản lý dự toán', username: 'quanlydutoan01' }
+  ]
 
-  await prisma.user.create({
-    data: {
-      name: 'admin',
+  const usersData = users.map(user => {
+    const role = createdRoles.find(r => r.name === user.name)
+
+    return {
+      name: user.name,
+      username: user.username,
       password: bcrypt.hashSync('aA@123', 10),
-      username: 'admin',
-      roleId: adminRole.id
+      roleId: role?.id
     }
+  })
+
+  await prisma.user.createMany({
+    data: usersData
   })
 }
 
