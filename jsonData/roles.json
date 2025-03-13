@@ -13,11 +13,30 @@
     ]
   },
   {
+    "name": "Giám đốc",
+    "permissions": [
+      "UPDATE_MY_PROFILE", "CHANGE_MY_PASSWORD",
+      "CREATE_COMPANY", "VIEW_COMPANY", "UPDATE_COMPANY", "DELETE_COMPANY",
+      "APPROVE_PROJECT", "REQUEST_EDIT_PROJECT",
+      "APPROVE_ESTIMATE", "CANCEL_ESTIMATE", "REQUEST_EDIT_ESTIMATE",
+      "CREATE_PRIORITY", "VIEW_PRIORITY", "UPDATE_PRIORITY", "DELETE_PRIORITY"
+    ]
+  },
+  {
     "name": "Quản lý dự án",
-    "permissions": []
+    "permissions": [
+      "UPDATE_MY_PROFILE", "CHANGE_MY_PASSWORD",
+      "CREATE_PROJECT", "DELETE_PROJECT", "UPDATE_PROJECT", "VIEW_PROJECT",
+      "APPROVE_ESTIMATE", "CANCEL_ESTIMATE", "REQUEST_EDIT_ESTIMATE",
+      "CREATE_COMPANY", "VIEW_COMPANY"
+    ]
   },
   {
     "name": "Quản lý dự toán",
-    "permissions": []
+    "permissions": [
+      "UPDATE_MY_PROFILE", "CHANGE_MY_PASSWORD",
+      "CREATE_ESTIMATE", "DELETE_ESTIMATE", "UPDATE_ESTIMATE", "VIEW_ESTIMATE",
+      "CREATE_PRODUCT", "VIEW_PRODUCT", "UPDATE_PRODUCT", "DELETE_PRODUCT"
+    ]
   }
 ]
