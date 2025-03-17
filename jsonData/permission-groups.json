@@ -157,6 +157,10 @@
         "code": "APPROVE_PROJECT",
         "name": "Duyệt dự án"
       },
+         {
+        "code": "CANCEL_PROJECT",
+        "name": "Hủy dự án"
+      },
       {
         "code": "REQUEST_EDIT_PROJECT",
         "name": "Yêu cầu điều chỉnh"

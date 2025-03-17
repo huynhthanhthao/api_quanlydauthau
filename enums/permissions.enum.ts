@@ -5,7 +5,8 @@ export const permissions = {
     update: 'UPDATE_PROJECT',
     view: 'VIEW_PROJECT',
     approve: 'APPROVE_PROJECT',
-    requestEdit: 'REQUEST_EDIT_PROJECT'
+    requestEdit: 'REQUEST_EDIT_PROJECT',
+    cancel: 'CANCEL_PROJECT'
   },
   ticket: {
     send: 'SEND_TICKET',

@@ -304,4 +304,26 @@ export class ProjectService {
       select: projectSelect
     })
   }
+
+  async cancel(id: string, userId: string) {
+    const project = await this.prisma.project.findFirstOrThrow({
+      where: {
+        id
+      },
+      select: {
+        status: true
+      }
+    })
+
+    this.validateProjectStatus(project.status, ['PENDING'], 'duyệt')
+
+    return this.prisma.project.update({
+      where: { id },
+      data: {
+        status: ProjectStatus.CANCELED,
+        updaterId: userId
+      },
+      select: projectSelect
+    })
+  }
 }

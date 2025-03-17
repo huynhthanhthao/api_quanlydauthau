@@ -67,6 +67,14 @@ export class ProjectController {
     return this.projectService.requestEdit(id, userId)
   }
 
+  @Patch(':id/request-edit')
+  @HttpCode(HttpStatus.OK)
+  @Roles(permissions.project.cancel)
+  cancel(@Param('id') id: string, @Req() request: RequestJWT) {
+    const { userId } = request
+    return this.projectService.cancel(id, userId)
+  }
+
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   @Roles(permissions.project.delete)
