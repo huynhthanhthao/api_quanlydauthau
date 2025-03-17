@@ -1,7 +1,7 @@
 import { ProjectStatus } from '.prisma/client'
 import { PartialType } from '@nestjs/mapped-types'
 import { Transform, TransformFnParams } from 'class-transformer'
-import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator'
+import { IsBoolean, IsEnum, IsNotEmpty, IsOptional } from 'class-validator'
 import { DeleteManyDto, FindManyDto } from 'utils/common.dto'
 
 export class CreateProjectDto {
@@ -44,6 +44,11 @@ export class FindManyProjectDto extends FindManyDto {
   })
   @IsEnum(ProjectStatus, { each: true })
   statuses?: ProjectStatus[]
+
+  @IsOptional()
+  @Transform(({ value }: TransformFnParams) => value === 'true')
+  @IsBoolean()
+  isMyProjects?: boolean
 }
 
 export class FindManyQuotationDto extends FindManyDto {}

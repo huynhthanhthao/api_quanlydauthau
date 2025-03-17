@@ -23,8 +23,8 @@ import { CompanyModule } from './company/company.module'
 import { WardModule } from './ward/ward.module'
 import { PermissionModule } from './permission/permission.module'
 import { PermissionGroupModule } from './permission-group/permission-group.module'
-import { PriorityModule } from './priority/priority.module';
-import { EstimateModule } from './estimate/estimate.module';
+import { PriorityModule } from './priority/priority.module'
+import { EstimateModule } from './estimate/estimate.module'
 
 @Module({
   imports: [

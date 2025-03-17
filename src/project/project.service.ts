@@ -167,15 +167,24 @@ export class ProjectService {
       }
     }
 
-    return this.findManyBase(conditions, data, projectSelect)
+    return this.findManyBase(conditions, data, projectSelect, userId)
   }
 
   async findManyBase(
     conditions: Prisma.ProjectWhereInput,
     data: FindManyProjectDto,
-    select: Prisma.ProjectSelect
+    select: Prisma.ProjectSelect,
+    userId: string
   ) {
-    const { page, perPage, keyword, orderKey, orderValue, statuses } = data
+    const {
+      page,
+      perPage,
+      keyword,
+      orderKey,
+      orderValue,
+      statuses,
+      isMyProjects
+    } = data
 
     const keySearch = ['name', 'code', 'address']
 
@@ -189,6 +198,9 @@ export class ProjectService {
         status: {
           in: statuses
         }
+      }),
+      ...(isMyProjects && {
+        creatorId: userId
       }),
       ...conditions
     }
