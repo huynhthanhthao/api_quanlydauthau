@@ -31,7 +31,7 @@ import { extractPermissions } from 'utils/helper'
 export class TicketController {
   constructor(private readonly ticketService: TicketService) {}
 
-  @Post('me')
+  @Post('')
   @HttpCode(HttpStatus.OK)
   @Roles(permissions.ticket.send)
   create(@Body() data: CreateTicketDto, @Req() request: RequestJWT) {
@@ -39,7 +39,7 @@ export class TicketController {
     return this.ticketService.create(data, userId)
   }
 
-  @Post('me/:ticketId/comment')
+  @Post(':ticketId/comment')
   @HttpCode(HttpStatus.OK)
   @Roles(permissions.ticket.send)
   createComment(
@@ -51,7 +51,7 @@ export class TicketController {
     return this.ticketService.createComment(ticketId, data, userId)
   }
 
-  @Patch('me/:id')
+  @Patch(':id')
   @HttpCode(HttpStatus.OK)
   @Roles(permissions.ticket.updateStatus)
   update(
@@ -63,7 +63,7 @@ export class TicketController {
     return this.ticketService.update(id, data, userId)
   }
 
-  @Get('me/:ticketId/comment')
+  @Get(':ticketId/comment')
   @HttpCode(HttpStatus.OK)
   @Roles(...extractPermissions(permissions.ticket))
   findManyMyTicketComments(
@@ -75,7 +75,7 @@ export class TicketController {
     return this.ticketService.findManyMyTicketComments(ticketId, data, userId)
   }
 
-  @Get('me/:id')
+  @Get(':id')
   @HttpCode(HttpStatus.OK)
   @Roles(...extractPermissions(permissions.ticket))
   findOne(@Param('id') id: string, @Req() request: RequestJWT) {
@@ -83,7 +83,7 @@ export class TicketController {
     return this.ticketService.findOne(id, userId)
   }
 
-  @Get('me')
+  @Get('')
   @HttpCode(HttpStatus.OK)
   @Roles(...extractPermissions(permissions.ticket))
   findMany(@Query() data: FindManyTicketDto, @Req() request: RequestJWT) {
