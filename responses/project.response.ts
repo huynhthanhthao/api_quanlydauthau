@@ -43,6 +43,11 @@ export const projectForEstimatorSelect = (
   address: true,
   status: true,
   estDeadline: true,
+  estimates: {
+    where: {
+      creatorId: userId
+    }
+  },
   updatedAt: true,
   createdAt: true,
   inviter: {

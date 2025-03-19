@@ -172,6 +172,8 @@ model Estimate {
   creator          User?             @relation("creator", fields: [creatorId], references: [id])
   updater          User?             @relation("updater", fields: [updaterId], references: [id])
   productEstimates ProductEstimate[]
+
+  @@index([projectId, id])
 }
 
 model ProductEstimate {
