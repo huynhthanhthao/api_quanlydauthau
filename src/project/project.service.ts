@@ -10,7 +10,10 @@ import {
 import { Prisma, PrismaClient, ProjectStatus } from '.prisma/client'
 import { generateCodeUUID, hasPermission, paginate } from 'utils/helper'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
-import { projectSelect } from 'responses/project.response'
+import {
+  projectForEstimatorSelect,
+  projectSelect
+} from 'responses/project.response'
 import { permissions } from 'enums'
 
 @Injectable()
@@ -142,6 +145,7 @@ export class ProjectService {
     userId: string
   ) {
     let conditions: Prisma.ProjectWhereInput = {}
+    let select = {}
 
     const isAdmin = hasPermission(
       [permissions.project.approve],
@@ -150,9 +154,12 @@ export class ProjectService {
 
     if (isAdmin) {
       conditions = {}
+      select = projectSelect
     }
 
     if (!isAdmin) {
+      select = projectForEstimatorSelect(userId)
+
       conditions = {
         OR: [
           {
@@ -167,7 +174,7 @@ export class ProjectService {
       }
     }
 
-    return this.findManyBase(conditions, data, projectSelect, userId)
+    return this.findManyBase(conditions, data, select, userId)
   }
 
   async findManyBase(

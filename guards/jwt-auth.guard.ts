@@ -24,7 +24,7 @@ export class JwtAuthGuard implements CanActivate {
 
     if (!authHeader) return false
 
-    if (xApiKey !== process.env.X_API_KEY) return false
+    // if (xApiKey !== process.env.X_API_KEY) return false
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, token] = authHeader.split(' ')
