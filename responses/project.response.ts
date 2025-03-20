@@ -28,7 +28,7 @@ export const projectSelect = (userId?: string): Prisma.ProjectSelect => ({
   _count: {
     select: {
       estimates: {
-        ...(userId ? { where: { creatorId: userId } } : {})
+        ...(userId && { where: { creatorId: userId } })
       }
     }
   },
@@ -45,7 +45,7 @@ export const projectDetailSelect = (userId?: string): Prisma.ProjectSelect => ({
   status: true,
   estDeadline: true,
   estimates: {
-    ...(userId ? { where: { creatorId: userId } } : {}),
+    ...(userId && { where: { creatorId: userId } }),
     select: estimateSelect
   },
   updatedAt: true,
