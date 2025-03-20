@@ -44,12 +44,12 @@ export const projectDetailSelect = (userId?: string): Prisma.ProjectSelect => ({
   address: true,
   status: true,
   estDeadline: true,
+  updatedAt: true,
+  createdAt: true,
   estimates: {
     ...(userId && { where: { creatorId: userId } }),
     select: estimateSelect
   },
-  updatedAt: true,
-  createdAt: true,
   inviter: {
     select: companySelect
   },
@@ -61,6 +61,13 @@ export const projectDetailSelect = (userId?: string): Prisma.ProjectSelect => ({
   },
   priority: {
     select: prioritySelect
+  },
+  _count: {
+    select: {
+      estimates: {
+        ...(userId && { where: { creatorId: userId } })
+      }
+    }
   },
   creator: {
     select: userSortSelect
