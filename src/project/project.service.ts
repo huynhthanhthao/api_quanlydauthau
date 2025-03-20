@@ -10,10 +10,7 @@ import {
 import { Prisma, PrismaClient, ProjectStatus } from '.prisma/client'
 import { generateCodeUUID, hasPermission, paginate } from 'utils/helper'
 import { CreateManyTrashDto, CreateTrashDto } from 'src/trash/dto/trash.dto'
-import {
-  projectForEstimatorSelect,
-  projectSelect
-} from 'responses/project.response'
+import { projectDetailSelect, projectSelect } from 'responses/project.response'
 import { permissions } from 'enums'
 
 @Injectable()
@@ -39,7 +36,7 @@ export class ProjectService {
         },
         creatorId: userId
       },
-      select: projectSelect
+      select: projectSelect(userId)
     })
   }
 
@@ -68,7 +65,7 @@ export class ProjectService {
           },
           updaterId: userId
         },
-        select: projectSelect
+        select: projectSelect(userId)
       })
     })
   }
@@ -89,7 +86,7 @@ export class ProjectService {
 
       return prisma.project.delete({
         where: { id, creatorId: userId },
-        select: projectSelect
+        select: projectSelect(userId)
       })
     })
   }
@@ -99,7 +96,10 @@ export class ProjectService {
       const dataProject: CreateManyTrashDto = {
         ids: data.ids,
         userId,
-        modelName: 'Project'
+        modelName: 'Project',
+        include: {
+          estimates: true
+        }
       }
 
       const projects = await prisma.project.findMany({
@@ -145,7 +145,7 @@ export class ProjectService {
     userId: string
   ) {
     let conditions: Prisma.ProjectWhereInput = {}
-    let select = {}
+    let select = projectSelect(userId)
 
     const isAdmin = hasPermission(
       [permissions.project.approve],
@@ -154,12 +154,10 @@ export class ProjectService {
 
     if (isAdmin) {
       conditions = {}
-      select = projectSelect
+      select = projectSelect()
     }
 
     if (!isAdmin) {
-      select = projectForEstimatorSelect(userId)
-
       conditions = {
         OR: [
           {
@@ -230,6 +228,7 @@ export class ProjectService {
 
   async findOne(id: string, permissionCodes: string[], userId: string) {
     let conditions: Prisma.ProjectWhereInput = {}
+    let select = projectDetailSelect(userId)
 
     const isAdmin = hasPermission(
       [permissions.project.approve],
@@ -238,6 +237,7 @@ export class ProjectService {
 
     if (isAdmin) {
       conditions = {}
+      select = projectDetailSelect()
     }
 
     if (!isAdmin) {
@@ -264,7 +264,7 @@ export class ProjectService {
           }
         ]
       },
-      select: projectSelect
+      select: select
     })
   }
 
@@ -286,7 +286,7 @@ export class ProjectService {
         status: ProjectStatus.APPROVED,
         updaterId: userId
       },
-      select: projectSelect
+      select: projectSelect()
     })
   }
 
@@ -308,7 +308,7 @@ export class ProjectService {
         status: ProjectStatus.EDIT_REQUESTED,
         updaterId: userId
       },
-      select: projectSelect
+      select: projectSelect()
     })
   }
 
@@ -330,7 +330,7 @@ export class ProjectService {
         status: ProjectStatus.CANCELED,
         updaterId: userId
       },
-      select: projectSelect
+      select: projectSelect()
     })
   }
 }

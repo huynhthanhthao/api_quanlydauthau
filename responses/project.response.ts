@@ -2,8 +2,9 @@ import { Prisma } from '@prisma/client'
 import { companySelect } from './company.response'
 import { userSortSelect } from './user.response'
 import { prioritySelect } from './priority.response'
+import { estimateSelect } from './estimate.response'
 
-export const projectSelect: Prisma.ProjectSelect = {
+export const projectSelect = (userId?: string): Prisma.ProjectSelect => ({
   id: true,
   name: true,
   code: true,
@@ -24,19 +25,19 @@ export const projectSelect: Prisma.ProjectSelect = {
   priority: {
     select: prioritySelect
   },
-  creator: {
-    select: userSortSelect
-  },
   _count: {
     select: {
-      estimates: true
+      estimates: {
+        ...(userId ? { where: { creatorId: userId } } : {})
+      }
     }
+  },
+  creator: {
+    select: userSortSelect
   }
-}
+})
 
-export const projectForEstimatorSelect = (
-  userId: string
-): Prisma.ProjectSelect => ({
+export const projectDetailSelect = (userId?: string): Prisma.ProjectSelect => ({
   id: true,
   name: true,
   code: true,
@@ -44,9 +45,8 @@ export const projectForEstimatorSelect = (
   status: true,
   estDeadline: true,
   estimates: {
-    where: {
-      creatorId: userId
-    }
+    ...(userId ? { where: { creatorId: userId } } : {}),
+    select: estimateSelect
   },
   updatedAt: true,
   createdAt: true,
@@ -64,15 +64,6 @@ export const projectForEstimatorSelect = (
   },
   creator: {
     select: userSortSelect
-  },
-  _count: {
-    select: {
-      estimates: {
-        where: {
-          creatorId: userId
-        }
-      }
-    }
   }
 })
 
