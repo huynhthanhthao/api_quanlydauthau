@@ -1,11 +1,15 @@
 import { Prisma } from '.prisma/client'
 import { projectSortSelect } from './project.response'
 import { userSortSelect } from './user.response'
+import { prioritySelect } from './priority.response'
+import { companySelect } from './company.response'
 
 export const estimateSelect: Prisma.EstimateSelect = {
   id: true,
   name: true,
   status: true,
+  createdAt: true,
+  updatedAt: true,
   project: {
     select: projectSortSelect
   },
@@ -23,8 +27,31 @@ export const estimateDetailSelect: Prisma.EstimateSelect = {
   id: true,
   name: true,
   status: true,
+  createdAt: true,
+  updatedAt: true,
   project: {
-    select: projectSortSelect
+    select: {
+      id: true,
+      name: true,
+      code: true,
+      address: true,
+      status: true,
+      estDeadline: true,
+      updatedAt: true,
+      createdAt: true,
+      inviter: {
+        select: companySelect
+      },
+      investor: {
+        select: companySelect
+      },
+      priority: {
+        select: prioritySelect
+      },
+      creator: {
+        select: userSortSelect
+      }
+    }
   },
   productEstimates: {
     select: {

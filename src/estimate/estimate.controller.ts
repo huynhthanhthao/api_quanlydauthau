@@ -71,9 +71,12 @@ export class EstimateController {
   @HttpCode(HttpStatus.OK)
   @Roles(...extractPermissions(permissions.estimate))
   findOne(@Param('id') id: string, @Req() request: RequestJWT) {
-    const { userId } = request
+    const { userId, role } = request
 
-    return this.estimateService.findOne(id, userId)
+    const permissionCodes =
+      role.permissions.map(permission => permission.code) || []
+
+    return this.estimateService.findOne(id, permissionCodes, userId)
   }
 
   @Get('')

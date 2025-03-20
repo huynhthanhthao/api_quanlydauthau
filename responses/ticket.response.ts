@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client'
 import { userSortSelect } from './user.response'
+import { projectSortSelect } from './project.response'
 export const ticketSelect: Prisma.TicketSelect = {
   id: true,
   type: true,
@@ -9,6 +10,9 @@ export const ticketSelect: Prisma.TicketSelect = {
   createdAt: true,
   lastCommentAt: true,
   lastComment: true,
+  project: {
+    select: projectSortSelect
+  },
   creator: {
     select: userSortSelect
   },

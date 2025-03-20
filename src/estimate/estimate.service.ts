@@ -98,7 +98,11 @@ export class EstimateService {
     let conditions: Prisma.EstimateWhereInput = {}
 
     const isAdmin = hasPermission(
-      [permissions.estimate.approve, permissions.estimate.cancel],
+      [
+        permissions.estimate.approve,
+        permissions.estimate.cancel,
+        permissions.estimate.requestEdit
+      ],
       permissionCodes
     )
 
@@ -140,9 +144,29 @@ export class EstimateService {
     )
   }
 
-  async findOne(id: string, userId: string) {
+  async findOne(id: string, permissionCodes: string[], userId: string) {
+    let conditions = {}
+
+    const isAdmin = hasPermission(
+      [
+        permissions.estimate.approve,
+        permissions.estimate.cancel,
+        permissions.estimate.requestEdit
+      ],
+      permissionCodes
+    )
+
+    if (isAdmin) {
+      conditions = {}
+    }
+
+    if (!isAdmin) {
+      conditions = {
+        creatorId: userId
+      }
+    }
     return this.prisma.estimate.findUniqueOrThrow({
-      where: { id, creatorId: userId },
+      where: { id, ...conditions },
       select: estimateDetailSelect
     })
   }

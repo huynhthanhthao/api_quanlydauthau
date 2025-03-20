@@ -322,7 +322,11 @@ export class ProjectService {
       }
     })
 
-    this.validateProjectStatus(project.status, ['PENDING'], 'duyệt')
+    this.validateProjectStatus(
+      project.status,
+      ['APPROVED', 'BUDGET_APPROVED', 'EDIT_REQUESTED', 'PENDING', 'QUOTED'],
+      'hủy'
+    )
 
     return this.prisma.project.update({
       where: { id },

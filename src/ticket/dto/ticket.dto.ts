@@ -32,7 +32,9 @@ export class UpdateTicketDto extends PartialType(CreateTicketDto) {
   status: TicketStatus
 }
 
-export class FindManyTicketDto extends FindManyDto {}
+export class FindManyTicketDto extends FindManyDto {
+  projectId?: string
+}
 
 export class FindManyTicketCommentDto extends FindManyDto {
   orderKey?: string = 'createdAt'

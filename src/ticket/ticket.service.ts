@@ -148,7 +148,7 @@ export class TicketService {
   }
 
   async findMany(data: FindManyTicketDto, userId: string) {
-    const { page, perPage, keyword, orderKey, orderValue } = data
+    const { page, perPage, keyword, orderKey, orderValue, projectId } = data
 
     const keySearch = ['title', 'code']
 
@@ -158,6 +158,7 @@ export class TicketService {
           [key]: { contains: keyword }
         }))
       }),
+      ...(projectId && { projectId }),
       assignees: {
         some: {
           id: userId
