@@ -64,3 +64,21 @@ export const estimateDetailSelect: Prisma.EstimateSelect = {
     select: userSortSelect
   }
 }
+
+export const estimateSortSelect: Prisma.EstimateSelect = {
+  id: true,
+  name: true,
+  status: true,
+  createdAt: true,
+  updatedAt: true,
+  productEstimates: {
+    select: {
+      id: true,
+      name: true,
+      desc: true
+    }
+  },
+  creator: {
+    select: userSortSelect
+  }
+}

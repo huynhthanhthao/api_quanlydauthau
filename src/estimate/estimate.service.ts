@@ -232,13 +232,22 @@ export class EstimateService {
   async approve(id: string, userId: string) {
     return await this.prisma.$transaction(async (prisma: PrismaClient) => {
       const estimate = await prisma.estimate.findUniqueOrThrow({
-        where: { id }
+        where: { id },
+        include: {
+          project: true
+        }
       })
 
       this.validateEstimateStatus(estimate.status, ['PENDING'], 'duyệt')
 
+      this.validateProjectStatus(
+        estimate.status,
+        ['APPROVED'],
+        'Dự án này đã duyệt dự toán!'
+      )
+
       // Hủy dự toán đã duyệt trước đó
-      prisma.estimate.updateMany({
+      await prisma.estimate.updateMany({
         where: {
           projectId: estimate.projectId,
           status: EstimateStatus.APPROVED
@@ -249,7 +258,7 @@ export class EstimateService {
       })
 
       // Cập nhật trạng thái dự án -> Đã duyệt dự toán
-      prisma.project.update({
+      await prisma.project.update({
         where: { id: estimate.projectId },
         data: { status: ProjectStatus.BUDGET_APPROVED }
       })
@@ -313,6 +322,16 @@ export class EstimateService {
         `Không thể ${action} dự toán ở trạng thái này.`,
         HttpStatus.CONFLICT
       )
+    }
+  }
+
+  validateProjectStatus(
+    status: ProjectStatus,
+    validStatuses: ProjectStatus[],
+    message: string
+  ) {
+    if (!validStatuses.includes(status)) {
+      throw new HttpException(message, HttpStatus.CONFLICT)
     }
   }
 }
