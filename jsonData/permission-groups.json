@@ -164,6 +164,10 @@
       {
         "code": "REQUEST_EDIT_PROJECT",
         "name": "Yêu cầu điều chỉnh"
+      },
+      {
+        "code": "EXPORT_EXCEL_PROJECT",
+        "name": "Xuất excel dự án"
       }
     ]
   },

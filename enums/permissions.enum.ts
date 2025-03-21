@@ -6,7 +6,8 @@ export const permissions = {
     view: 'VIEW_PROJECT',
     approve: 'APPROVE_PROJECT',
     requestEdit: 'REQUEST_EDIT_PROJECT',
-    cancel: 'CANCEL_PROJECT'
+    cancel: 'CANCEL_PROJECT',
+    exportExcel: 'EXPORT_EXCEL_PROJECT'
   },
   ticket: {
     send: 'SEND_TICKET',
