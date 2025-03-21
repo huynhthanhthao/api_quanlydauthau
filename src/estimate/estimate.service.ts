@@ -241,9 +241,9 @@ export class EstimateService {
       this.validateEstimateStatus(estimate.status, ['PENDING'], 'duyệt')
 
       this.validateProjectStatus(
-        estimate.status,
+        estimate.project.status,
         ['APPROVED'],
-        'Dự án này đã duyệt dự toán!'
+        'Không thể duyệt dự toán của dự án này!'
       )
 
       // Hủy dự toán đã duyệt trước đó

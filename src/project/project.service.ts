@@ -231,7 +231,14 @@ export class ProjectService {
     let select = projectDetailSelect(userId)
 
     const isAdmin = hasPermission(
-      [permissions.project.approve],
+      [
+        permissions.project.approve,
+        permissions.project.cancel,
+        permissions.project.requestEdit,
+        permissions.estimate.approve,
+        permissions.estimate.requestEdit,
+        permissions.estimate.cancel
+      ],
       permissionCodes
     )
 
